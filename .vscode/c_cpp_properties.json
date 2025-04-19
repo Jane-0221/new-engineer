@@ -1,0 +1,46 @@
+{
+    "configurations": [
+        {
+            "name": "windows-gcc-x64",
+            "includePath": [
+                "d:/RM/code/25-EE-code/**",
+                "d:/RM/code/25-EE-code/Omni/Applications/Software"
+            ],
+            "compilerPath": "D:/Program Files (x86)/Dev-Cpp/MinGW64/bin/gcc.exe",
+            "intelliSenseMode": "windows-gcc-x64",
+            "compilerArgs": [
+                ""
+            ],
+            "compilerPathInCppPropertiesJson": "D:/Program Files (x86)/Dev-Cpp/MinGW64/bin/gcc.exe",
+            "mergeConfigurations": false,
+            "browse": {
+                "path": [
+                    "d:/RM/code/25-EE-code/**",
+                    "d:/RM/code/25-EE-code/Omni/Applications/Software",
+                    "${workspaceFolder}"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "cStandard": "c17"
+        },
+        {
+            "name": "arm-gnu-toolchain",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/User/Hardware",
+                "${workspaceFolder}/User/BSP",
+                "${workspaceFolder}/User/Software"
+            ],
+            "defines": [
+                "USE_HAL_DRIVER",
+                "STM32H723xx",
+                "YOUNG_OMNI"
+            ],
+            "compilerPath": "D:\\gcc-arm-none-eabi-10.3-2021.10-win32\\Arm-GNU-Toolchian\\bin\\arm-none-eabi-gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}
