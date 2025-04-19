@@ -101,7 +101,10 @@
     "ui_types.h": "c",
     "tim.h": "c",
     "music.h": "c",
-    "usbd_cdc_if.h": "c"
+    "usbd_cdc_if.h": "c",
+    "dm4310_drv.h": "c",
+    "arm_math.h": "c",
+    "math.h": "c"
   },
   "files.encoding": "gbk",
   "makefile.makefilePath": "D:\\RM\\code\\25-EE-code\\Makefile",

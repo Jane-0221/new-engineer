@@ -34,6 +34,11 @@ typedef struct
 	
 } motor_measure_t;
 
+typedef FDCAN_HandleTypeDef hcan_t;//
+    //当前时刻的电机接收flag
+    extern   uint32_t Flag_damiao[6];
+    extern uint32_t Pre_Flag_damiao[6];
+    
 extern motor_measure_t motor_data[33];
 
 extern void can_init(void);

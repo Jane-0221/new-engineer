@@ -2764,6 +2764,72 @@ Discarded input sections
  .text          0x00000000        0x0 build/motor.o
  .data          0x00000000        0x0 build/motor.o
  .bss           0x00000000        0x0 build/motor.o
+ .text          0x00000000        0x0 build/dm4310_drv.o
+ .data          0x00000000        0x0 build/dm4310_drv.o
+ .bss           0x00000000        0x0 build/dm4310_drv.o
+ .bss.arm_motor
+                0x00000000      0xaa0 build/dm4310_drv.o
+ .bss.pos_motor
+                0x00000000       0x18 build/dm4310_drv.o
+ .bss.vel_motor
+                0x00000000       0x18 build/dm4310_drv.o
+ .bss.tor_motor
+                0x00000000       0x18 build/dm4310_drv.o
+ .text.Hex_To_Float
+                0x00000000       0x20 build/dm4310_drv.o
+ .text.FloatTohex
+                0x00000000       0x1a build/dm4310_drv.o
+ .text.float_to_uint
+                0x00000000       0x66 build/dm4310_drv.o
+ .text.uint_to_float
+                0x00000000       0x64 build/dm4310_drv.o
+ .text.arm_motor_init
+                0x00000000       0x28 build/dm4310_drv.o
+ .text.enable_motor_mode
+                0x00000000       0x58 build/dm4310_drv.o
+ .text.disable_motor_mode
+                0x00000000       0x4e build/dm4310_drv.o
+ .text.dm4310_fbdata
+                0x00000000       0xfc build/dm4310_drv.o
+ .text.dm8009_fbdata
+                0x00000000      0x10c build/dm4310_drv.o
+ .text.dm10010l_fbdata
+                0x00000000      0x104 build/dm4310_drv.o
+ .text.set_DM_pos_vel
+                0x00000000       0x4c build/dm4310_drv.o
+ .text.set_DM_vel
+                0x00000000       0x34 build/dm4310_drv.o
+ .text.set_DM_mit
+                0x00000000       0x94 build/dm4310_drv.o
+ .text.set_DM_mode
+                0x00000000       0x34 build/dm4310_drv.o
+ .text.mit_ctrl
+                0x00000000      0x120 build/dm4310_drv.o
+ .text.pos_speed_ctrl
+                0x00000000       0x6a build/dm4310_drv.o
+ .rodata        0x00000000       0x20 build/dm4310_drv.o
+ .text.CAN_Send_Enter
+                0x00000000       0x74 build/dm4310_drv.o
+ .text.CAN_Send_Exit
+                0x00000000       0x74 build/dm4310_drv.o
+ .text.CAN_Send_Clear_Error
+                0x00000000       0x74 build/dm4310_drv.o
+ .text.CAN_Send_Save_Zero
+                0x00000000       0x74 build/dm4310_drv.o
+ .text.speed_ctrl
+                0x00000000       0x4a build/dm4310_drv.o
+ .debug_info    0x00000000     0x1a07 build/dm4310_drv.o
+ .debug_abbrev  0x00000000      0x2a5 build/dm4310_drv.o
+ .debug_loc     0x00000000      0x706 build/dm4310_drv.o
+ .debug_aranges
+                0x00000000       0xc0 build/dm4310_drv.o
+ .debug_ranges  0x00000000       0xb0 build/dm4310_drv.o
+ .debug_line    0x00000000      0x67d build/dm4310_drv.o
+ .debug_str     0x00000000      0xcb8 build/dm4310_drv.o
+ .comment       0x00000000       0x13 build/dm4310_drv.o
+ .debug_frame   0x00000000      0x328 build/dm4310_drv.o
+ .ARM.attributes
+                0x00000000       0x32 build/dm4310_drv.o
  .text          0x00000000        0x0 build/supercup.o
  .data          0x00000000        0x0 build/supercup.o
  .bss           0x00000000        0x0 build/supercup.o
@@ -3537,6 +3603,7 @@ LOAD build/UART_data_txrx.o
 LOAD build/CAN_receive_send.o
 LOAD build/Stm32_time.o
 LOAD build/motor.o
+LOAD build/dm4310_drv.o
 LOAD build/supercup.o
 LOAD build/IMU_updata.o
 LOAD build/DT7.o
@@ -8319,6 +8386,10 @@ Buzzer_on                                         build/buzzer.o
                                                   build/music.o
 Buzzer_set_frequency                              build/buzzer.o
                                                   build/music.o
+CAN_Send_Clear_Error                              build/dm4310_drv.o
+CAN_Send_Enter                                    build/dm4310_drv.o
+CAN_Send_Exit                                     build/dm4310_drv.o
+CAN_Send_Save_Zero                                build/dm4310_drv.o
 CDC_Transmit_HS                                   build/usbd_cdc_if.o
                                                   build/USB_VirCom.o
 CEC_IRQHandler                                    build/startup_stm32h723xx.o
@@ -8412,6 +8483,7 @@ EXTI3_IRQHandler                                  build/startup_stm32h723xx.o
 EXTI4_IRQHandler                                  build/startup_stm32h723xx.o
 EXTI9_5_IRQHandler                                build/startup_stm32h723xx.o
 Error_Handler                                     build/main.o
+                                                  build/dm4310_drv.o
                                                   build/usart.o
                                                   build/tim.o
                                                   build/spi.o
@@ -8440,6 +8512,7 @@ FLASH_WaitForLastOperation                        build/stm32h7xx_hal_flash.o
 FMAC_IRQHandler                                   build/startup_stm32h723xx.o
 FMC_IRQHandler                                    build/startup_stm32h723xx.o
 FPU_IRQHandler                                    build/startup_stm32h723xx.o
+FloatTohex                                        build/dm4310_drv.o
 Get_CRC16_Check_Sum                               build/CRC8_CRC16.o
 Get_angle                                         build/IMU_updata.o
 Get_sys_time_ms                                   build/Stm32_time.o
@@ -8548,6 +8621,7 @@ HAL_FDCAN_ActivateNotification                    build/stm32h7xx_hal_fdcan.o
 HAL_FDCAN_AddMessageToTxBuffer                    build/stm32h7xx_hal_fdcan.o
 HAL_FDCAN_AddMessageToTxFifoQ                     build/stm32h7xx_hal_fdcan.o
                                                   build/supercup.o
+                                                  build/dm4310_drv.o
                                                   build/motor.o
                                                   build/CAN_receive_send.o
 HAL_FDCAN_ClockCalibrationCallback                build/stm32h7xx_hal_fdcan.o
@@ -9402,6 +9476,7 @@ HSEM1_IRQHandler                                  build/startup_stm32h723xx.o
 HS_Desc                                           build/usbd_desc.o
                                                   build/usb_device.o
 HardFault_Handler                                 build/stm32h7xx_it.o
+Hex_To_Float                                      build/dm4310_drv.o
 I2C1_ER_IRQHandler                                build/startup_stm32h723xx.o
 I2C1_EV_IRQHandler                                build/startup_stm32h723xx.o
 I2C2_ER_IRQHandler                                build/startup_stm32h723xx.o
@@ -10306,6 +10381,8 @@ acosf                                             D:/MSYS2/mingw64/bin/../lib/gc
                                                   build/AHRS_middleware.o
 append_CRC16_check_sum                            build/CRC8_CRC16.o
 append_CRC8_check_sum                             build/CRC8_CRC16.o
+arm_motor                                         build/dm4310_drv.o
+arm_motor_init                                    build/dm4310_drv.o
 asinf                                             D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-wf_asin.o)
                                                   build/IMU_updata.o
                                                   build/AHRS_middleware.o
@@ -10322,6 +10399,7 @@ calc_crc16                                        build/ui_interface.o
 calc_crc8                                         build/ui_interface.o
 can_init                                          build/CAN_receive_send.o
                                                   build/main.o
+canx_send_data                                    build/dm4310_drv.o
 cap                                               build/supercup.o
                                                   build/Chassis.o
                                                   build/freertos.o
@@ -10346,8 +10424,13 @@ data                                              build/Auto_control.o
 decodeMINIPCdata                                  build/Auto_control.o
                                                   build/UART_data_txrx.o
 degree2rad                                        build/IMU_updata.o
+disable_motor_mode                                build/dm4310_drv.o
+dm10010l_fbdata                                   build/dm4310_drv.o
+dm4310_fbdata                                     build/dm4310_drv.o
+dm8009_fbdata                                     build/dm4310_drv.o
 eTaskGetState                                     build/tasks.o
                                                   build/cmsis_os2.o
+enable_motor_mode                                 build/dm4310_drv.o
 encodeSTM32                                       build/Auto_control.o
 environ                                           build/syscalls.o
 errno                                             D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-reent.o)
@@ -10411,6 +10494,7 @@ fifo_s_puts_noprotect                             build/fifo.o
 fifo_s_used                                       build/fifo.o
                                                   build/referee_system.o
 fifo_used                                         build/fifo.o
+float_to_uint                                     build/dm4310_drv.o
 floor                                             D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-s_floor.o)
                                                   D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-k_rem_pio2.o)
 floorf                                            D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_floor.o)
@@ -10576,6 +10660,7 @@ memset                                            D:/MSYS2/mingw64/bin/../lib/gc
                                                   build/usbd_conf.o
                                                   build/main.o
                                                   D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard/crt0.o
+mit_ctrl                                          build/dm4310_drv.o
 mouse_x_kf_fliter                                 build/Kalman_Filter_c.o
 mouse_y_kf_fliter                                 build/Kalman_Filter_c.o
 nanf                                              D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_nan.o)
@@ -10681,6 +10766,8 @@ pitch_auto_speed_pid                              build/Gimbal.o
 pitch_location_pid                                build/Gimbal.o
 pitch_ramp                                        build/Gimbal.o
 pitch_speed_pid                                   build/Gimbal.o
+pos_motor                                         build/dm4310_drv.o
+pos_speed_ctrl                                    build/dm4310_drv.o
 power_heat_data                                   build/referee_system.o
 power_limt                                        build/Chassis.o
 print_message                                     build/ui_interface.o
@@ -10731,6 +10818,10 @@ scalbnf                                           D:/MSYS2/mingw64/bin/../lib/gc
                                                   D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-kf_rem_pio2.o)
 send_data_cap                                     build/supercup.o
 seq                                               build/ui_interface.o
+set_DM_mit                                        build/dm4310_drv.o
+set_DM_mode                                       build/dm4310_drv.o
+set_DM_pos_vel                                    build/dm4310_drv.o
+set_DM_vel                                        build/dm4310_drv.o
 shoot_L_speed_pid                                 build/Shoot.o
 shoot_R_speed_pid                                 build/Shoot.o
 shoot_data                                        build/referee_system.o
@@ -10742,6 +10833,7 @@ sin                                               D:/MSYS2/mingw64/bin/../lib/gc
 sinf                                              D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sinf.o)
                                                   build/Chassis.o
 software_init_hook                                D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard/crt0.o
+speed_ctrl                                        build/dm4310_drv.o
 sqrt                                              D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-w_sqrt.o)
                                                   build/MahonyAHRS.o
                                                   build/madgwick.o
@@ -10752,6 +10844,7 @@ strlen                                            D:/MSYS2/mingw64/bin/../lib/gc
 tanf                                              D:/MSYS2/mingw64/bin/../lib/gcc/arm-none-eabi/13.3.0/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libm.a(libm_a-sf_tan.o)
                                                   build/AHRS_middleware.o
 toMINIPC                                          build/Auto_control.o
+tor_motor                                         build/dm4310_drv.o
 trigger_location_pid                              build/Shoot.o
 trigger_speed_pid                                 build/Shoot.o
 twoKi                                             build/MahonyAHRS.o
@@ -10795,6 +10888,7 @@ ui_self_id                                        build/ui_interface.o
                                                   build/freertos.o
 ui_updata                                         build/ui.o
                                                   build/freertos.o
+uint_to_float                                     build/dm4310_drv.o
 ulTaskNotifyTake                                  build/tasks.o
 ulTaskNotifyValueClear                            build/tasks.o
 ulTdleCycleCount                                  build/IMU_updata.o
@@ -10944,6 +11038,7 @@ vTaskSwitchContext                                build/tasks.o
 vTimerSetReloadMode                               build/timers.o
 vTimerSetTimerID                                  build/timers.o
 vTimerSetTimerNumber                              build/timers.o
+vel_motor                                         build/dm4310_drv.o
 verify_CRC16_check_sum                            build/CRC8_CRC16.o
                                                   build/referee_system.o
 verify_CRC8_check_sum                             build/CRC8_CRC16.o

@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
   47              		.global	referee_image_fifo_buf
   48              		.section	.bss.referee_image_fifo_buf,"aw",%nobits
   49              		.align	2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 2
 
 
   52              	referee_image_fifo_buf:
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  102      00000000 
  102      00000000 
  102      00000000 
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 3
 
 
  103              		.global	referee_warning
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  161              		.align	2
  164              	exchange_data:
  165 0000 00000000 		.space	64
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 4
 
 
  165      00000000 
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
   37:User/Hardware/referee_system.c **** ext_referee_warning_t referee_warning; // 裁判警告信息
   38:User/Hardware/referee_system.c **** /*----------- 机器人状态数据 -----------*/
   39:User/Hardware/referee_system.c **** ext_robot_status_t robot_status;                 // 机器人性能数据(10Hz，含底盘、电源等状态)
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 5
 
 
   40:User/Hardware/referee_system.c **** ext_power_heat_data_t power_heat_data;           // 实时功率热量数据(50Hz，含底盘功率、枪口热量等)
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  215 002e 0021     		movs	r1, #0
  216 0030 1F48     		ldr	r0, .L2+16
  217 0032 FFF7FEFF 		bl	memset
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 6
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 6
 
 
   60:User/Hardware/referee_system.c ****     memset(&referee_warning, 0, sizeof(ext_referee_warning_t));
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  257 0082 FFF7FEFF 		bl	memset
   75:User/Hardware/referee_system.c ****     // 选手端特定位置显示字符
   76:User/Hardware/referee_system.c ****     memset(&exchange_data, 0, sizeof(ext_custom_info_t));
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 7
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 7
 
 
  258              		.loc 1 76 5
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  309 0002 00AF     		add	r7, sp, #0
  310              	.LCFI3:
  311              		.cfi_def_cfa_register 7
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 8
 
 
   82:User/Hardware/referee_system.c **** 		Referee_data.Initial_SPEED = shoot_data.initial_speed; 
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  358 0042 0C4B     		ldr	r3, .L5+4
  359 0044 1A82     		strh	r2, [r3, #16]	@ movhi
   90:User/Hardware/referee_system.c **** 		Referee_data.Chassis_Power_Limit = robot_status.chassis_power_limit; 
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 9
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 9
 
 
  360              		.loc 1 90 50
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  412              		.cfi_def_cfa_offset 20
  413              		.cfi_offset 4, -20
  414              		.cfi_offset 5, -16
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 10
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 10
 
 
  415              		.cfi_offset 6, -12
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  458 003a 00F3FA80 		bgt	.L46
  459 003e B3F5407F 		cmp	r3, #768
  460 0042 18DC     		bgt	.L9
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 11
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 11
 
 
  461 0044 40F20E22 		movw	r2, #526
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  143:User/Hardware/referee_system.c ****         {
  144:User/Hardware/referee_system.c ****             memcpy(&robot_status, frame + index, sizeof(ext_robot_status_t));
  145:User/Hardware/referee_system.c ****         }
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 12
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 12
 
 
  146:User/Hardware/referee_system.c ****         break;
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  200:User/Hardware/referee_system.c ****         }
  201:User/Hardware/referee_system.c ****         break;
  202:User/Hardware/referee_system.c ****         case ROBOT_INTERACTION_CMD_ID:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 13
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 13
 
 
  203:User/Hardware/referee_system.c ****         {
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  479 0074 DDE0     		b	.L46
  480              	.L9:
  105:User/Hardware/referee_system.c ****     {
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 14
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 14
 
 
  481              		.loc 1 105 5
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  535              	.L13:
  109:User/Hardware/referee_system.c ****         }
  536              		.loc 1 109 13
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 15
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 15
 
 
  537 0114 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  581 0154 AA69     		ldr	r2, [r5, #24]	@ unaligned
  582 0156 EB69     		ldr	r3, [r5, #28]	@ unaligned
  583 0158 0FC4     		stmia	r4!, {r0, r1, r2, r3}
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 16
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 16
 
 
  121:User/Hardware/referee_system.c ****         case FIELD_EVENTS_CMD_ID:
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  626 0190 1868     		ldr	r0, [r3]	@ unaligned
  627 0192 5968     		ldr	r1, [r3, #4]	@ unaligned
  628 0194 9A68     		ldr	r2, [r3, #8]	@ unaligned
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 17
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 17
 
 
  629 0196 DB68     		ldr	r3, [r3, #12]	@ unaligned
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  671 01cc 9288     		ldrh	r2, [r2, #4]	@ unaligned
  672 01ce 9A80     		strh	r2, [r3, #4]	@ unaligned
  181:User/Hardware/referee_system.c ****         case ROBOT_RFID_STATE_CMD_ID:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 18
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 18
 
 
  673              		.loc 1 181 9
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  715              		.loc 1 221 9
  716 0208 14E0     		b	.L44
  717              	.L15:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 19
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 19
 
 
  249:User/Hardware/referee_system.c ****         }
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  765 0254 00000000 		.word	power_heat_data
  766 0258 00000000 		.word	hurt_data
  767 025c 00000000 		.word	shoot_data
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 20
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 20
 
 
  768 0260 00000000 		.word	projectile_allowance
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  814              	.L53:
  815 0024 00000000 		.word	referee_fifo_buf
  816 0028 00000000 		.word	referee_fifo
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 21
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 21
 
 
  817 002c 00000000 		.word	referee_image_fifo_buf
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  858 0014 7868     		ldr	r0, [r7, #4]
  859 0016 FFF7FEFF 		bl	fifo_s_get
  860 001a 0346     		mov	r3, r0
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 22
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 22
 
 
  861 001c FB73     		strb	r3, [r7, #15]
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  295:User/Hardware/referee_system.c ****         p_obj->index = 0;
  296:User/Hardware/referee_system.c ****       }
  297:User/Hardware/referee_system.c ****     }
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 23
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 23
 
 
  298:User/Hardware/referee_system.c ****     break;
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  944 00b4 3B68     		ldr	r3, [r7]
  945 00b6 9B88     		ldrh	r3, [r3, #4]	@ unaligned
  946 00b8 9BB2     		uxth	r3, r3
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 24
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 24
 
 
  947 00ba 1AB2     		sxth	r2, r3
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  987              		.loc 1 319 28
  988 00fe 3B68     		ldr	r3, [r7]
  989 0100 0022     		movs	r2, #0
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 25
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 25
 
 
  990 0102 83F88620 		strb	r2, [r3, #134]
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  1033 0150 3B68     		ldr	r3, [r7]
  1034 0152 1344     		add	r3, r3, r2
  1035 0154 FA7B     		ldrb	r2, [r7, #15]
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 26
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 26
 
 
  1036 0156 9A71     		strb	r2, [r3, #6]
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  1073 0196 4DE0     		b	.L75
  1074              	.L58:
  349:User/Hardware/referee_system.c **** 
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 27
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 27
 
 
  350:User/Hardware/referee_system.c ****     case STEP_DATA_CRC16:
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  1120 01e0 3B68     		ldr	r3, [r7]
  1121 01e2 0022     		movs	r2, #0
  1122 01e4 83F88620 		strb	r2, [r3, #134]
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 28
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 28
 
 
  359:User/Hardware/referee_system.c ****         p_obj->index = 0;
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  1163 022c 0022     		movs	r2, #0
  1164 022e 83F88820 		strb	r2, [r3, #136]
  373:User/Hardware/referee_system.c ****     }
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 29
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 29
 
 
  374:User/Hardware/referee_system.c ****     break;
@@ -1731,80 +1731,80 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 1
  1204              		.file 7 "User/Hardware/referee_system.h"
  1205              		.file 8 "Algorithm/CRC8_CRC16.h"
  1206              		.file 9 "D:/MSYS2/mingw64/arm-none-eabi/include/string.h"
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 30
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 30
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 referee_system.c
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:24     .bss.Referee_data:00000000 Referee_data
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:21     .bss.Referee_data:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:31     .bss.referee_fifo:00000000 referee_fifo
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:28     .bss.referee_fifo:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:38     .bss.referee_image_fifo:00000000 referee_image_fifo
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:35     .bss.referee_image_fifo:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:45     .bss.referee_fifo_buf:00000000 referee_fifo_buf
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:42     .bss.referee_fifo_buf:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:52     .bss.referee_image_fifo_buf:00000000 referee_image_fifo_buf
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:49     .bss.referee_image_fifo_buf:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:59     .bss.referee_unpack_obj:00000000 referee_unpack_obj
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:56     .bss.referee_unpack_obj:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:66     .bss.referee_image_unpack_obj:00000000 referee_image_unpack_obj
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:63     .bss.referee_image_unpack_obj:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:73     .bss.referee_receive_header:00000000 referee_receive_header
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:70     .bss.referee_receive_header:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:80     .bss.referee_send_header:00000000 referee_send_header
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:77     .bss.referee_send_header:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:87     .bss.game_status:00000000 game_status
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:84     .bss.game_status:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:94     .bss.game_result:00000000 game_result
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:91     .bss.game_result:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:101    .bss.game_robot_HP:00000000 game_robot_HP
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:98     .bss.game_robot_HP:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:108    .bss.referee_warning:00000000 referee_warning
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:105    .bss.referee_warning:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:115    .bss.robot_status:00000000 robot_status
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:112    .bss.robot_status:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:122    .bss.power_heat_data:00000000 power_heat_data
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:119    .bss.power_heat_data:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:129    .bss.hurt_data:00000000 hurt_data
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:126    .bss.hurt_data:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:136    .bss.shoot_data:00000000 shoot_data
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:133    .bss.shoot_data:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:143    .bss.projectile_allowance:00000000 projectile_allowance
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:140    .bss.projectile_allowance:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:150    .bss.rfid_status:00000000 rfid_status
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:147    .bss.rfid_status:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:157    .bss.robot_interaction_data:00000000 robot_interaction_data
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:154    .bss.robot_interaction_data:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:164    .bss.exchange_data:00000000 exchange_data
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:161    .bss.exchange_data:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:171    .bss.remote_control:00000000 remote_control
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:168    .bss.remote_control:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:174    .text.referee_struct_init:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:179    .text.referee_struct_init:00000000 referee_struct_init
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:274    .text.referee_struct_init:000000a0 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:293    .text.required_Data:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:298    .text.required_Data:00000000 required_Data
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:389    .text.required_Data:00000070 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:399    .text.referee_data_solve:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:404    .text.referee_data_solve:00000000 referee_data_solve
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:489    .text.referee_data_solve:00000088 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:497    .text.referee_data_solve:000000a8 $t
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:506    .text.referee_data_solve:000000b8 $d
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccCwOrge.s 			page 31
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:24     .bss.Referee_data:00000000 Referee_data
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:21     .bss.Referee_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:31     .bss.referee_fifo:00000000 referee_fifo
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:28     .bss.referee_fifo:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:38     .bss.referee_image_fifo:00000000 referee_image_fifo
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:35     .bss.referee_image_fifo:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:45     .bss.referee_fifo_buf:00000000 referee_fifo_buf
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:42     .bss.referee_fifo_buf:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:52     .bss.referee_image_fifo_buf:00000000 referee_image_fifo_buf
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:49     .bss.referee_image_fifo_buf:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:59     .bss.referee_unpack_obj:00000000 referee_unpack_obj
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:56     .bss.referee_unpack_obj:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:66     .bss.referee_image_unpack_obj:00000000 referee_image_unpack_obj
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:63     .bss.referee_image_unpack_obj:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:73     .bss.referee_receive_header:00000000 referee_receive_header
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:70     .bss.referee_receive_header:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:80     .bss.referee_send_header:00000000 referee_send_header
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:77     .bss.referee_send_header:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:87     .bss.game_status:00000000 game_status
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:84     .bss.game_status:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:94     .bss.game_result:00000000 game_result
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:91     .bss.game_result:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:101    .bss.game_robot_HP:00000000 game_robot_HP
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:98     .bss.game_robot_HP:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:108    .bss.referee_warning:00000000 referee_warning
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:105    .bss.referee_warning:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:115    .bss.robot_status:00000000 robot_status
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:112    .bss.robot_status:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:122    .bss.power_heat_data:00000000 power_heat_data
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:119    .bss.power_heat_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:129    .bss.hurt_data:00000000 hurt_data
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:126    .bss.hurt_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:136    .bss.shoot_data:00000000 shoot_data
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:133    .bss.shoot_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:143    .bss.projectile_allowance:00000000 projectile_allowance
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:140    .bss.projectile_allowance:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:150    .bss.rfid_status:00000000 rfid_status
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:147    .bss.rfid_status:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:157    .bss.robot_interaction_data:00000000 robot_interaction_data
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:154    .bss.robot_interaction_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:164    .bss.exchange_data:00000000 exchange_data
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:161    .bss.exchange_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:171    .bss.remote_control:00000000 remote_control
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:168    .bss.remote_control:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:174    .text.referee_struct_init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:179    .text.referee_struct_init:00000000 referee_struct_init
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:274    .text.referee_struct_init:000000a0 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:293    .text.required_Data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:298    .text.required_Data:00000000 required_Data
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:389    .text.required_Data:00000070 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:399    .text.referee_data_solve:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:404    .text.referee_data_solve:00000000 referee_data_solve
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:489    .text.referee_data_solve:00000088 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:497    .text.referee_data_solve:000000a8 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:506    .text.referee_data_solve:000000b8 $d
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s 			page 31
 
 
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:520    .text.referee_data_solve:000000f0 $t
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:529    .text.referee_data_solve:00000100 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:534    .text.referee_data_solve:00000114 $t
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:759    .text.referee_data_solve:0000023c $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:777    .text.Refree_system_init:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:783    .text.Refree_system_init:00000000 Refree_system_init
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:815    .text.Refree_system_init:00000024 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:823    .text.Referee_unpack_fifo_data:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:829    .text.Referee_unpack_fifo_data:00000000 Referee_unpack_fifo_data
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:872    .text.Referee_unpack_fifo_data:00000030 $d
-C:\Users\23671\AppData\Local\Temp\ccCwOrge.s:878    .text.Referee_unpack_fifo_data:00000048 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:520    .text.referee_data_solve:000000f0 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:529    .text.referee_data_solve:00000100 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:534    .text.referee_data_solve:00000114 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:759    .text.referee_data_solve:0000023c $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:777    .text.Refree_system_init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:783    .text.Refree_system_init:00000000 Refree_system_init
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:815    .text.Refree_system_init:00000024 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:823    .text.Referee_unpack_fifo_data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:829    .text.Referee_unpack_fifo_data:00000000 Referee_unpack_fifo_data
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:872    .text.Referee_unpack_fifo_data:00000030 $d
+C:\Users\23671\AppData\Local\Temp\cc5dLlU5.s:878    .text.Referee_unpack_fifo_data:00000048 $t
 
 UNDEFINED SYMBOLS
 memset

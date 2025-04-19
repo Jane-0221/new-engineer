@@ -119,6 +119,7 @@ User/BSP/UART_data_txrx.c \
 User/BSP/CAN_receive_send.c \
 User/BSP/Stm32_time.c \
 User/Hardware/motor.c \
+User/Hardware/dm4310_drv.c \
 User/Hardware/supercup.c \
 User/Hardware/IMU_updata.c \
 User/Hardware/DT7.c \

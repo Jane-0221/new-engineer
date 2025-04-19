@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
   56              		.section	.rodata
   57 000f 00       		.align	2
   58              	.LC1:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 2
 
 
   59 0010 47696D62 		.ascii	"Gimbal\000"
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  110 0004 00000000 		.space	16
  110      00000000 
  110      00000000 
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 3
 
 
  110      00000000 
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  163              	Log_and_debugHandle:
  164 0000 00000000 		.space	4
  165              		.global	Log_and_debug_attributes
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 4
 
 
  166              		.section	.rodata
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
   28:Core/Src/freertos.c **** #include "remote_control.h"
   29:Core/Src/freertos.c **** #include "Chassis.h"
   30:Core/Src/freertos.c **** #include "Gimbal.h"
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 5
 
 
   31:Core/Src/freertos.c **** #include "Global_status.h"
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
   85:Core/Src/freertos.c ****     .priority = (osPriority_t)osPriorityLow,
   86:Core/Src/freertos.c **** };
   87:Core/Src/freertos.c **** /* Definitions for Motor_control */
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 6
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 6
 
 
   88:Core/Src/freertos.c **** osThreadId_t Motor_controlHandle;
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  193              		@ link register save eliminated.
  194 0000 80B4     		push	{r7}
  195              	.LCFI0:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 7
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 7
 
 
  196              		.cfi_def_cfa_offset 4
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  233 0002 00AF     		add	r7, sp, #0
  234              	.LCFI5:
  235              		.cfi_def_cfa_register 7
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 8
 
 
  157:Core/Src/freertos.c ****   /* USER CODE BEGIN Init */
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  261 0030 194A     		ldr	r2, .L3+32
  262 0032 1360     		str	r3, [r2]
  186:Core/Src/freertos.c **** 
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 9
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 9
 
 
  187:Core/Src/freertos.c ****   /* creation of Motor_control */
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  205:Core/Src/freertos.c ****   /* USER CODE END RTOS_EVENTS */
  206:Core/Src/freertos.c **** }
  299              		.loc 1 206 1
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 10
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 10
 
 
  300 0074 00BF     		nop
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  346              		.cfi_offset 14, -4
  347 0002 82B0     		sub	sp, sp, #8
  348              	.LCFI7:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 11
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 11
 
 
  349              		.cfi_def_cfa_offset 16
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  381              		.loc 1 239 1
  382              		.cfi_startproc
  383              		@ args = 0, pretend = 0, frame = 8
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 12
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 12
 
 
  384              		@ frame_needed = 1, uses_anonymous_args = 0
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  420              		@ args = 0, pretend = 0, frame = 8
  421              		@ frame_needed = 1, uses_anonymous_args = 0
  422 0000 80B5     		push	{r7, lr}
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 13
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 13
 
 
  423              	.LCFI12:
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  458              		.cfi_startproc
  459              		@ args = 0, pretend = 0, frame = 8
  460              		@ frame_needed = 1, uses_anonymous_args = 0
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 14
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 14
 
 
  461 0000 80B5     		push	{r7, lr}
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  504              	.LFE156:
  506              		.section	.text.Shoot_Task,"ax",%progbits
  507              		.align	1
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 15
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 15
 
 
  508              		.global	Shoot_Task
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  544              		.loc 1 307 7
  545 001a FFF7FEFF 		bl	Auto_control
  546              	.L18:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 16
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 16
 
 
  308:Core/Src/freertos.c ****     Shoot_task();
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  324:Core/Src/freertos.c ****   ui_init();
  586              		.loc 1 324 3
  587 0008 FFF7FEFF 		bl	ui_init
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 17
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 17
 
 
  588              	.L23:
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  631      6F00
  632              		.section	.text.Log_and_debug_Task,"ax",%progbits
  633              		.align	1
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 18
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 18
 
 
  634              		.global	Log_and_debug_Task
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  670 0026 4FF47F40 		mov	r0, #65280
  671 002a FFF7FEFF 		bl	LEDshowcolor
  672              	.L27:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 19
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 19
 
 
  354:Core/Src/freertos.c **** 
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  713              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_iwdg.h"
  714              		.file 7 "Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h"
  715              		.file 8 "User/Software/Global_status.h"
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 20
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 20
 
 
  716              		.file 9 "Drivers/UI/ui_interface.h"
@@ -1155,67 +1155,67 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 1
  727              		.file 20 "User/Software/Chassis.h"
  728              		.file 21 "User/Software/Gimbal.h"
  729              		.file 22 "User/Software/remote_control.h"
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 21
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 21
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 freertos.c
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:24     .bss.color:00000000 color
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:21     .bss.color:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:31     .bss.Remote_controlHandle:00000000 Remote_controlHandle
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:28     .bss.Remote_controlHandle:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:42     .rodata.Remote_control_attributes:00000000 Remote_control_attributes
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:35     .rodata:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:39     .rodata.Remote_control_attributes:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:53     .bss.GimbalHandle:00000000 GimbalHandle
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:50     .bss.GimbalHandle:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:64     .rodata.Gimbal_attributes:00000000 Gimbal_attributes
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:61     .rodata.Gimbal_attributes:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:75     .bss.ChassisHandle:00000000 ChassisHandle
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:72     .bss.ChassisHandle:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:86     .rodata.Chassis_attributes:00000000 Chassis_attributes
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:83     .rodata.Chassis_attributes:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:97     .bss.Motor_controlHandle:00000000 Motor_controlHandle
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:94     .bss.Motor_controlHandle:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:108    .rodata.Motor_control_attributes:00000000 Motor_control_attributes
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:105    .rodata.Motor_control_attributes:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:119    .bss.ShootHandle:00000000 ShootHandle
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:116    .bss.ShootHandle:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:130    .rodata.Shoot_attributes:00000000 Shoot_attributes
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:127    .rodata.Shoot_attributes:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:141    .bss.RefereeHandle:00000000 RefereeHandle
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:138    .bss.RefereeHandle:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:152    .rodata.Referee_attributes:00000000 Referee_attributes
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:149    .rodata.Referee_attributes:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:163    .bss.Log_and_debugHandle:00000000 Log_and_debugHandle
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:160    .bss.Log_and_debugHandle:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:174    .rodata.Log_and_debug_attributes:00000000 Log_and_debug_attributes
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:171    .rodata.Log_and_debug_attributes:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:181    .text.vApplicationIdleHook:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:187    .text.vApplicationIdleHook:00000000 vApplicationIdleHook
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:216    .text.MX_FREERTOS_Init:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:222    .text.MX_FREERTOS_Init:00000000 MX_FREERTOS_Init
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:305    .text.MX_FREERTOS_Init:00000078 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:336    .text.Remote_control_Task:00000000 Remote_control_Task
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:379    .text.Gimbal_Task:00000000 Gimbal_Task
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:416    .text.Chassis_Task:00000000 Chassis_Task
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:455    .text.Motor_control_Task:00000000 Motor_control_Task
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:513    .text.Shoot_Task:00000000 Shoot_Task
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:568    .text.Referee_Task:00000000 Referee_Task
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:639    .text.Log_and_debug_Task:00000000 Log_and_debug_Task
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:330    .text.Remote_control_Task:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:373    .text.Gimbal_Task:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:410    .text.Chassis_Task:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:449    .text.Motor_control_Task:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:501    .text.Motor_control_Task:0000002c $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:507    .text.Shoot_Task:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:557    .text.Shoot_Task:0000002c $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:562    .text.Referee_Task:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:620    .text.Referee_Task:00000044 $d
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:633    .text.Log_and_debug_Task:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s:703    .text.Log_and_debug_Task:0000006c $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:24     .bss.color:00000000 color
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:21     .bss.color:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:31     .bss.Remote_controlHandle:00000000 Remote_controlHandle
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:28     .bss.Remote_controlHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:42     .rodata.Remote_control_attributes:00000000 Remote_control_attributes
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:35     .rodata:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:39     .rodata.Remote_control_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:53     .bss.GimbalHandle:00000000 GimbalHandle
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:50     .bss.GimbalHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:64     .rodata.Gimbal_attributes:00000000 Gimbal_attributes
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:61     .rodata.Gimbal_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:75     .bss.ChassisHandle:00000000 ChassisHandle
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:72     .bss.ChassisHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:86     .rodata.Chassis_attributes:00000000 Chassis_attributes
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:83     .rodata.Chassis_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:97     .bss.Motor_controlHandle:00000000 Motor_controlHandle
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:94     .bss.Motor_controlHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:108    .rodata.Motor_control_attributes:00000000 Motor_control_attributes
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:105    .rodata.Motor_control_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:119    .bss.ShootHandle:00000000 ShootHandle
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:116    .bss.ShootHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:130    .rodata.Shoot_attributes:00000000 Shoot_attributes
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:127    .rodata.Shoot_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:141    .bss.RefereeHandle:00000000 RefereeHandle
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:138    .bss.RefereeHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:152    .rodata.Referee_attributes:00000000 Referee_attributes
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:149    .rodata.Referee_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:163    .bss.Log_and_debugHandle:00000000 Log_and_debugHandle
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:160    .bss.Log_and_debugHandle:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:174    .rodata.Log_and_debug_attributes:00000000 Log_and_debug_attributes
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:171    .rodata.Log_and_debug_attributes:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:181    .text.vApplicationIdleHook:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:187    .text.vApplicationIdleHook:00000000 vApplicationIdleHook
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:216    .text.MX_FREERTOS_Init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:222    .text.MX_FREERTOS_Init:00000000 MX_FREERTOS_Init
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:305    .text.MX_FREERTOS_Init:00000078 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:336    .text.Remote_control_Task:00000000 Remote_control_Task
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:379    .text.Gimbal_Task:00000000 Gimbal_Task
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:416    .text.Chassis_Task:00000000 Chassis_Task
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:455    .text.Motor_control_Task:00000000 Motor_control_Task
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:513    .text.Shoot_Task:00000000 Shoot_Task
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:568    .text.Referee_Task:00000000 Referee_Task
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:639    .text.Log_and_debug_Task:00000000 Log_and_debug_Task
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:330    .text.Remote_control_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:373    .text.Gimbal_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:410    .text.Chassis_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:449    .text.Motor_control_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:501    .text.Motor_control_Task:0000002c $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:507    .text.Shoot_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:557    .text.Shoot_Task:0000002c $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:562    .text.Referee_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:620    .text.Referee_Task:00000044 $d
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:633    .text.Log_and_debug_Task:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccju4HRm.s:703    .text.Log_and_debug_Task:0000006c $d
 
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccU6TVHa.s 			page 22
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccju4HRm.s 			page 22
 
 
 UNDEFINED SYMBOLS

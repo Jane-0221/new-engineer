@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
   20:User/Hardware/motor.c **** /**
   21:User/Hardware/motor.c ****  * @brief 大疆电机初始化，暂时只用来初始化类型
   22:User/Hardware/motor.c ****  *
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 2
 
 
   23:User/Hardware/motor.c ****  * @param motor_type 电机种类：GM6020,M3508,M2006
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
   80 003c BA7B     		ldrb	r2, [r7, #14]	@ zero_extendqisi2
   81              		.loc 1 31 46
   82 003e 0C48     		ldr	r0, .L2+8
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 3
 
 
   83 0040 1346     		mov	r3, r2
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  129              		@ frame_needed = 1, uses_anonymous_args = 0
  130              		@ link register save eliminated.
  131 0000 80B4     		push	{r7}
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 4
 
 
  132              	.LCFI6:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  182 005a C1E90023 		strd	r2, [r1]
   46:User/Hardware/motor.c **** }
  183              		.loc 1 46 1
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 5
 
 
  184 005e 00BF     		nop
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  231 0008 0A46     		mov	r2, r1
  232 000a FB80     		strh	r3, [r7, #6]	@ movhi
  233 000c 1346     		mov	r3, r2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 6
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 6
 
 
  234 000e 7B71     		strb	r3, [r7, #5]
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  286 0060 E9A28B2E 		.word	780903145
  287 0064 A38B2EBA 		.word	-1171354717
  288 0068 00000000 		.word	DJIMotor_data
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 7
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 7
 
 
  289              		.cfi_endproc
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  335 0026 1346     		mov	r3, r2
  336 0028 9B00     		lsls	r3, r3, #2
  337 002a 1344     		add	r3, r3, r2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 8
 
 
  338 002c 5B00     		lsls	r3, r3, #1
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  392              		.global	DJIMotor_get_process_motor_data
  393              		.syntax unified
  394              		.thumb
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 9
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 9
 
 
  395              		.thumb_func
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  438              		.loc 1 80 44
  439 0026 1343     		orrs	r3, r3, r2
  440 0028 1BB2     		sxth	r3, r3
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 10
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 10
 
 
  441              		.loc 1 80 18
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
   87:User/Hardware/motor.c ****     if ((ptr)->last_ecd > 7000 && (ptr)->ecd < 1000)
  489              		.loc 1 87 14
  490 0070 7B68     		ldr	r3, [r7, #4]
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 11
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 11
 
 
  491 0072 9B89     		ldrh	r3, [r3, #12]
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  543 00e0 9B88     		ldrh	r3, [r3, #4]
  544              		.loc 1 89 37 discriminator 1
  545 00e2 41F65832 		movw	r2, #7000
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 12
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 12
 
 
  546 00e6 9342     		cmp	r3, r2
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  597 0150 12EB0408 		adds	r8, r2, r4
  598 0154 43EB0509 		adc	r9, r3, r5
  599 0158 7B68     		ldr	r3, [r7, #4]
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 13
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 13
 
 
  600 015a C3E90489 		strd	r8, [r3, #16]
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  643 01b8 D7ED037A 		vldr.32	s15, [r7, #12]
  644 01bc FDEEE77A 		vcvt.s32.f32	s15, s15
  645 01c0 17EE903A 		vmov	r3, s15	@ int
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 14
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 14
 
 
  646 01c4 002B     		cmp	r3, #0
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  694 022e BB68     		ldr	r3, [r7, #8]
  695 0230 B422     		movs	r2, #180
  696 0232 02FB03F3 		mul	r3, r2, r3
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 15
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 15
 
 
  697              		.loc 1 109 23
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  742 02a6 B7EEE77A 		vcvt.f64.f32	d7, s15
  743 02aa 7B68     		ldr	r3, [r7, #4]
  744 02ac 83ED0A7B 		vstr.64	d7, [r3, #40]
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 16
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 16
 
 
  745              	.LBE2:
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  780 02ea 07EE903A 		vmov	s15, r3	@ int
  781 02ee B8EEE77A 		vcvt.f32.s32	s14, s15
  782 02f2 DFED0C6A 		vldr.32	s13, .L32+20
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 17
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 17
 
 
  783 02f6 C7EE267A 		vdiv.f32	s15, s14, s13
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  828              		.cfi_offset 14, -4
  829 0002 84B0     		sub	sp, sp, #16
  830              	.LCFI30:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 18
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 18
 
 
  831              		.cfi_def_cfa_offset 24
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  868 003e 9342     		cmp	r3, r2
  869 0040 0FD1     		bne	.L37
  147:User/Hardware/motor.c ****         }
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 19
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 19
 
 
  870              		.loc 1 147 66
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  920 0090 00000000 		.word	hfdcan1
  921 0094 00000000 		.word	DJIMotor_data
  922 0098 00000000 		.word	hfdcan2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 20
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 20
 
 
  923 009c 00000000 		.word	hfdcan3
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  966 001e 02D0     		beq	.L43
  168:User/Hardware/motor.c ****         HAL_FDCAN_ErrorCallback(&hfdcan2);
  967              		.loc 1 168 9
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 21
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 21
 
 
  968 0020 B348     		ldr	r0, .L61+4
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  1011 0064 0022     		movs	r2, #0
  1012 0066 DA61     		str	r2, [r3, #28]
  180:User/Hardware/motor.c ****     tx_message.MessageMarker = 0x00;                    // 用于复制到TX EVENT FIFO的消息Maker来识别
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 22
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 22
 
 
  1013              		.loc 1 180 30
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  188:User/Hardware/motor.c ****             can_send_data[i][k + 1] = DJIMotor_data[i][canid].set;
  1060              		.loc 1 188 62
  1061 00b8 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 23
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 23
 
 
  1062 00bc 8F48     		ldr	r0, .L61+16
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  191:User/Hardware/motor.c ****     }
  192:User/Hardware/motor.c ****     // 三路can同时发送
  193:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &tx_message, can_send_data[0]);
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 24
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 24
 
 
  1110              		.loc 1 193 5
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  1153 0156 6948     		ldr	r0, .L61+16
  1154 0158 396B     		ldr	r1, [r7, #48]
  1155 015a 1346     		mov	r3, r2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 25
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 25
 
 
  1156 015c DB00     		lsls	r3, r3, #3
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  1207              		.loc 1 202 34 discriminator 3
  1208 01ca FB6A     		ldr	r3, [r7, #44]
  1209 01cc 0233     		adds	r3, r3, #2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 26
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 26
 
 
  1210 01ce FB62     		str	r3, [r7, #44]
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  216:User/Hardware/motor.c ****     for (int i = 0; i < 3; i++)
  1252              		.loc 1 216 14
  1253 0212 0023     		movs	r3, #0
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 27
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 27
 
 
  1254 0214 BB62     		str	r3, [r7, #40]
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  1302 026c 4FF41A72 		mov	r2, #616
  1303 0270 01FB02F2 		mul	r2, r1, r2
  1304 0274 1344     		add	r3, r3, r2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 28
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 28
 
 
  1305 0276 0344     		add	r3, r3, r0
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  228:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &tx_message, can_send_data[1]);
  1350              		.loc 1 228 5
  1351 02c0 3B1D     		adds	r3, r7, #4
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 29
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 29
 
 
  1352 02c2 0833     		adds	r3, r3, #8
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  1396 0312 396A     		ldr	r1, [r7, #32]
  1397 0314 1346     		mov	r3, r2
  1398 0316 DB00     		lsls	r3, r3, #3
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 30
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 30
 
 
  1399 0318 9B1A     		subs	r3, r3, r2
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  1450 0384 FB69     		ldr	r3, [r7, #28]
  1451 0386 0233     		adds	r3, r3, #2
  1452 0388 FB61     		str	r3, [r7, #28]
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 31
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 31
 
 
  1453              	.L58:
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  1497              		@ sp needed
  1498 03ca 80BD     		pop	{r7, pc}
  1499              	.L64:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 32
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 32
 
 
  1500              		.align	2
@@ -1889,38 +1889,38 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 1
  1524              		.file 8 "Core/Inc/fdcan.h"
  1525              		.file 9 "User/Hardware/motor.h"
  1526              		.file 10 "User/BSP/CAN_receive_send.h"
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s 			page 33
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cczhF97Q.s 			page 33
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 motor.c
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:24     .bss.DJIMotor_data:00000000 DJIMotor_data
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:21     .bss.DJIMotor_data:00000000 $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:27     .text.DJIMotor_init:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:33     .text.DJIMotor_init:00000000 DJIMotor_init
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:111    .text.DJIMotor_init:00000068 $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:118    .text.DJIMotor_setzero:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:124    .text.DJIMotor_setzero:00000000 DJIMotor_setzero
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:200    .text.DJIMotor_setzero:0000006c $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:207    .text.DJIMotor_set:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:213    .text.DJIMotor_set:00000000 DJIMotor_set
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:286    .text.DJIMotor_set:00000060 $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:293    .text.DJIMotor_get_data:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:299    .text.DJIMotor_get_data:00000000 DJIMotor_get_data
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:382    .text.DJIMotor_get_data:00000070 $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:391    .text.DJIMotor_get_process_motor_data:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:397    .text.DJIMotor_get_process_motor_data:00000000 DJIMotor_get_process_motor_data
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:802    .text.DJIMotor_get_process_motor_data:00000310 $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:812    .text.DJIMotor_decode_candata:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:818    .text.DJIMotor_decode_candata:00000000 DJIMotor_decode_candata
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:920    .text.DJIMotor_decode_candata:00000090 $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:928    .text.DJIMotor_send_current:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:934    .text.DJIMotor_send_current:00000000 DJIMotor_send_current
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:1377   .text.DJIMotor_send_current:000002ec $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:1514   .bss.tx_message.0:00000000 tx_message.0
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:1384   .text.DJIMotor_send_current:00000300 $t
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:1502   .text.DJIMotor_send_current:000003cc $d
-C:\Users\23671\AppData\Local\Temp\ccbx9Tj9.s:1511   .bss.tx_message.0:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:24     .bss.DJIMotor_data:00000000 DJIMotor_data
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:21     .bss.DJIMotor_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:27     .text.DJIMotor_init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:33     .text.DJIMotor_init:00000000 DJIMotor_init
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:111    .text.DJIMotor_init:00000068 $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:118    .text.DJIMotor_setzero:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:124    .text.DJIMotor_setzero:00000000 DJIMotor_setzero
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:200    .text.DJIMotor_setzero:0000006c $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:207    .text.DJIMotor_set:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:213    .text.DJIMotor_set:00000000 DJIMotor_set
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:286    .text.DJIMotor_set:00000060 $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:293    .text.DJIMotor_get_data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:299    .text.DJIMotor_get_data:00000000 DJIMotor_get_data
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:382    .text.DJIMotor_get_data:00000070 $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:391    .text.DJIMotor_get_process_motor_data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:397    .text.DJIMotor_get_process_motor_data:00000000 DJIMotor_get_process_motor_data
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:802    .text.DJIMotor_get_process_motor_data:00000310 $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:812    .text.DJIMotor_decode_candata:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:818    .text.DJIMotor_decode_candata:00000000 DJIMotor_decode_candata
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:920    .text.DJIMotor_decode_candata:00000090 $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:928    .text.DJIMotor_send_current:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:934    .text.DJIMotor_send_current:00000000 DJIMotor_send_current
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:1377   .text.DJIMotor_send_current:000002ec $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:1514   .bss.tx_message.0:00000000 tx_message.0
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:1384   .text.DJIMotor_send_current:00000300 $t
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:1502   .text.DJIMotor_send_current:000003cc $d
+C:\Users\23671\AppData\Local\Temp\cczhF97Q.s:1511   .bss.tx_message.0:00000000 $d
 
 UNDEFINED SYMBOLS
 __aeabi_l2f
