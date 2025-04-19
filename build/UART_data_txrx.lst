@@ -1,0 +1,2751 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"UART_data_txrx.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/BSP/UART_data_txrx.c"
+  19              		.global	UART1_data
+  20              		.section	.bss.UART1_data,"aw",%nobits
+  21              		.align	2
+  24              	UART1_data:
+  25 0000 00000000 		.space	269
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	UART2_data
+  27              		.section	.bss.UART2_data,"aw",%nobits
+  28              		.align	2
+  31              	UART2_data:
+  32 0000 00000000 		.space	269
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  33              		.global	UART3_data
+  34              		.section	.bss.UART3_data,"aw",%nobits
+  35              		.align	2
+  38              	UART3_data:
+  39 0000 00000000 		.space	269
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.global	UART5_data
+  41              		.section	.bss.UART5_data,"aw",%nobits
+  42              		.align	2
+  45              	UART5_data:
+  46 0000 00000000 		.space	269
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  47              		.global	UART7_data
+  48              		.section	.bss.UART7_data,"aw",%nobits
+  49              		.align	2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 2
+
+
+  52              	UART7_data:
+  53 0000 00000000 		.space	269
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  54              		.global	UART10_data
+  55              		.section	.bss.UART10_data,"aw",%nobits
+  56              		.align	2
+  59              	UART10_data:
+  60 0000 00000000 		.space	269
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  61              		.section	.text.uart_init,"ax",%progbits
+  62              		.align	1
+  63              		.global	uart_init
+  64              		.syntax unified
+  65              		.thumb
+  66              		.thumb_func
+  68              	uart_init:
+  69              	.LFB147:
+   1:User/BSP/UART_data_txrx.c **** /**
+   2:User/BSP/UART_data_txrx.c ****  * @file UART_data_txrx.c
+   3:User/BSP/UART_data_txrx.c ****  * @author sethome
+   4:User/BSP/UART_data_txrx.c ****  * @brief 串口数据发送接受
+   5:User/BSP/UART_data_txrx.c ****  * @version 0.1
+   6:User/BSP/UART_data_txrx.c ****  * @date 2022-11-20
+   7:User/BSP/UART_data_txrx.c ****  *
+   8:User/BSP/UART_data_txrx.c ****  * @copyright Copyright (c) 2022 sethome
+   9:User/BSP/UART_data_txrx.c ****  *
+  10:User/BSP/UART_data_txrx.c ****  */
+  11:User/BSP/UART_data_txrx.c **** // #include "fifo.h"
+  12:User/BSP/UART_data_txrx.c **** #include "stdio.h"
+  13:User/BSP/UART_data_txrx.c **** #include "stdlib.h"
+  14:User/BSP/UART_data_txrx.c **** #include "string.h"
+  15:User/BSP/UART_data_txrx.c **** #include "fifo.h"
+  16:User/BSP/UART_data_txrx.c **** 
+  17:User/BSP/UART_data_txrx.c **** #include "UART_data_txrx.h"
+  18:User/BSP/UART_data_txrx.c **** 
+  19:User/BSP/UART_data_txrx.c **** #include "DT7.h"
+  20:User/BSP/UART_data_txrx.c **** #include "referee_system.h"
+  21:User/BSP/UART_data_txrx.c **** #include "Global_status.h"
+  22:User/BSP/UART_data_txrx.c **** #include "Auto_control.h"
+  23:User/BSP/UART_data_txrx.c **** 
+  24:User/BSP/UART_data_txrx.c **** // DMA控制变量
+  25:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_uart5_rx; // 遥控器，仅用接受
+  26:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_uart7_rx; // 串口7，连接图传模块
+  27:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_uart7_tx;
+  28:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart10_rx; // 串口10，连接电源管理模块
+  29:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart10_tx;
+  30:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart1_rx;
+  31:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart1_tx;
+  32:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart2_rx;
+  33:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart2_tx;
+  34:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart3_rx;
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 3
+
+
+  35:User/BSP/UART_data_txrx.c **** extern DMA_HandleTypeDef hdma_usart3_tx;
+  36:User/BSP/UART_data_txrx.c **** 
+  37:User/BSP/UART_data_txrx.c **** // 串口控制变量
+  38:User/BSP/UART_data_txrx.c **** extern UART_HandleTypeDef huart1;
+  39:User/BSP/UART_data_txrx.c **** extern UART_HandleTypeDef huart2;
+  40:User/BSP/UART_data_txrx.c **** extern UART_HandleTypeDef huart3;
+  41:User/BSP/UART_data_txrx.c **** extern UART_HandleTypeDef huart5; // 遥控器，可能用不到
+  42:User/BSP/UART_data_txrx.c **** extern UART_HandleTypeDef huart7;
+  43:User/BSP/UART_data_txrx.c **** extern UART_HandleTypeDef huart10;
+  44:User/BSP/UART_data_txrx.c **** 
+  45:User/BSP/UART_data_txrx.c **** // 将上述串口+DMA整合，并包含缓冲区
+  46:User/BSP/UART_data_txrx.c **** transmit_data UART1_data;
+  47:User/BSP/UART_data_txrx.c **** transmit_data UART2_data;
+  48:User/BSP/UART_data_txrx.c **** transmit_data UART3_data;
+  49:User/BSP/UART_data_txrx.c **** transmit_data UART5_data;
+  50:User/BSP/UART_data_txrx.c **** transmit_data UART7_data;
+  51:User/BSP/UART_data_txrx.c **** transmit_data UART10_data;
+  52:User/BSP/UART_data_txrx.c **** 
+  53:User/BSP/UART_data_txrx.c **** /**
+  54:User/BSP/UART_data_txrx.c ****  * @brief 串口初始化
+  55:User/BSP/UART_data_txrx.c ****  *
+  56:User/BSP/UART_data_txrx.c ****  * @return * void
+  57:User/BSP/UART_data_txrx.c ****  */
+  58:User/BSP/UART_data_txrx.c **** void uart_init(void)
+  59:User/BSP/UART_data_txrx.c **** {
+  70              		.loc 1 59 1
+  71              		.cfi_startproc
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 1, uses_anonymous_args = 0
+  74 0000 80B5     		push	{r7, lr}
+  75              	.LCFI0:
+  76              		.cfi_def_cfa_offset 8
+  77              		.cfi_offset 7, -8
+  78              		.cfi_offset 14, -4
+  79 0002 00AF     		add	r7, sp, #0
+  80              	.LCFI1:
+  81              		.cfi_def_cfa_register 7
+  60:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART1_data, &huart1, &hdma_usart1_rx, &hdma_usart1_rx);
+  82              		.loc 1 60 3
+  83 0004 124B     		ldr	r3, .L2
+  84 0006 124A     		ldr	r2, .L2
+  85 0008 1249     		ldr	r1, .L2+4
+  86 000a 1348     		ldr	r0, .L2+8
+  87 000c FFF7FEFF 		bl	UART_DMA_rxtx_start
+  61:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART2_data, &huart2, &hdma_usart2_rx, &hdma_usart2_rx);
+  88              		.loc 1 61 3
+  89 0010 124B     		ldr	r3, .L2+12
+  90 0012 124A     		ldr	r2, .L2+12
+  91 0014 1249     		ldr	r1, .L2+16
+  92 0016 1348     		ldr	r0, .L2+20
+  93 0018 FFF7FEFF 		bl	UART_DMA_rxtx_start
+  62:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART3_data, &huart3, &hdma_usart3_rx, &hdma_usart3_rx);
+  94              		.loc 1 62 3
+  95 001c 124B     		ldr	r3, .L2+24
+  96 001e 124A     		ldr	r2, .L2+24
+  97 0020 1249     		ldr	r1, .L2+28
+  98 0022 1348     		ldr	r0, .L2+32
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 4
+
+
+  99 0024 FFF7FEFF 		bl	UART_DMA_rxtx_start
+  63:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART5_data, &huart5, &hdma_uart5_rx, &hdma_uart5_rx);
+ 100              		.loc 1 63 3
+ 101 0028 124B     		ldr	r3, .L2+36
+ 102 002a 124A     		ldr	r2, .L2+36
+ 103 002c 1249     		ldr	r1, .L2+40
+ 104 002e 1348     		ldr	r0, .L2+44
+ 105 0030 FFF7FEFF 		bl	UART_DMA_rxtx_start
+  64:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART7_data, &huart7, &hdma_uart7_rx, &hdma_uart7_tx);
+ 106              		.loc 1 64 3
+ 107 0034 124B     		ldr	r3, .L2+48
+ 108 0036 134A     		ldr	r2, .L2+52
+ 109 0038 1349     		ldr	r1, .L2+56
+ 110 003a 1448     		ldr	r0, .L2+60
+ 111 003c FFF7FEFF 		bl	UART_DMA_rxtx_start
+  65:User/BSP/UART_data_txrx.c ****   UART_DMA_rxtx_start(&UART10_data, &huart10, &hdma_usart10_rx, &hdma_usart10_tx);
+ 112              		.loc 1 65 3
+ 113 0040 134B     		ldr	r3, .L2+64
+ 114 0042 144A     		ldr	r2, .L2+68
+ 115 0044 1449     		ldr	r1, .L2+72
+ 116 0046 1548     		ldr	r0, .L2+76
+ 117 0048 FFF7FEFF 		bl	UART_DMA_rxtx_start
+  66:User/BSP/UART_data_txrx.c **** }
+ 118              		.loc 1 66 1
+ 119 004c 00BF     		nop
+ 120 004e 80BD     		pop	{r7, pc}
+ 121              	.L3:
+ 122              		.align	2
+ 123              	.L2:
+ 124 0050 00000000 		.word	hdma_usart1_rx
+ 125 0054 00000000 		.word	huart1
+ 126 0058 00000000 		.word	UART1_data
+ 127 005c 00000000 		.word	hdma_usart2_rx
+ 128 0060 00000000 		.word	huart2
+ 129 0064 00000000 		.word	UART2_data
+ 130 0068 00000000 		.word	hdma_usart3_rx
+ 131 006c 00000000 		.word	huart3
+ 132 0070 00000000 		.word	UART3_data
+ 133 0074 00000000 		.word	hdma_uart5_rx
+ 134 0078 00000000 		.word	huart5
+ 135 007c 00000000 		.word	UART5_data
+ 136 0080 00000000 		.word	hdma_uart7_tx
+ 137 0084 00000000 		.word	hdma_uart7_rx
+ 138 0088 00000000 		.word	huart7
+ 139 008c 00000000 		.word	UART7_data
+ 140 0090 00000000 		.word	hdma_usart10_tx
+ 141 0094 00000000 		.word	hdma_usart10_rx
+ 142 0098 00000000 		.word	huart10
+ 143 009c 00000000 		.word	UART10_data
+ 144              		.cfi_endproc
+ 145              	.LFE147:
+ 147              		.section	.text.UART_DMA_rxtx_start,"ax",%progbits
+ 148              		.align	1
+ 149              		.global	UART_DMA_rxtx_start
+ 150              		.syntax unified
+ 151              		.thumb
+ 152              		.thumb_func
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 5
+
+
+ 154              	UART_DMA_rxtx_start:
+ 155              	.LFB148:
+  67:User/BSP/UART_data_txrx.c **** 
+  68:User/BSP/UART_data_txrx.c **** /**
+  69:User/BSP/UART_data_txrx.c ****  * @brief DMA，串口中断启动，ヾ(?ω?`)o温馨提示，可以在头文件里用宏自定义串口缓冲区大小，
+  70:User/BSP/UART_data_txrx.c ****  * @param data 串口整合包指针
+  71:User/BSP/UART_data_txrx.c ****  * @param huart 串口指针
+  72:User/BSP/UART_data_txrx.c ****  * @param hdma_usart_rx 串口接受dma指针
+  73:User/BSP/UART_data_txrx.c ****  * @param hdma_usart_tx 串口发送dma指针
+  74:User/BSP/UART_data_txrx.c ****  */
+  75:User/BSP/UART_data_txrx.c **** void UART_DMA_rxtx_start(transmit_data *data, UART_HandleTypeDef *huart, DMA_HandleTypeDef *hdma_us
+  76:User/BSP/UART_data_txrx.c **** {
+ 156              		.loc 1 76 1
+ 157              		.cfi_startproc
+ 158              		@ args = 0, pretend = 0, frame = 16
+ 159              		@ frame_needed = 1, uses_anonymous_args = 0
+ 160 0000 80B5     		push	{r7, lr}
+ 161              	.LCFI2:
+ 162              		.cfi_def_cfa_offset 8
+ 163              		.cfi_offset 7, -8
+ 164              		.cfi_offset 14, -4
+ 165 0002 84B0     		sub	sp, sp, #16
+ 166              	.LCFI3:
+ 167              		.cfi_def_cfa_offset 24
+ 168 0004 00AF     		add	r7, sp, #0
+ 169              	.LCFI4:
+ 170              		.cfi_def_cfa_register 7
+ 171 0006 F860     		str	r0, [r7, #12]
+ 172 0008 B960     		str	r1, [r7, #8]
+ 173 000a 7A60     		str	r2, [r7, #4]
+ 174 000c 3B60     		str	r3, [r7]
+  77:User/BSP/UART_data_txrx.c ****   data->huart = huart;                 // 串口控制变量
+ 175              		.loc 1 77 15
+ 176 000e FB68     		ldr	r3, [r7, #12]
+ 177 0010 BA68     		ldr	r2, [r7, #8]
+ 178 0012 1A60     		str	r2, [r3]	@ unaligned
+  78:User/BSP/UART_data_txrx.c ****   data->hdma_usart_rx = hdma_usart_rx; // DMA接收缓冲
+ 179              		.loc 1 78 23
+ 180 0014 FB68     		ldr	r3, [r7, #12]
+ 181 0016 7A68     		ldr	r2, [r7, #4]
+ 182 0018 5A60     		str	r2, [r3, #4]	@ unaligned
+  79:User/BSP/UART_data_txrx.c ****   data->hdma_usart_tx = hdma_usart_tx; // DMA发送缓冲
+ 183              		.loc 1 79 23
+ 184 001a FB68     		ldr	r3, [r7, #12]
+ 185 001c 3A68     		ldr	r2, [r7]
+ 186 001e 9A60     		str	r2, [r3, #8]	@ unaligned
+  80:User/BSP/UART_data_txrx.c **** 
+  81:User/BSP/UART_data_txrx.c ****   HAL_UARTEx_ReceiveToIdle_DMA(huart, data->rev_data, UART_BUFFER_SIZE); // 开启DMA批量数据接受
+ 187              		.loc 1 81 43
+ 188 0020 FB68     		ldr	r3, [r7, #12]
+ 189 0022 0C33     		adds	r3, r3, #12
+ 190              		.loc 1 81 3
+ 191 0024 4FF48072 		mov	r2, #256
+ 192 0028 1946     		mov	r1, r3
+ 193 002a B868     		ldr	r0, [r7, #8]
+ 194 002c FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+  82:User/BSP/UART_data_txrx.c ****   __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);                        // 关闭接受过半中断
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 6
+
+
+ 195              		.loc 1 82 3
+ 196 0030 BB68     		ldr	r3, [r7, #8]
+ 197 0032 D3F88030 		ldr	r3, [r3, #128]
+ 198 0036 1B68     		ldr	r3, [r3]
+ 199 0038 444A     		ldr	r2, .L8
+ 200 003a 9342     		cmp	r3, r2
+ 201 003c 68D0     		beq	.L5
+ 202              		.loc 1 82 3 is_stmt 0 discriminator 2
+ 203 003e BB68     		ldr	r3, [r7, #8]
+ 204 0040 D3F88030 		ldr	r3, [r3, #128]
+ 205 0044 1B68     		ldr	r3, [r3]
+ 206 0046 424A     		ldr	r2, .L8+4
+ 207 0048 9342     		cmp	r3, r2
+ 208 004a 61D0     		beq	.L5
+ 209              		.loc 1 82 3 discriminator 4
+ 210 004c BB68     		ldr	r3, [r7, #8]
+ 211 004e D3F88030 		ldr	r3, [r3, #128]
+ 212 0052 1B68     		ldr	r3, [r3]
+ 213 0054 3F4A     		ldr	r2, .L8+8
+ 214 0056 9342     		cmp	r3, r2
+ 215 0058 5AD0     		beq	.L5
+ 216              		.loc 1 82 3 discriminator 6
+ 217 005a BB68     		ldr	r3, [r7, #8]
+ 218 005c D3F88030 		ldr	r3, [r3, #128]
+ 219 0060 1B68     		ldr	r3, [r3]
+ 220 0062 3D4A     		ldr	r2, .L8+12
+ 221 0064 9342     		cmp	r3, r2
+ 222 0066 53D0     		beq	.L5
+ 223              		.loc 1 82 3 discriminator 8
+ 224 0068 BB68     		ldr	r3, [r7, #8]
+ 225 006a D3F88030 		ldr	r3, [r3, #128]
+ 226 006e 1B68     		ldr	r3, [r3]
+ 227 0070 3A4A     		ldr	r2, .L8+16
+ 228 0072 9342     		cmp	r3, r2
+ 229 0074 4CD0     		beq	.L5
+ 230              		.loc 1 82 3 discriminator 10
+ 231 0076 BB68     		ldr	r3, [r7, #8]
+ 232 0078 D3F88030 		ldr	r3, [r3, #128]
+ 233 007c 1B68     		ldr	r3, [r3]
+ 234 007e 384A     		ldr	r2, .L8+20
+ 235 0080 9342     		cmp	r3, r2
+ 236 0082 45D0     		beq	.L5
+ 237              		.loc 1 82 3 discriminator 12
+ 238 0084 BB68     		ldr	r3, [r7, #8]
+ 239 0086 D3F88030 		ldr	r3, [r3, #128]
+ 240 008a 1B68     		ldr	r3, [r3]
+ 241 008c 354A     		ldr	r2, .L8+24
+ 242 008e 9342     		cmp	r3, r2
+ 243 0090 3ED0     		beq	.L5
+ 244              		.loc 1 82 3 discriminator 14
+ 245 0092 BB68     		ldr	r3, [r7, #8]
+ 246 0094 D3F88030 		ldr	r3, [r3, #128]
+ 247 0098 1B68     		ldr	r3, [r3]
+ 248 009a 334A     		ldr	r2, .L8+28
+ 249 009c 9342     		cmp	r3, r2
+ 250 009e 37D0     		beq	.L5
+ 251              		.loc 1 82 3 discriminator 16
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 7
+
+
+ 252 00a0 BB68     		ldr	r3, [r7, #8]
+ 253 00a2 D3F88030 		ldr	r3, [r3, #128]
+ 254 00a6 1B68     		ldr	r3, [r3]
+ 255 00a8 304A     		ldr	r2, .L8+32
+ 256 00aa 9342     		cmp	r3, r2
+ 257 00ac 30D0     		beq	.L5
+ 258              		.loc 1 82 3 discriminator 18
+ 259 00ae BB68     		ldr	r3, [r7, #8]
+ 260 00b0 D3F88030 		ldr	r3, [r3, #128]
+ 261 00b4 1B68     		ldr	r3, [r3]
+ 262 00b6 2E4A     		ldr	r2, .L8+36
+ 263 00b8 9342     		cmp	r3, r2
+ 264 00ba 29D0     		beq	.L5
+ 265              		.loc 1 82 3 discriminator 20
+ 266 00bc BB68     		ldr	r3, [r7, #8]
+ 267 00be D3F88030 		ldr	r3, [r3, #128]
+ 268 00c2 1B68     		ldr	r3, [r3]
+ 269 00c4 2B4A     		ldr	r2, .L8+40
+ 270 00c6 9342     		cmp	r3, r2
+ 271 00c8 22D0     		beq	.L5
+ 272              		.loc 1 82 3 discriminator 22
+ 273 00ca BB68     		ldr	r3, [r7, #8]
+ 274 00cc D3F88030 		ldr	r3, [r3, #128]
+ 275 00d0 1B68     		ldr	r3, [r3]
+ 276 00d2 294A     		ldr	r2, .L8+44
+ 277 00d4 9342     		cmp	r3, r2
+ 278 00d6 1BD0     		beq	.L5
+ 279              		.loc 1 82 3 discriminator 24
+ 280 00d8 BB68     		ldr	r3, [r7, #8]
+ 281 00da D3F88030 		ldr	r3, [r3, #128]
+ 282 00de 1B68     		ldr	r3, [r3]
+ 283 00e0 264A     		ldr	r2, .L8+48
+ 284 00e2 9342     		cmp	r3, r2
+ 285 00e4 14D0     		beq	.L5
+ 286              		.loc 1 82 3 discriminator 26
+ 287 00e6 BB68     		ldr	r3, [r7, #8]
+ 288 00e8 D3F88030 		ldr	r3, [r3, #128]
+ 289 00ec 1B68     		ldr	r3, [r3]
+ 290 00ee 244A     		ldr	r2, .L8+52
+ 291 00f0 9342     		cmp	r3, r2
+ 292 00f2 0DD0     		beq	.L5
+ 293              		.loc 1 82 3 discriminator 28
+ 294 00f4 BB68     		ldr	r3, [r7, #8]
+ 295 00f6 D3F88030 		ldr	r3, [r3, #128]
+ 296 00fa 1B68     		ldr	r3, [r3]
+ 297 00fc 214A     		ldr	r2, .L8+56
+ 298 00fe 9342     		cmp	r3, r2
+ 299 0100 06D0     		beq	.L5
+ 300              		.loc 1 82 3 discriminator 30
+ 301 0102 BB68     		ldr	r3, [r7, #8]
+ 302 0104 D3F88030 		ldr	r3, [r3, #128]
+ 303 0108 1B68     		ldr	r3, [r3]
+ 304 010a 1F4A     		ldr	r2, .L8+60
+ 305 010c 9342     		cmp	r3, r2
+ 306 010e 0CD1     		bne	.L6
+ 307              	.L5:
+ 308              		.loc 1 82 3 discriminator 31
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 8
+
+
+ 309 0110 BB68     		ldr	r3, [r7, #8]
+ 310 0112 D3F88030 		ldr	r3, [r3, #128]
+ 311 0116 1B68     		ldr	r3, [r3]
+ 312 0118 1A68     		ldr	r2, [r3]
+ 313 011a BB68     		ldr	r3, [r7, #8]
+ 314 011c D3F88030 		ldr	r3, [r3, #128]
+ 315 0120 1B68     		ldr	r3, [r3]
+ 316 0122 22F00802 		bic	r2, r2, #8
+ 317 0126 1A60     		str	r2, [r3]
+ 318              		.loc 1 82 3
+ 319 0128 0CE0     		b	.L7
+ 320              	.L6:
+ 321              		.loc 1 82 3 discriminator 32
+ 322 012a BB68     		ldr	r3, [r7, #8]
+ 323 012c D3F88030 		ldr	r3, [r3, #128]
+ 324 0130 1B68     		ldr	r3, [r3]
+ 325 0132 1A68     		ldr	r2, [r3]
+ 326 0134 BB68     		ldr	r3, [r7, #8]
+ 327 0136 D3F88030 		ldr	r3, [r3, #128]
+ 328 013a 1B68     		ldr	r3, [r3]
+ 329 013c 22F00402 		bic	r2, r2, #4
+ 330 0140 1A60     		str	r2, [r3]
+  83:User/BSP/UART_data_txrx.c **** }
+ 331              		.loc 1 83 1 is_stmt 1
+ 332 0142 00BF     		nop
+ 333              	.L7:
+ 334 0144 00BF     		nop
+ 335 0146 1037     		adds	r7, r7, #16
+ 336              	.LCFI5:
+ 337              		.cfi_def_cfa_offset 8
+ 338 0148 BD46     		mov	sp, r7
+ 339              	.LCFI6:
+ 340              		.cfi_def_cfa_register 13
+ 341              		@ sp needed
+ 342 014a 80BD     		pop	{r7, pc}
+ 343              	.L9:
+ 344              		.align	2
+ 345              	.L8:
+ 346 014c 10000240 		.word	1073872912
+ 347 0150 28000240 		.word	1073872936
+ 348 0154 40000240 		.word	1073872960
+ 349 0158 58000240 		.word	1073872984
+ 350 015c 70000240 		.word	1073873008
+ 351 0160 88000240 		.word	1073873032
+ 352 0164 A0000240 		.word	1073873056
+ 353 0168 B8000240 		.word	1073873080
+ 354 016c 10040240 		.word	1073873936
+ 355 0170 28040240 		.word	1073873960
+ 356 0174 40040240 		.word	1073873984
+ 357 0178 58040240 		.word	1073874008
+ 358 017c 70040240 		.word	1073874032
+ 359 0180 88040240 		.word	1073874056
+ 360 0184 A0040240 		.word	1073874080
+ 361 0188 B8040240 		.word	1073874104
+ 362              		.cfi_endproc
+ 363              	.LFE148:
+ 365              		.section	.text.UART_send_data,"ax",%progbits
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 9
+
+
+ 366              		.align	1
+ 367              		.global	UART_send_data
+ 368              		.syntax unified
+ 369              		.thumb
+ 370              		.thumb_func
+ 372              	UART_send_data:
+ 373              	.LFB149:
+  84:User/BSP/UART_data_txrx.c **** 
+  85:User/BSP/UART_data_txrx.c **** /**
+  86:User/BSP/UART_data_txrx.c ****  * @brief 串口发送数据
+  87:User/BSP/UART_data_txrx.c ****  *
+  88:User/BSP/UART_data_txrx.c ****  * @param uart 发送串口整合包
+  89:User/BSP/UART_data_txrx.c ****  * @param data 发送数据（数据别释放了，不然后面收不到）
+  90:User/BSP/UART_data_txrx.c ****  * @param size 数据大小
+  91:User/BSP/UART_data_txrx.c ****  */
+  92:User/BSP/UART_data_txrx.c **** void UART_send_data(transmit_data uart, uint8_t data[], uint16_t size)
+  93:User/BSP/UART_data_txrx.c **** {
+ 374              		.loc 1 93 1
+ 375              		.cfi_startproc
+ 376              		@ args = 280, pretend = 16, frame = 0
+ 377              		@ frame_needed = 1, uses_anonymous_args = 0
+ 378 0000 84B0     		sub	sp, sp, #16
+ 379              	.LCFI7:
+ 380              		.cfi_def_cfa_offset 16
+ 381 0002 80B5     		push	{r7, lr}
+ 382              	.LCFI8:
+ 383              		.cfi_def_cfa_offset 24
+ 384              		.cfi_offset 7, -24
+ 385              		.cfi_offset 14, -20
+ 386 0004 00AF     		add	r7, sp, #0
+ 387              	.LCFI9:
+ 388              		.cfi_def_cfa_register 7
+ 389 0006 07F1080C 		add	ip, r7, #8
+ 390 000a 8CE80F00 		stm	ip, {r0, r1, r2, r3}
+  94:User/BSP/UART_data_txrx.c ****   //+++++++++++++++//while(HAL_DMA_GetState(UART6_data.hdma_usart_tx) != HAL_DMA_STATE_READY)
+  95:User/BSP/UART_data_txrx.c ****   HAL_UART_Transmit_DMA(uart.huart, data, size); // 套娃ヾ(?ω?`)o
+ 391              		.loc 1 95 3
+ 392 000e BB68     		ldr	r3, [r7, #8]
+ 393 0010 B7F81C21 		ldrh	r2, [r7, #284]
+ 394 0014 D7F81811 		ldr	r1, [r7, #280]
+ 395 0018 1846     		mov	r0, r3
+ 396 001a FFF7FEFF 		bl	HAL_UART_Transmit_DMA
+  96:User/BSP/UART_data_txrx.c **** }
+ 397              		.loc 1 96 1
+ 398 001e 00BF     		nop
+ 399 0020 BD46     		mov	sp, r7
+ 400              	.LCFI10:
+ 401              		.cfi_def_cfa_register 13
+ 402              		@ sp needed
+ 403 0022 BDE88040 		pop	{r7, lr}
+ 404              	.LCFI11:
+ 405              		.cfi_restore 14
+ 406              		.cfi_restore 7
+ 407              		.cfi_def_cfa_offset 16
+ 408 0026 04B0     		add	sp, sp, #16
+ 409              	.LCFI12:
+ 410              		.cfi_def_cfa_offset 0
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 10
+
+
+ 411 0028 7047     		bx	lr
+ 412              		.cfi_endproc
+ 413              	.LFE149:
+ 415              		.section	.text.HAL_UARTEx_RxEventCallback,"ax",%progbits
+ 416              		.align	1
+ 417              		.global	HAL_UARTEx_RxEventCallback
+ 418              		.syntax unified
+ 419              		.thumb
+ 420              		.thumb_func
+ 422              	HAL_UARTEx_RxEventCallback:
+ 423              	.LFB150:
+  97:User/BSP/UART_data_txrx.c **** 
+  98:User/BSP/UART_data_txrx.c **** /**
+  99:User/BSP/UART_data_txrx.c ****  * @brief 串口接受空回调函数，用于接受不定长数据，放置数据处理函数
+ 100:User/BSP/UART_data_txrx.c ****  *
+ 101:User/BSP/UART_data_txrx.c ****  * @param huart 接受到数据的串口
+ 102:User/BSP/UART_data_txrx.c ****  * @param Size 数据大小
+ 103:User/BSP/UART_data_txrx.c ****  */
+ 104:User/BSP/UART_data_txrx.c **** void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+ 105:User/BSP/UART_data_txrx.c **** {
+ 424              		.loc 1 105 1
+ 425              		.cfi_startproc
+ 426              		@ args = 0, pretend = 0, frame = 8
+ 427              		@ frame_needed = 1, uses_anonymous_args = 0
+ 428 0000 80B5     		push	{r7, lr}
+ 429              	.LCFI13:
+ 430              		.cfi_def_cfa_offset 8
+ 431              		.cfi_offset 7, -8
+ 432              		.cfi_offset 14, -4
+ 433 0002 82B0     		sub	sp, sp, #8
+ 434              	.LCFI14:
+ 435              		.cfi_def_cfa_offset 16
+ 436 0004 00AF     		add	r7, sp, #0
+ 437              	.LCFI15:
+ 438              		.cfi_def_cfa_register 7
+ 439 0006 7860     		str	r0, [r7, #4]
+ 440 0008 0B46     		mov	r3, r1
+ 441 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 106:User/BSP/UART_data_txrx.c ****   if (huart == &huart5)
+ 442              		.loc 1 106 6
+ 443 000c 7B68     		ldr	r3, [r7, #4]
+ 444 000e 994A     		ldr	r2, .L37
+ 445 0010 9342     		cmp	r3, r2
+ 446 0012 40F09380 		bne	.L12
+ 107:User/BSP/UART_data_txrx.c ****   {
+ 108:User/BSP/UART_data_txrx.c ****     DT7_decode_data(UART5_data.rev_data);
+ 447              		.loc 1 108 5
+ 448 0016 9848     		ldr	r0, .L37+4
+ 449 0018 FFF7FEFF 		bl	DT7_decode_data
+ 109:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART5_data.rev_data, UART_BUFFER_SIZE);
+ 450              		.loc 1 109 5
+ 451 001c 4FF48072 		mov	r2, #256
+ 452 0020 9549     		ldr	r1, .L37+4
+ 453 0022 7868     		ldr	r0, [r7, #4]
+ 454 0024 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 110:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 455              		.loc 1 110 5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 11
+
+
+ 456 0028 7B68     		ldr	r3, [r7, #4]
+ 457 002a D3F88030 		ldr	r3, [r3, #128]
+ 458 002e 1B68     		ldr	r3, [r3]
+ 459 0030 924A     		ldr	r2, .L37+8
+ 460 0032 9342     		cmp	r3, r2
+ 461 0034 68D0     		beq	.L13
+ 462              		.loc 1 110 5 is_stmt 0 discriminator 2
+ 463 0036 7B68     		ldr	r3, [r7, #4]
+ 464 0038 D3F88030 		ldr	r3, [r3, #128]
+ 465 003c 1B68     		ldr	r3, [r3]
+ 466 003e 904A     		ldr	r2, .L37+12
+ 467 0040 9342     		cmp	r3, r2
+ 468 0042 61D0     		beq	.L13
+ 469              		.loc 1 110 5 discriminator 4
+ 470 0044 7B68     		ldr	r3, [r7, #4]
+ 471 0046 D3F88030 		ldr	r3, [r3, #128]
+ 472 004a 1B68     		ldr	r3, [r3]
+ 473 004c 8D4A     		ldr	r2, .L37+16
+ 474 004e 9342     		cmp	r3, r2
+ 475 0050 5AD0     		beq	.L13
+ 476              		.loc 1 110 5 discriminator 6
+ 477 0052 7B68     		ldr	r3, [r7, #4]
+ 478 0054 D3F88030 		ldr	r3, [r3, #128]
+ 479 0058 1B68     		ldr	r3, [r3]
+ 480 005a 8B4A     		ldr	r2, .L37+20
+ 481 005c 9342     		cmp	r3, r2
+ 482 005e 53D0     		beq	.L13
+ 483              		.loc 1 110 5 discriminator 8
+ 484 0060 7B68     		ldr	r3, [r7, #4]
+ 485 0062 D3F88030 		ldr	r3, [r3, #128]
+ 486 0066 1B68     		ldr	r3, [r3]
+ 487 0068 884A     		ldr	r2, .L37+24
+ 488 006a 9342     		cmp	r3, r2
+ 489 006c 4CD0     		beq	.L13
+ 490              		.loc 1 110 5 discriminator 10
+ 491 006e 7B68     		ldr	r3, [r7, #4]
+ 492 0070 D3F88030 		ldr	r3, [r3, #128]
+ 493 0074 1B68     		ldr	r3, [r3]
+ 494 0076 864A     		ldr	r2, .L37+28
+ 495 0078 9342     		cmp	r3, r2
+ 496 007a 45D0     		beq	.L13
+ 497              		.loc 1 110 5 discriminator 12
+ 498 007c 7B68     		ldr	r3, [r7, #4]
+ 499 007e D3F88030 		ldr	r3, [r3, #128]
+ 500 0082 1B68     		ldr	r3, [r3]
+ 501 0084 834A     		ldr	r2, .L37+32
+ 502 0086 9342     		cmp	r3, r2
+ 503 0088 3ED0     		beq	.L13
+ 504              		.loc 1 110 5 discriminator 14
+ 505 008a 7B68     		ldr	r3, [r7, #4]
+ 506 008c D3F88030 		ldr	r3, [r3, #128]
+ 507 0090 1B68     		ldr	r3, [r3]
+ 508 0092 814A     		ldr	r2, .L37+36
+ 509 0094 9342     		cmp	r3, r2
+ 510 0096 37D0     		beq	.L13
+ 511              		.loc 1 110 5 discriminator 16
+ 512 0098 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 12
+
+
+ 513 009a D3F88030 		ldr	r3, [r3, #128]
+ 514 009e 1B68     		ldr	r3, [r3]
+ 515 00a0 7E4A     		ldr	r2, .L37+40
+ 516 00a2 9342     		cmp	r3, r2
+ 517 00a4 30D0     		beq	.L13
+ 518              		.loc 1 110 5 discriminator 18
+ 519 00a6 7B68     		ldr	r3, [r7, #4]
+ 520 00a8 D3F88030 		ldr	r3, [r3, #128]
+ 521 00ac 1B68     		ldr	r3, [r3]
+ 522 00ae 7C4A     		ldr	r2, .L37+44
+ 523 00b0 9342     		cmp	r3, r2
+ 524 00b2 29D0     		beq	.L13
+ 525              		.loc 1 110 5 discriminator 20
+ 526 00b4 7B68     		ldr	r3, [r7, #4]
+ 527 00b6 D3F88030 		ldr	r3, [r3, #128]
+ 528 00ba 1B68     		ldr	r3, [r3]
+ 529 00bc 794A     		ldr	r2, .L37+48
+ 530 00be 9342     		cmp	r3, r2
+ 531 00c0 22D0     		beq	.L13
+ 532              		.loc 1 110 5 discriminator 22
+ 533 00c2 7B68     		ldr	r3, [r7, #4]
+ 534 00c4 D3F88030 		ldr	r3, [r3, #128]
+ 535 00c8 1B68     		ldr	r3, [r3]
+ 536 00ca 774A     		ldr	r2, .L37+52
+ 537 00cc 9342     		cmp	r3, r2
+ 538 00ce 1BD0     		beq	.L13
+ 539              		.loc 1 110 5 discriminator 24
+ 540 00d0 7B68     		ldr	r3, [r7, #4]
+ 541 00d2 D3F88030 		ldr	r3, [r3, #128]
+ 542 00d6 1B68     		ldr	r3, [r3]
+ 543 00d8 744A     		ldr	r2, .L37+56
+ 544 00da 9342     		cmp	r3, r2
+ 545 00dc 14D0     		beq	.L13
+ 546              		.loc 1 110 5 discriminator 26
+ 547 00de 7B68     		ldr	r3, [r7, #4]
+ 548 00e0 D3F88030 		ldr	r3, [r3, #128]
+ 549 00e4 1B68     		ldr	r3, [r3]
+ 550 00e6 724A     		ldr	r2, .L37+60
+ 551 00e8 9342     		cmp	r3, r2
+ 552 00ea 0DD0     		beq	.L13
+ 553              		.loc 1 110 5 discriminator 28
+ 554 00ec 7B68     		ldr	r3, [r7, #4]
+ 555 00ee D3F88030 		ldr	r3, [r3, #128]
+ 556 00f2 1B68     		ldr	r3, [r3]
+ 557 00f4 6F4A     		ldr	r2, .L37+64
+ 558 00f6 9342     		cmp	r3, r2
+ 559 00f8 06D0     		beq	.L13
+ 560              		.loc 1 110 5 discriminator 30
+ 561 00fa 7B68     		ldr	r3, [r7, #4]
+ 562 00fc D3F88030 		ldr	r3, [r3, #128]
+ 563 0100 1B68     		ldr	r3, [r3]
+ 564 0102 6D4A     		ldr	r2, .L37+68
+ 565 0104 9342     		cmp	r3, r2
+ 566 0106 0CD1     		bne	.L14
+ 567              	.L13:
+ 568              		.loc 1 110 5 discriminator 31
+ 569 0108 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 13
+
+
+ 570 010a D3F88030 		ldr	r3, [r3, #128]
+ 571 010e 1B68     		ldr	r3, [r3]
+ 572 0110 1A68     		ldr	r2, [r3]
+ 573 0112 7B68     		ldr	r3, [r7, #4]
+ 574 0114 D3F88030 		ldr	r3, [r3, #128]
+ 575 0118 1B68     		ldr	r3, [r3]
+ 576 011a 22F00802 		bic	r2, r2, #8
+ 577 011e 1A60     		str	r2, [r3]
+ 578              		.loc 1 110 5
+ 579 0120 6BE3     		b	.L16
+ 580              	.L14:
+ 581              		.loc 1 110 5 discriminator 32
+ 582 0122 7B68     		ldr	r3, [r7, #4]
+ 583 0124 D3F88030 		ldr	r3, [r3, #128]
+ 584 0128 1B68     		ldr	r3, [r3]
+ 585 012a 1A68     		ldr	r2, [r3]
+ 586 012c 7B68     		ldr	r3, [r7, #4]
+ 587 012e D3F88030 		ldr	r3, [r3, #128]
+ 588 0132 1B68     		ldr	r3, [r3]
+ 589 0134 22F00402 		bic	r2, r2, #4
+ 590 0138 1A60     		str	r2, [r3]
+ 111:User/BSP/UART_data_txrx.c ****   }
+ 112:User/BSP/UART_data_txrx.c ****   else if (huart == &huart7)
+ 113:User/BSP/UART_data_txrx.c ****   {
+ 114:User/BSP/UART_data_txrx.c ****     fifo_s_puts(&referee_fifo, (char *)UART7_data.rev_data, (int)Size);
+ 115:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart7, UART7_data.rev_data, UART_BUFFER_SIZE);
+ 116:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 117:User/BSP/UART_data_txrx.c ****   }
+ 118:User/BSP/UART_data_txrx.c ****   else if (huart == &huart10)
+ 119:User/BSP/UART_data_txrx.c ****   {
+ 120:User/BSP/UART_data_txrx.c ****     fifo_s_puts(&referee_image_fifo, (char *)UART10_data.rev_data, (int)Size);
+ 121:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART10_data.rev_data, UART_BUFFER_SIZE);
+ 122:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 123:User/BSP/UART_data_txrx.c ****   }
+ 124:User/BSP/UART_data_txrx.c ****   else if (huart == &huart1)
+ 125:User/BSP/UART_data_txrx.c ****   {
+ 126:User/BSP/UART_data_txrx.c ****     if (UART1_data.rev_data[0] == 0xA5)
+ 127:User/BSP/UART_data_txrx.c ****     {
+ 128:User/BSP/UART_data_txrx.c ****       Global.Auto.input.Auto_control_online = 20;
+ 129:User/BSP/UART_data_txrx.c ****       decodeMINIPCdata(&fromMINIPC, UART1_data.rev_data, Size);
+ 130:User/BSP/UART_data_txrx.c ****       MINIPC_to_STM32();
+ 131:User/BSP/UART_data_txrx.c ****     }
+ 132:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART1_data.rev_data, UART_BUFFER_SIZE);
+ 133:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 134:User/BSP/UART_data_txrx.c ****   }
+ 135:User/BSP/UART_data_txrx.c ****   else if (huart == &huart2)
+ 136:User/BSP/UART_data_txrx.c ****   {
+ 137:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART2_data.rev_data, UART_BUFFER_SIZE);
+ 138:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 139:User/BSP/UART_data_txrx.c ****   }
+ 140:User/BSP/UART_data_txrx.c ****   else if (huart == &huart3)
+ 141:User/BSP/UART_data_txrx.c ****   {
+ 142:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART3_data.rev_data, UART_BUFFER_SIZE);
+ 143:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 144:User/BSP/UART_data_txrx.c ****   }
+ 145:User/BSP/UART_data_txrx.c **** }
+ 591              		.loc 1 145 1 is_stmt 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 14
+
+
+ 592 013a 5EE3     		b	.L36
+ 593              	.L12:
+ 112:User/BSP/UART_data_txrx.c ****   {
+ 594              		.loc 1 112 11
+ 595 013c 7B68     		ldr	r3, [r7, #4]
+ 596 013e 5F4A     		ldr	r2, .L37+72
+ 597 0140 9342     		cmp	r3, r2
+ 598 0142 40F0C180 		bne	.L17
+ 114:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart7, UART7_data.rev_data, UART_BUFFER_SIZE);
+ 599              		.loc 1 114 5
+ 600 0146 7B88     		ldrh	r3, [r7, #2]
+ 601 0148 1A46     		mov	r2, r3
+ 602 014a 5D49     		ldr	r1, .L37+76
+ 603 014c 5D48     		ldr	r0, .L37+80
+ 604 014e FFF7FEFF 		bl	fifo_s_puts
+ 115:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 605              		.loc 1 115 5
+ 606 0152 4FF48072 		mov	r2, #256
+ 607 0156 5A49     		ldr	r1, .L37+76
+ 608 0158 5848     		ldr	r0, .L37+72
+ 609 015a FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 610              		.loc 1 116 5
+ 611 015e 7B68     		ldr	r3, [r7, #4]
+ 612 0160 D3F88030 		ldr	r3, [r3, #128]
+ 613 0164 1B68     		ldr	r3, [r3]
+ 614 0166 454A     		ldr	r2, .L37+8
+ 615 0168 9342     		cmp	r3, r2
+ 616 016a 68D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 617              		.loc 1 116 5 is_stmt 0 discriminator 2
+ 618 016c 7B68     		ldr	r3, [r7, #4]
+ 619 016e D3F88030 		ldr	r3, [r3, #128]
+ 620 0172 1B68     		ldr	r3, [r3]
+ 621 0174 424A     		ldr	r2, .L37+12
+ 622 0176 9342     		cmp	r3, r2
+ 623 0178 61D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 624              		.loc 1 116 5 discriminator 4
+ 625 017a 7B68     		ldr	r3, [r7, #4]
+ 626 017c D3F88030 		ldr	r3, [r3, #128]
+ 627 0180 1B68     		ldr	r3, [r3]
+ 628 0182 404A     		ldr	r2, .L37+16
+ 629 0184 9342     		cmp	r3, r2
+ 630 0186 5AD0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 631              		.loc 1 116 5 discriminator 6
+ 632 0188 7B68     		ldr	r3, [r7, #4]
+ 633 018a D3F88030 		ldr	r3, [r3, #128]
+ 634 018e 1B68     		ldr	r3, [r3]
+ 635 0190 3D4A     		ldr	r2, .L37+20
+ 636 0192 9342     		cmp	r3, r2
+ 637 0194 53D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 638              		.loc 1 116 5 discriminator 8
+ 639 0196 7B68     		ldr	r3, [r7, #4]
+ 640 0198 D3F88030 		ldr	r3, [r3, #128]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 15
+
+
+ 641 019c 1B68     		ldr	r3, [r3]
+ 642 019e 3B4A     		ldr	r2, .L37+24
+ 643 01a0 9342     		cmp	r3, r2
+ 644 01a2 4CD0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 645              		.loc 1 116 5 discriminator 10
+ 646 01a4 7B68     		ldr	r3, [r7, #4]
+ 647 01a6 D3F88030 		ldr	r3, [r3, #128]
+ 648 01aa 1B68     		ldr	r3, [r3]
+ 649 01ac 384A     		ldr	r2, .L37+28
+ 650 01ae 9342     		cmp	r3, r2
+ 651 01b0 45D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 652              		.loc 1 116 5 discriminator 12
+ 653 01b2 7B68     		ldr	r3, [r7, #4]
+ 654 01b4 D3F88030 		ldr	r3, [r3, #128]
+ 655 01b8 1B68     		ldr	r3, [r3]
+ 656 01ba 364A     		ldr	r2, .L37+32
+ 657 01bc 9342     		cmp	r3, r2
+ 658 01be 3ED0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 659              		.loc 1 116 5 discriminator 14
+ 660 01c0 7B68     		ldr	r3, [r7, #4]
+ 661 01c2 D3F88030 		ldr	r3, [r3, #128]
+ 662 01c6 1B68     		ldr	r3, [r3]
+ 663 01c8 334A     		ldr	r2, .L37+36
+ 664 01ca 9342     		cmp	r3, r2
+ 665 01cc 37D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 666              		.loc 1 116 5 discriminator 16
+ 667 01ce 7B68     		ldr	r3, [r7, #4]
+ 668 01d0 D3F88030 		ldr	r3, [r3, #128]
+ 669 01d4 1B68     		ldr	r3, [r3]
+ 670 01d6 314A     		ldr	r2, .L37+40
+ 671 01d8 9342     		cmp	r3, r2
+ 672 01da 30D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 673              		.loc 1 116 5 discriminator 18
+ 674 01dc 7B68     		ldr	r3, [r7, #4]
+ 675 01de D3F88030 		ldr	r3, [r3, #128]
+ 676 01e2 1B68     		ldr	r3, [r3]
+ 677 01e4 2E4A     		ldr	r2, .L37+44
+ 678 01e6 9342     		cmp	r3, r2
+ 679 01e8 29D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 680              		.loc 1 116 5 discriminator 20
+ 681 01ea 7B68     		ldr	r3, [r7, #4]
+ 682 01ec D3F88030 		ldr	r3, [r3, #128]
+ 683 01f0 1B68     		ldr	r3, [r3]
+ 684 01f2 2C4A     		ldr	r2, .L37+48
+ 685 01f4 9342     		cmp	r3, r2
+ 686 01f6 22D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 687              		.loc 1 116 5 discriminator 22
+ 688 01f8 7B68     		ldr	r3, [r7, #4]
+ 689 01fa D3F88030 		ldr	r3, [r3, #128]
+ 690 01fe 1B68     		ldr	r3, [r3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 16
+
+
+ 691 0200 294A     		ldr	r2, .L37+52
+ 692 0202 9342     		cmp	r3, r2
+ 693 0204 1BD0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 694              		.loc 1 116 5 discriminator 24
+ 695 0206 7B68     		ldr	r3, [r7, #4]
+ 696 0208 D3F88030 		ldr	r3, [r3, #128]
+ 697 020c 1B68     		ldr	r3, [r3]
+ 698 020e 274A     		ldr	r2, .L37+56
+ 699 0210 9342     		cmp	r3, r2
+ 700 0212 14D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 701              		.loc 1 116 5 discriminator 26
+ 702 0214 7B68     		ldr	r3, [r7, #4]
+ 703 0216 D3F88030 		ldr	r3, [r3, #128]
+ 704 021a 1B68     		ldr	r3, [r3]
+ 705 021c 244A     		ldr	r2, .L37+60
+ 706 021e 9342     		cmp	r3, r2
+ 707 0220 0DD0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 708              		.loc 1 116 5 discriminator 28
+ 709 0222 7B68     		ldr	r3, [r7, #4]
+ 710 0224 D3F88030 		ldr	r3, [r3, #128]
+ 711 0228 1B68     		ldr	r3, [r3]
+ 712 022a 224A     		ldr	r2, .L37+64
+ 713 022c 9342     		cmp	r3, r2
+ 714 022e 06D0     		beq	.L18
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 715              		.loc 1 116 5 discriminator 30
+ 716 0230 7B68     		ldr	r3, [r7, #4]
+ 717 0232 D3F88030 		ldr	r3, [r3, #128]
+ 718 0236 1B68     		ldr	r3, [r3]
+ 719 0238 1F4A     		ldr	r2, .L37+68
+ 720 023a 9342     		cmp	r3, r2
+ 721 023c 0CD1     		bne	.L19
+ 722              	.L18:
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 723              		.loc 1 116 5 discriminator 31
+ 724 023e 7B68     		ldr	r3, [r7, #4]
+ 725 0240 D3F88030 		ldr	r3, [r3, #128]
+ 726 0244 1B68     		ldr	r3, [r3]
+ 727 0246 1A68     		ldr	r2, [r3]
+ 728 0248 7B68     		ldr	r3, [r7, #4]
+ 729 024a D3F88030 		ldr	r3, [r3, #128]
+ 730 024e 1B68     		ldr	r3, [r3]
+ 731 0250 22F00802 		bic	r2, r2, #8
+ 732 0254 1A60     		str	r2, [r3]
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 733              		.loc 1 116 5
+ 734 0256 D0E2     		b	.L16
+ 735              	.L19:
+ 116:User/BSP/UART_data_txrx.c ****   }
+ 736              		.loc 1 116 5 discriminator 32
+ 737 0258 7B68     		ldr	r3, [r7, #4]
+ 738 025a D3F88030 		ldr	r3, [r3, #128]
+ 739 025e 1B68     		ldr	r3, [r3]
+ 740 0260 1A68     		ldr	r2, [r3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 17
+
+
+ 741 0262 7B68     		ldr	r3, [r7, #4]
+ 742 0264 D3F88030 		ldr	r3, [r3, #128]
+ 743 0268 1B68     		ldr	r3, [r3]
+ 744 026a 22F00402 		bic	r2, r2, #4
+ 745 026e 1A60     		str	r2, [r3]
+ 746              		.loc 1 145 1 is_stmt 1
+ 747 0270 C3E2     		b	.L36
+ 748              	.L38:
+ 749 0272 00BF     		.align	2
+ 750              	.L37:
+ 751 0274 00000000 		.word	huart5
+ 752 0278 0C000000 		.word	UART5_data+12
+ 753 027c 10000240 		.word	1073872912
+ 754 0280 28000240 		.word	1073872936
+ 755 0284 40000240 		.word	1073872960
+ 756 0288 58000240 		.word	1073872984
+ 757 028c 70000240 		.word	1073873008
+ 758 0290 88000240 		.word	1073873032
+ 759 0294 A0000240 		.word	1073873056
+ 760 0298 B8000240 		.word	1073873080
+ 761 029c 10040240 		.word	1073873936
+ 762 02a0 28040240 		.word	1073873960
+ 763 02a4 40040240 		.word	1073873984
+ 764 02a8 58040240 		.word	1073874008
+ 765 02ac 70040240 		.word	1073874032
+ 766 02b0 88040240 		.word	1073874056
+ 767 02b4 A0040240 		.word	1073874080
+ 768 02b8 B8040240 		.word	1073874104
+ 769 02bc 00000000 		.word	huart7
+ 770 02c0 0C000000 		.word	UART7_data+12
+ 771 02c4 00000000 		.word	referee_fifo
+ 772              	.L17:
+ 118:User/BSP/UART_data_txrx.c ****   {
+ 773              		.loc 1 118 11
+ 774 02c8 7B68     		ldr	r3, [r7, #4]
+ 775 02ca 984A     		ldr	r2, .L39
+ 776 02cc 9342     		cmp	r3, r2
+ 777 02ce 40F09680 		bne	.L21
+ 120:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART10_data.rev_data, UART_BUFFER_SIZE);
+ 778              		.loc 1 120 5
+ 779 02d2 7B88     		ldrh	r3, [r7, #2]
+ 780 02d4 1A46     		mov	r2, r3
+ 781 02d6 9649     		ldr	r1, .L39+4
+ 782 02d8 9648     		ldr	r0, .L39+8
+ 783 02da FFF7FEFF 		bl	fifo_s_puts
+ 121:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 784              		.loc 1 121 5
+ 785 02de 4FF48072 		mov	r2, #256
+ 786 02e2 9349     		ldr	r1, .L39+4
+ 787 02e4 7868     		ldr	r0, [r7, #4]
+ 788 02e6 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 789              		.loc 1 122 5
+ 790 02ea 7B68     		ldr	r3, [r7, #4]
+ 791 02ec D3F88030 		ldr	r3, [r3, #128]
+ 792 02f0 1B68     		ldr	r3, [r3]
+ 793 02f2 914A     		ldr	r2, .L39+12
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 18
+
+
+ 794 02f4 9342     		cmp	r3, r2
+ 795 02f6 68D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 796              		.loc 1 122 5 is_stmt 0 discriminator 2
+ 797 02f8 7B68     		ldr	r3, [r7, #4]
+ 798 02fa D3F88030 		ldr	r3, [r3, #128]
+ 799 02fe 1B68     		ldr	r3, [r3]
+ 800 0300 8E4A     		ldr	r2, .L39+16
+ 801 0302 9342     		cmp	r3, r2
+ 802 0304 61D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 803              		.loc 1 122 5 discriminator 4
+ 804 0306 7B68     		ldr	r3, [r7, #4]
+ 805 0308 D3F88030 		ldr	r3, [r3, #128]
+ 806 030c 1B68     		ldr	r3, [r3]
+ 807 030e 8C4A     		ldr	r2, .L39+20
+ 808 0310 9342     		cmp	r3, r2
+ 809 0312 5AD0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 810              		.loc 1 122 5 discriminator 6
+ 811 0314 7B68     		ldr	r3, [r7, #4]
+ 812 0316 D3F88030 		ldr	r3, [r3, #128]
+ 813 031a 1B68     		ldr	r3, [r3]
+ 814 031c 894A     		ldr	r2, .L39+24
+ 815 031e 9342     		cmp	r3, r2
+ 816 0320 53D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 817              		.loc 1 122 5 discriminator 8
+ 818 0322 7B68     		ldr	r3, [r7, #4]
+ 819 0324 D3F88030 		ldr	r3, [r3, #128]
+ 820 0328 1B68     		ldr	r3, [r3]
+ 821 032a 874A     		ldr	r2, .L39+28
+ 822 032c 9342     		cmp	r3, r2
+ 823 032e 4CD0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 824              		.loc 1 122 5 discriminator 10
+ 825 0330 7B68     		ldr	r3, [r7, #4]
+ 826 0332 D3F88030 		ldr	r3, [r3, #128]
+ 827 0336 1B68     		ldr	r3, [r3]
+ 828 0338 844A     		ldr	r2, .L39+32
+ 829 033a 9342     		cmp	r3, r2
+ 830 033c 45D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 831              		.loc 1 122 5 discriminator 12
+ 832 033e 7B68     		ldr	r3, [r7, #4]
+ 833 0340 D3F88030 		ldr	r3, [r3, #128]
+ 834 0344 1B68     		ldr	r3, [r3]
+ 835 0346 824A     		ldr	r2, .L39+36
+ 836 0348 9342     		cmp	r3, r2
+ 837 034a 3ED0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 838              		.loc 1 122 5 discriminator 14
+ 839 034c 7B68     		ldr	r3, [r7, #4]
+ 840 034e D3F88030 		ldr	r3, [r3, #128]
+ 841 0352 1B68     		ldr	r3, [r3]
+ 842 0354 7F4A     		ldr	r2, .L39+40
+ 843 0356 9342     		cmp	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 19
+
+
+ 844 0358 37D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 845              		.loc 1 122 5 discriminator 16
+ 846 035a 7B68     		ldr	r3, [r7, #4]
+ 847 035c D3F88030 		ldr	r3, [r3, #128]
+ 848 0360 1B68     		ldr	r3, [r3]
+ 849 0362 7D4A     		ldr	r2, .L39+44
+ 850 0364 9342     		cmp	r3, r2
+ 851 0366 30D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 852              		.loc 1 122 5 discriminator 18
+ 853 0368 7B68     		ldr	r3, [r7, #4]
+ 854 036a D3F88030 		ldr	r3, [r3, #128]
+ 855 036e 1B68     		ldr	r3, [r3]
+ 856 0370 7A4A     		ldr	r2, .L39+48
+ 857 0372 9342     		cmp	r3, r2
+ 858 0374 29D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 859              		.loc 1 122 5 discriminator 20
+ 860 0376 7B68     		ldr	r3, [r7, #4]
+ 861 0378 D3F88030 		ldr	r3, [r3, #128]
+ 862 037c 1B68     		ldr	r3, [r3]
+ 863 037e 784A     		ldr	r2, .L39+52
+ 864 0380 9342     		cmp	r3, r2
+ 865 0382 22D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 866              		.loc 1 122 5 discriminator 22
+ 867 0384 7B68     		ldr	r3, [r7, #4]
+ 868 0386 D3F88030 		ldr	r3, [r3, #128]
+ 869 038a 1B68     		ldr	r3, [r3]
+ 870 038c 754A     		ldr	r2, .L39+56
+ 871 038e 9342     		cmp	r3, r2
+ 872 0390 1BD0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 873              		.loc 1 122 5 discriminator 24
+ 874 0392 7B68     		ldr	r3, [r7, #4]
+ 875 0394 D3F88030 		ldr	r3, [r3, #128]
+ 876 0398 1B68     		ldr	r3, [r3]
+ 877 039a 734A     		ldr	r2, .L39+60
+ 878 039c 9342     		cmp	r3, r2
+ 879 039e 14D0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 880              		.loc 1 122 5 discriminator 26
+ 881 03a0 7B68     		ldr	r3, [r7, #4]
+ 882 03a2 D3F88030 		ldr	r3, [r3, #128]
+ 883 03a6 1B68     		ldr	r3, [r3]
+ 884 03a8 704A     		ldr	r2, .L39+64
+ 885 03aa 9342     		cmp	r3, r2
+ 886 03ac 0DD0     		beq	.L22
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 887              		.loc 1 122 5 discriminator 28
+ 888 03ae 7B68     		ldr	r3, [r7, #4]
+ 889 03b0 D3F88030 		ldr	r3, [r3, #128]
+ 890 03b4 1B68     		ldr	r3, [r3]
+ 891 03b6 6E4A     		ldr	r2, .L39+68
+ 892 03b8 9342     		cmp	r3, r2
+ 893 03ba 06D0     		beq	.L22
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 20
+
+
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 894              		.loc 1 122 5 discriminator 30
+ 895 03bc 7B68     		ldr	r3, [r7, #4]
+ 896 03be D3F88030 		ldr	r3, [r3, #128]
+ 897 03c2 1B68     		ldr	r3, [r3]
+ 898 03c4 6B4A     		ldr	r2, .L39+72
+ 899 03c6 9342     		cmp	r3, r2
+ 900 03c8 0CD1     		bne	.L23
+ 901              	.L22:
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 902              		.loc 1 122 5 discriminator 31
+ 903 03ca 7B68     		ldr	r3, [r7, #4]
+ 904 03cc D3F88030 		ldr	r3, [r3, #128]
+ 905 03d0 1B68     		ldr	r3, [r3]
+ 906 03d2 1A68     		ldr	r2, [r3]
+ 907 03d4 7B68     		ldr	r3, [r7, #4]
+ 908 03d6 D3F88030 		ldr	r3, [r3, #128]
+ 909 03da 1B68     		ldr	r3, [r3]
+ 910 03dc 22F00802 		bic	r2, r2, #8
+ 911 03e0 1A60     		str	r2, [r3]
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 912              		.loc 1 122 5
+ 913 03e2 0AE2     		b	.L16
+ 914              	.L23:
+ 122:User/BSP/UART_data_txrx.c ****   }
+ 915              		.loc 1 122 5 discriminator 32
+ 916 03e4 7B68     		ldr	r3, [r7, #4]
+ 917 03e6 D3F88030 		ldr	r3, [r3, #128]
+ 918 03ea 1B68     		ldr	r3, [r3]
+ 919 03ec 1A68     		ldr	r2, [r3]
+ 920 03ee 7B68     		ldr	r3, [r7, #4]
+ 921 03f0 D3F88030 		ldr	r3, [r3, #128]
+ 922 03f4 1B68     		ldr	r3, [r3]
+ 923 03f6 22F00402 		bic	r2, r2, #4
+ 924 03fa 1A60     		str	r2, [r3]
+ 925              		.loc 1 145 1 is_stmt 1
+ 926 03fc FDE1     		b	.L36
+ 927              	.L21:
+ 124:User/BSP/UART_data_txrx.c ****   {
+ 928              		.loc 1 124 11
+ 929 03fe 7B68     		ldr	r3, [r7, #4]
+ 930 0400 5D4A     		ldr	r2, .L39+76
+ 931 0402 9342     		cmp	r3, r2
+ 932 0404 40F0CF80 		bne	.L25
+ 126:User/BSP/UART_data_txrx.c ****     {
+ 933              		.loc 1 126 28
+ 934 0408 5C4B     		ldr	r3, .L39+80
+ 935 040a 1B7B     		ldrb	r3, [r3, #12]	@ zero_extendqisi2
+ 126:User/BSP/UART_data_txrx.c ****     {
+ 936              		.loc 1 126 8
+ 937 040c A52B     		cmp	r3, #165
+ 938 040e 0AD1     		bne	.L26
+ 128:User/BSP/UART_data_txrx.c ****       decodeMINIPCdata(&fromMINIPC, UART1_data.rev_data, Size);
+ 939              		.loc 1 128 45
+ 940 0410 5B4B     		ldr	r3, .L39+84
+ 941 0412 1422     		movs	r2, #20
+ 942 0414 1A63     		str	r2, [r3, #48]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 21
+
+
+ 129:User/BSP/UART_data_txrx.c ****       MINIPC_to_STM32();
+ 943              		.loc 1 129 7
+ 944 0416 7B88     		ldrh	r3, [r7, #2]
+ 945 0418 1A46     		mov	r2, r3
+ 946 041a 5A49     		ldr	r1, .L39+88
+ 947 041c 5A48     		ldr	r0, .L39+92
+ 948 041e FFF7FEFF 		bl	decodeMINIPCdata
+ 130:User/BSP/UART_data_txrx.c ****     }
+ 949              		.loc 1 130 7
+ 950 0422 FFF7FEFF 		bl	MINIPC_to_STM32
+ 951              	.L26:
+ 132:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 952              		.loc 1 132 5
+ 953 0426 4FF48072 		mov	r2, #256
+ 954 042a 5649     		ldr	r1, .L39+88
+ 955 042c 7868     		ldr	r0, [r7, #4]
+ 956 042e FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 957              		.loc 1 133 5
+ 958 0432 7B68     		ldr	r3, [r7, #4]
+ 959 0434 D3F88030 		ldr	r3, [r3, #128]
+ 960 0438 1B68     		ldr	r3, [r3]
+ 961 043a 3F4A     		ldr	r2, .L39+12
+ 962 043c 9342     		cmp	r3, r2
+ 963 043e 68D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 964              		.loc 1 133 5 is_stmt 0 discriminator 2
+ 965 0440 7B68     		ldr	r3, [r7, #4]
+ 966 0442 D3F88030 		ldr	r3, [r3, #128]
+ 967 0446 1B68     		ldr	r3, [r3]
+ 968 0448 3C4A     		ldr	r2, .L39+16
+ 969 044a 9342     		cmp	r3, r2
+ 970 044c 61D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 971              		.loc 1 133 5 discriminator 4
+ 972 044e 7B68     		ldr	r3, [r7, #4]
+ 973 0450 D3F88030 		ldr	r3, [r3, #128]
+ 974 0454 1B68     		ldr	r3, [r3]
+ 975 0456 3A4A     		ldr	r2, .L39+20
+ 976 0458 9342     		cmp	r3, r2
+ 977 045a 5AD0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 978              		.loc 1 133 5 discriminator 6
+ 979 045c 7B68     		ldr	r3, [r7, #4]
+ 980 045e D3F88030 		ldr	r3, [r3, #128]
+ 981 0462 1B68     		ldr	r3, [r3]
+ 982 0464 374A     		ldr	r2, .L39+24
+ 983 0466 9342     		cmp	r3, r2
+ 984 0468 53D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 985              		.loc 1 133 5 discriminator 8
+ 986 046a 7B68     		ldr	r3, [r7, #4]
+ 987 046c D3F88030 		ldr	r3, [r3, #128]
+ 988 0470 1B68     		ldr	r3, [r3]
+ 989 0472 354A     		ldr	r2, .L39+28
+ 990 0474 9342     		cmp	r3, r2
+ 991 0476 4CD0     		beq	.L27
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 22
+
+
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 992              		.loc 1 133 5 discriminator 10
+ 993 0478 7B68     		ldr	r3, [r7, #4]
+ 994 047a D3F88030 		ldr	r3, [r3, #128]
+ 995 047e 1B68     		ldr	r3, [r3]
+ 996 0480 324A     		ldr	r2, .L39+32
+ 997 0482 9342     		cmp	r3, r2
+ 998 0484 45D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 999              		.loc 1 133 5 discriminator 12
+ 1000 0486 7B68     		ldr	r3, [r7, #4]
+ 1001 0488 D3F88030 		ldr	r3, [r3, #128]
+ 1002 048c 1B68     		ldr	r3, [r3]
+ 1003 048e 304A     		ldr	r2, .L39+36
+ 1004 0490 9342     		cmp	r3, r2
+ 1005 0492 3ED0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1006              		.loc 1 133 5 discriminator 14
+ 1007 0494 7B68     		ldr	r3, [r7, #4]
+ 1008 0496 D3F88030 		ldr	r3, [r3, #128]
+ 1009 049a 1B68     		ldr	r3, [r3]
+ 1010 049c 2D4A     		ldr	r2, .L39+40
+ 1011 049e 9342     		cmp	r3, r2
+ 1012 04a0 37D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1013              		.loc 1 133 5 discriminator 16
+ 1014 04a2 7B68     		ldr	r3, [r7, #4]
+ 1015 04a4 D3F88030 		ldr	r3, [r3, #128]
+ 1016 04a8 1B68     		ldr	r3, [r3]
+ 1017 04aa 2B4A     		ldr	r2, .L39+44
+ 1018 04ac 9342     		cmp	r3, r2
+ 1019 04ae 30D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1020              		.loc 1 133 5 discriminator 18
+ 1021 04b0 7B68     		ldr	r3, [r7, #4]
+ 1022 04b2 D3F88030 		ldr	r3, [r3, #128]
+ 1023 04b6 1B68     		ldr	r3, [r3]
+ 1024 04b8 284A     		ldr	r2, .L39+48
+ 1025 04ba 9342     		cmp	r3, r2
+ 1026 04bc 29D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1027              		.loc 1 133 5 discriminator 20
+ 1028 04be 7B68     		ldr	r3, [r7, #4]
+ 1029 04c0 D3F88030 		ldr	r3, [r3, #128]
+ 1030 04c4 1B68     		ldr	r3, [r3]
+ 1031 04c6 264A     		ldr	r2, .L39+52
+ 1032 04c8 9342     		cmp	r3, r2
+ 1033 04ca 22D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1034              		.loc 1 133 5 discriminator 22
+ 1035 04cc 7B68     		ldr	r3, [r7, #4]
+ 1036 04ce D3F88030 		ldr	r3, [r3, #128]
+ 1037 04d2 1B68     		ldr	r3, [r3]
+ 1038 04d4 234A     		ldr	r2, .L39+56
+ 1039 04d6 9342     		cmp	r3, r2
+ 1040 04d8 1BD0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 23
+
+
+ 1041              		.loc 1 133 5 discriminator 24
+ 1042 04da 7B68     		ldr	r3, [r7, #4]
+ 1043 04dc D3F88030 		ldr	r3, [r3, #128]
+ 1044 04e0 1B68     		ldr	r3, [r3]
+ 1045 04e2 214A     		ldr	r2, .L39+60
+ 1046 04e4 9342     		cmp	r3, r2
+ 1047 04e6 14D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1048              		.loc 1 133 5 discriminator 26
+ 1049 04e8 7B68     		ldr	r3, [r7, #4]
+ 1050 04ea D3F88030 		ldr	r3, [r3, #128]
+ 1051 04ee 1B68     		ldr	r3, [r3]
+ 1052 04f0 1E4A     		ldr	r2, .L39+64
+ 1053 04f2 9342     		cmp	r3, r2
+ 1054 04f4 0DD0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1055              		.loc 1 133 5 discriminator 28
+ 1056 04f6 7B68     		ldr	r3, [r7, #4]
+ 1057 04f8 D3F88030 		ldr	r3, [r3, #128]
+ 1058 04fc 1B68     		ldr	r3, [r3]
+ 1059 04fe 1C4A     		ldr	r2, .L39+68
+ 1060 0500 9342     		cmp	r3, r2
+ 1061 0502 06D0     		beq	.L27
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1062              		.loc 1 133 5 discriminator 30
+ 1063 0504 7B68     		ldr	r3, [r7, #4]
+ 1064 0506 D3F88030 		ldr	r3, [r3, #128]
+ 1065 050a 1B68     		ldr	r3, [r3]
+ 1066 050c 194A     		ldr	r2, .L39+72
+ 1067 050e 9342     		cmp	r3, r2
+ 1068 0510 3CD1     		bne	.L28
+ 1069              	.L27:
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1070              		.loc 1 133 5 discriminator 31
+ 1071 0512 7B68     		ldr	r3, [r7, #4]
+ 1072 0514 D3F88030 		ldr	r3, [r3, #128]
+ 1073 0518 1B68     		ldr	r3, [r3]
+ 1074 051a 1A68     		ldr	r2, [r3]
+ 1075 051c 7B68     		ldr	r3, [r7, #4]
+ 1076 051e D3F88030 		ldr	r3, [r3, #128]
+ 1077 0522 1B68     		ldr	r3, [r3]
+ 1078 0524 22F00802 		bic	r2, r2, #8
+ 1079 0528 1A60     		str	r2, [r3]
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1080              		.loc 1 133 5
+ 1081 052a 66E1     		b	.L16
+ 1082              	.L40:
+ 1083              		.align	2
+ 1084              	.L39:
+ 1085 052c 00000000 		.word	huart10
+ 1086 0530 0C000000 		.word	UART10_data+12
+ 1087 0534 00000000 		.word	referee_image_fifo
+ 1088 0538 10000240 		.word	1073872912
+ 1089 053c 28000240 		.word	1073872936
+ 1090 0540 40000240 		.word	1073872960
+ 1091 0544 58000240 		.word	1073872984
+ 1092 0548 70000240 		.word	1073873008
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 24
+
+
+ 1093 054c 88000240 		.word	1073873032
+ 1094 0550 A0000240 		.word	1073873056
+ 1095 0554 B8000240 		.word	1073873080
+ 1096 0558 10040240 		.word	1073873936
+ 1097 055c 28040240 		.word	1073873960
+ 1098 0560 40040240 		.word	1073873984
+ 1099 0564 58040240 		.word	1073874008
+ 1100 0568 70040240 		.word	1073874032
+ 1101 056c 88040240 		.word	1073874056
+ 1102 0570 A0040240 		.word	1073874080
+ 1103 0574 B8040240 		.word	1073874104
+ 1104 0578 00000000 		.word	huart1
+ 1105 057c 00000000 		.word	UART1_data
+ 1106 0580 00000000 		.word	Global
+ 1107 0584 0C000000 		.word	UART1_data+12
+ 1108 0588 00000000 		.word	fromMINIPC
+ 1109              	.L28:
+ 133:User/BSP/UART_data_txrx.c ****   }
+ 1110              		.loc 1 133 5 discriminator 32
+ 1111 058c 7B68     		ldr	r3, [r7, #4]
+ 1112 058e D3F88030 		ldr	r3, [r3, #128]
+ 1113 0592 1B68     		ldr	r3, [r3]
+ 1114 0594 1A68     		ldr	r2, [r3]
+ 1115 0596 7B68     		ldr	r3, [r7, #4]
+ 1116 0598 D3F88030 		ldr	r3, [r3, #128]
+ 1117 059c 1B68     		ldr	r3, [r3]
+ 1118 059e 22F00402 		bic	r2, r2, #4
+ 1119 05a2 1A60     		str	r2, [r3]
+ 1120              		.loc 1 145 1 is_stmt 1
+ 1121 05a4 29E1     		b	.L36
+ 1122              	.L25:
+ 135:User/BSP/UART_data_txrx.c ****   {
+ 1123              		.loc 1 135 11
+ 1124 05a6 7B68     		ldr	r3, [r7, #4]
+ 1125 05a8 964A     		ldr	r2, .L41
+ 1126 05aa 9342     		cmp	r3, r2
+ 1127 05ac 40F09080 		bne	.L30
+ 137:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 1128              		.loc 1 137 5
+ 1129 05b0 4FF48072 		mov	r2, #256
+ 1130 05b4 9449     		ldr	r1, .L41+4
+ 1131 05b6 7868     		ldr	r0, [r7, #4]
+ 1132 05b8 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1133              		.loc 1 138 5
+ 1134 05bc 7B68     		ldr	r3, [r7, #4]
+ 1135 05be D3F88030 		ldr	r3, [r3, #128]
+ 1136 05c2 1B68     		ldr	r3, [r3]
+ 1137 05c4 914A     		ldr	r2, .L41+8
+ 1138 05c6 9342     		cmp	r3, r2
+ 1139 05c8 68D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1140              		.loc 1 138 5 is_stmt 0 discriminator 2
+ 1141 05ca 7B68     		ldr	r3, [r7, #4]
+ 1142 05cc D3F88030 		ldr	r3, [r3, #128]
+ 1143 05d0 1B68     		ldr	r3, [r3]
+ 1144 05d2 8F4A     		ldr	r2, .L41+12
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 25
+
+
+ 1145 05d4 9342     		cmp	r3, r2
+ 1146 05d6 61D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1147              		.loc 1 138 5 discriminator 4
+ 1148 05d8 7B68     		ldr	r3, [r7, #4]
+ 1149 05da D3F88030 		ldr	r3, [r3, #128]
+ 1150 05de 1B68     		ldr	r3, [r3]
+ 1151 05e0 8C4A     		ldr	r2, .L41+16
+ 1152 05e2 9342     		cmp	r3, r2
+ 1153 05e4 5AD0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1154              		.loc 1 138 5 discriminator 6
+ 1155 05e6 7B68     		ldr	r3, [r7, #4]
+ 1156 05e8 D3F88030 		ldr	r3, [r3, #128]
+ 1157 05ec 1B68     		ldr	r3, [r3]
+ 1158 05ee 8A4A     		ldr	r2, .L41+20
+ 1159 05f0 9342     		cmp	r3, r2
+ 1160 05f2 53D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1161              		.loc 1 138 5 discriminator 8
+ 1162 05f4 7B68     		ldr	r3, [r7, #4]
+ 1163 05f6 D3F88030 		ldr	r3, [r3, #128]
+ 1164 05fa 1B68     		ldr	r3, [r3]
+ 1165 05fc 874A     		ldr	r2, .L41+24
+ 1166 05fe 9342     		cmp	r3, r2
+ 1167 0600 4CD0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1168              		.loc 1 138 5 discriminator 10
+ 1169 0602 7B68     		ldr	r3, [r7, #4]
+ 1170 0604 D3F88030 		ldr	r3, [r3, #128]
+ 1171 0608 1B68     		ldr	r3, [r3]
+ 1172 060a 854A     		ldr	r2, .L41+28
+ 1173 060c 9342     		cmp	r3, r2
+ 1174 060e 45D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1175              		.loc 1 138 5 discriminator 12
+ 1176 0610 7B68     		ldr	r3, [r7, #4]
+ 1177 0612 D3F88030 		ldr	r3, [r3, #128]
+ 1178 0616 1B68     		ldr	r3, [r3]
+ 1179 0618 824A     		ldr	r2, .L41+32
+ 1180 061a 9342     		cmp	r3, r2
+ 1181 061c 3ED0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1182              		.loc 1 138 5 discriminator 14
+ 1183 061e 7B68     		ldr	r3, [r7, #4]
+ 1184 0620 D3F88030 		ldr	r3, [r3, #128]
+ 1185 0624 1B68     		ldr	r3, [r3]
+ 1186 0626 804A     		ldr	r2, .L41+36
+ 1187 0628 9342     		cmp	r3, r2
+ 1188 062a 37D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1189              		.loc 1 138 5 discriminator 16
+ 1190 062c 7B68     		ldr	r3, [r7, #4]
+ 1191 062e D3F88030 		ldr	r3, [r3, #128]
+ 1192 0632 1B68     		ldr	r3, [r3]
+ 1193 0634 7D4A     		ldr	r2, .L41+40
+ 1194 0636 9342     		cmp	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 26
+
+
+ 1195 0638 30D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1196              		.loc 1 138 5 discriminator 18
+ 1197 063a 7B68     		ldr	r3, [r7, #4]
+ 1198 063c D3F88030 		ldr	r3, [r3, #128]
+ 1199 0640 1B68     		ldr	r3, [r3]
+ 1200 0642 7B4A     		ldr	r2, .L41+44
+ 1201 0644 9342     		cmp	r3, r2
+ 1202 0646 29D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1203              		.loc 1 138 5 discriminator 20
+ 1204 0648 7B68     		ldr	r3, [r7, #4]
+ 1205 064a D3F88030 		ldr	r3, [r3, #128]
+ 1206 064e 1B68     		ldr	r3, [r3]
+ 1207 0650 784A     		ldr	r2, .L41+48
+ 1208 0652 9342     		cmp	r3, r2
+ 1209 0654 22D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1210              		.loc 1 138 5 discriminator 22
+ 1211 0656 7B68     		ldr	r3, [r7, #4]
+ 1212 0658 D3F88030 		ldr	r3, [r3, #128]
+ 1213 065c 1B68     		ldr	r3, [r3]
+ 1214 065e 764A     		ldr	r2, .L41+52
+ 1215 0660 9342     		cmp	r3, r2
+ 1216 0662 1BD0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1217              		.loc 1 138 5 discriminator 24
+ 1218 0664 7B68     		ldr	r3, [r7, #4]
+ 1219 0666 D3F88030 		ldr	r3, [r3, #128]
+ 1220 066a 1B68     		ldr	r3, [r3]
+ 1221 066c 734A     		ldr	r2, .L41+56
+ 1222 066e 9342     		cmp	r3, r2
+ 1223 0670 14D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1224              		.loc 1 138 5 discriminator 26
+ 1225 0672 7B68     		ldr	r3, [r7, #4]
+ 1226 0674 D3F88030 		ldr	r3, [r3, #128]
+ 1227 0678 1B68     		ldr	r3, [r3]
+ 1228 067a 714A     		ldr	r2, .L41+60
+ 1229 067c 9342     		cmp	r3, r2
+ 1230 067e 0DD0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1231              		.loc 1 138 5 discriminator 28
+ 1232 0680 7B68     		ldr	r3, [r7, #4]
+ 1233 0682 D3F88030 		ldr	r3, [r3, #128]
+ 1234 0686 1B68     		ldr	r3, [r3]
+ 1235 0688 6E4A     		ldr	r2, .L41+64
+ 1236 068a 9342     		cmp	r3, r2
+ 1237 068c 06D0     		beq	.L31
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1238              		.loc 1 138 5 discriminator 30
+ 1239 068e 7B68     		ldr	r3, [r7, #4]
+ 1240 0690 D3F88030 		ldr	r3, [r3, #128]
+ 1241 0694 1B68     		ldr	r3, [r3]
+ 1242 0696 6C4A     		ldr	r2, .L41+68
+ 1243 0698 9342     		cmp	r3, r2
+ 1244 069a 0CD1     		bne	.L32
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 27
+
+
+ 1245              	.L31:
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1246              		.loc 1 138 5 discriminator 31
+ 1247 069c 7B68     		ldr	r3, [r7, #4]
+ 1248 069e D3F88030 		ldr	r3, [r3, #128]
+ 1249 06a2 1B68     		ldr	r3, [r3]
+ 1250 06a4 1A68     		ldr	r2, [r3]
+ 1251 06a6 7B68     		ldr	r3, [r7, #4]
+ 1252 06a8 D3F88030 		ldr	r3, [r3, #128]
+ 1253 06ac 1B68     		ldr	r3, [r3]
+ 1254 06ae 22F00802 		bic	r2, r2, #8
+ 1255 06b2 1A60     		str	r2, [r3]
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1256              		.loc 1 138 5
+ 1257 06b4 A1E0     		b	.L16
+ 1258              	.L32:
+ 138:User/BSP/UART_data_txrx.c ****   }
+ 1259              		.loc 1 138 5 discriminator 32
+ 1260 06b6 7B68     		ldr	r3, [r7, #4]
+ 1261 06b8 D3F88030 		ldr	r3, [r3, #128]
+ 1262 06bc 1B68     		ldr	r3, [r3]
+ 1263 06be 1A68     		ldr	r2, [r3]
+ 1264 06c0 7B68     		ldr	r3, [r7, #4]
+ 1265 06c2 D3F88030 		ldr	r3, [r3, #128]
+ 1266 06c6 1B68     		ldr	r3, [r3]
+ 1267 06c8 22F00402 		bic	r2, r2, #4
+ 1268 06cc 1A60     		str	r2, [r3]
+ 1269              		.loc 1 145 1 is_stmt 1
+ 1270 06ce 94E0     		b	.L36
+ 1271              	.L30:
+ 140:User/BSP/UART_data_txrx.c ****   {
+ 1272              		.loc 1 140 11
+ 1273 06d0 7B68     		ldr	r3, [r7, #4]
+ 1274 06d2 5E4A     		ldr	r2, .L41+72
+ 1275 06d4 9342     		cmp	r3, r2
+ 1276 06d6 40F09080 		bne	.L36
+ 142:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 1277              		.loc 1 142 5
+ 1278 06da 4FF48072 		mov	r2, #256
+ 1279 06de 5C49     		ldr	r1, .L41+76
+ 1280 06e0 7868     		ldr	r0, [r7, #4]
+ 1281 06e2 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1282              		.loc 1 143 5
+ 1283 06e6 7B68     		ldr	r3, [r7, #4]
+ 1284 06e8 D3F88030 		ldr	r3, [r3, #128]
+ 1285 06ec 1B68     		ldr	r3, [r3]
+ 1286 06ee 474A     		ldr	r2, .L41+8
+ 1287 06f0 9342     		cmp	r3, r2
+ 1288 06f2 68D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1289              		.loc 1 143 5 is_stmt 0 discriminator 2
+ 1290 06f4 7B68     		ldr	r3, [r7, #4]
+ 1291 06f6 D3F88030 		ldr	r3, [r3, #128]
+ 1292 06fa 1B68     		ldr	r3, [r3]
+ 1293 06fc 444A     		ldr	r2, .L41+12
+ 1294 06fe 9342     		cmp	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 28
+
+
+ 1295 0700 61D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1296              		.loc 1 143 5 discriminator 4
+ 1297 0702 7B68     		ldr	r3, [r7, #4]
+ 1298 0704 D3F88030 		ldr	r3, [r3, #128]
+ 1299 0708 1B68     		ldr	r3, [r3]
+ 1300 070a 424A     		ldr	r2, .L41+16
+ 1301 070c 9342     		cmp	r3, r2
+ 1302 070e 5AD0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1303              		.loc 1 143 5 discriminator 6
+ 1304 0710 7B68     		ldr	r3, [r7, #4]
+ 1305 0712 D3F88030 		ldr	r3, [r3, #128]
+ 1306 0716 1B68     		ldr	r3, [r3]
+ 1307 0718 3F4A     		ldr	r2, .L41+20
+ 1308 071a 9342     		cmp	r3, r2
+ 1309 071c 53D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1310              		.loc 1 143 5 discriminator 8
+ 1311 071e 7B68     		ldr	r3, [r7, #4]
+ 1312 0720 D3F88030 		ldr	r3, [r3, #128]
+ 1313 0724 1B68     		ldr	r3, [r3]
+ 1314 0726 3D4A     		ldr	r2, .L41+24
+ 1315 0728 9342     		cmp	r3, r2
+ 1316 072a 4CD0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1317              		.loc 1 143 5 discriminator 10
+ 1318 072c 7B68     		ldr	r3, [r7, #4]
+ 1319 072e D3F88030 		ldr	r3, [r3, #128]
+ 1320 0732 1B68     		ldr	r3, [r3]
+ 1321 0734 3A4A     		ldr	r2, .L41+28
+ 1322 0736 9342     		cmp	r3, r2
+ 1323 0738 45D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1324              		.loc 1 143 5 discriminator 12
+ 1325 073a 7B68     		ldr	r3, [r7, #4]
+ 1326 073c D3F88030 		ldr	r3, [r3, #128]
+ 1327 0740 1B68     		ldr	r3, [r3]
+ 1328 0742 384A     		ldr	r2, .L41+32
+ 1329 0744 9342     		cmp	r3, r2
+ 1330 0746 3ED0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1331              		.loc 1 143 5 discriminator 14
+ 1332 0748 7B68     		ldr	r3, [r7, #4]
+ 1333 074a D3F88030 		ldr	r3, [r3, #128]
+ 1334 074e 1B68     		ldr	r3, [r3]
+ 1335 0750 354A     		ldr	r2, .L41+36
+ 1336 0752 9342     		cmp	r3, r2
+ 1337 0754 37D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1338              		.loc 1 143 5 discriminator 16
+ 1339 0756 7B68     		ldr	r3, [r7, #4]
+ 1340 0758 D3F88030 		ldr	r3, [r3, #128]
+ 1341 075c 1B68     		ldr	r3, [r3]
+ 1342 075e 334A     		ldr	r2, .L41+40
+ 1343 0760 9342     		cmp	r3, r2
+ 1344 0762 30D0     		beq	.L34
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 29
+
+
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1345              		.loc 1 143 5 discriminator 18
+ 1346 0764 7B68     		ldr	r3, [r7, #4]
+ 1347 0766 D3F88030 		ldr	r3, [r3, #128]
+ 1348 076a 1B68     		ldr	r3, [r3]
+ 1349 076c 304A     		ldr	r2, .L41+44
+ 1350 076e 9342     		cmp	r3, r2
+ 1351 0770 29D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1352              		.loc 1 143 5 discriminator 20
+ 1353 0772 7B68     		ldr	r3, [r7, #4]
+ 1354 0774 D3F88030 		ldr	r3, [r3, #128]
+ 1355 0778 1B68     		ldr	r3, [r3]
+ 1356 077a 2E4A     		ldr	r2, .L41+48
+ 1357 077c 9342     		cmp	r3, r2
+ 1358 077e 22D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1359              		.loc 1 143 5 discriminator 22
+ 1360 0780 7B68     		ldr	r3, [r7, #4]
+ 1361 0782 D3F88030 		ldr	r3, [r3, #128]
+ 1362 0786 1B68     		ldr	r3, [r3]
+ 1363 0788 2B4A     		ldr	r2, .L41+52
+ 1364 078a 9342     		cmp	r3, r2
+ 1365 078c 1BD0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1366              		.loc 1 143 5 discriminator 24
+ 1367 078e 7B68     		ldr	r3, [r7, #4]
+ 1368 0790 D3F88030 		ldr	r3, [r3, #128]
+ 1369 0794 1B68     		ldr	r3, [r3]
+ 1370 0796 294A     		ldr	r2, .L41+56
+ 1371 0798 9342     		cmp	r3, r2
+ 1372 079a 14D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1373              		.loc 1 143 5 discriminator 26
+ 1374 079c 7B68     		ldr	r3, [r7, #4]
+ 1375 079e D3F88030 		ldr	r3, [r3, #128]
+ 1376 07a2 1B68     		ldr	r3, [r3]
+ 1377 07a4 264A     		ldr	r2, .L41+60
+ 1378 07a6 9342     		cmp	r3, r2
+ 1379 07a8 0DD0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1380              		.loc 1 143 5 discriminator 28
+ 1381 07aa 7B68     		ldr	r3, [r7, #4]
+ 1382 07ac D3F88030 		ldr	r3, [r3, #128]
+ 1383 07b0 1B68     		ldr	r3, [r3]
+ 1384 07b2 244A     		ldr	r2, .L41+64
+ 1385 07b4 9342     		cmp	r3, r2
+ 1386 07b6 06D0     		beq	.L34
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1387              		.loc 1 143 5 discriminator 30
+ 1388 07b8 7B68     		ldr	r3, [r7, #4]
+ 1389 07ba D3F88030 		ldr	r3, [r3, #128]
+ 1390 07be 1B68     		ldr	r3, [r3]
+ 1391 07c0 214A     		ldr	r2, .L41+68
+ 1392 07c2 9342     		cmp	r3, r2
+ 1393 07c4 0CD1     		bne	.L35
+ 1394              	.L34:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 30
+
+
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1395              		.loc 1 143 5 discriminator 31
+ 1396 07c6 7B68     		ldr	r3, [r7, #4]
+ 1397 07c8 D3F88030 		ldr	r3, [r3, #128]
+ 1398 07cc 1B68     		ldr	r3, [r3]
+ 1399 07ce 1A68     		ldr	r2, [r3]
+ 1400 07d0 7B68     		ldr	r3, [r7, #4]
+ 1401 07d2 D3F88030 		ldr	r3, [r3, #128]
+ 1402 07d6 1B68     		ldr	r3, [r3]
+ 1403 07d8 22F00802 		bic	r2, r2, #8
+ 1404 07dc 1A60     		str	r2, [r3]
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1405              		.loc 1 143 5
+ 1406 07de 0CE0     		b	.L16
+ 1407              	.L35:
+ 143:User/BSP/UART_data_txrx.c ****   }
+ 1408              		.loc 1 143 5 discriminator 32
+ 1409 07e0 7B68     		ldr	r3, [r7, #4]
+ 1410 07e2 D3F88030 		ldr	r3, [r3, #128]
+ 1411 07e6 1B68     		ldr	r3, [r3]
+ 1412 07e8 1A68     		ldr	r2, [r3]
+ 1413 07ea 7B68     		ldr	r3, [r7, #4]
+ 1414 07ec D3F88030 		ldr	r3, [r3, #128]
+ 1415 07f0 1B68     		ldr	r3, [r3]
+ 1416 07f2 22F00402 		bic	r2, r2, #4
+ 1417 07f6 1A60     		str	r2, [r3]
+ 1418              		.loc 1 145 1 is_stmt 1
+ 1419 07f8 FFE7     		b	.L36
+ 1420              	.L16:
+ 1421              	.L36:
+ 1422 07fa 00BF     		nop
+ 1423 07fc 0837     		adds	r7, r7, #8
+ 1424              	.LCFI16:
+ 1425              		.cfi_def_cfa_offset 8
+ 1426 07fe BD46     		mov	sp, r7
+ 1427              	.LCFI17:
+ 1428              		.cfi_def_cfa_register 13
+ 1429              		@ sp needed
+ 1430 0800 80BD     		pop	{r7, pc}
+ 1431              	.L42:
+ 1432 0802 00BF     		.align	2
+ 1433              	.L41:
+ 1434 0804 00000000 		.word	huart2
+ 1435 0808 0C000000 		.word	UART2_data+12
+ 1436 080c 10000240 		.word	1073872912
+ 1437 0810 28000240 		.word	1073872936
+ 1438 0814 40000240 		.word	1073872960
+ 1439 0818 58000240 		.word	1073872984
+ 1440 081c 70000240 		.word	1073873008
+ 1441 0820 88000240 		.word	1073873032
+ 1442 0824 A0000240 		.word	1073873056
+ 1443 0828 B8000240 		.word	1073873080
+ 1444 082c 10040240 		.word	1073873936
+ 1445 0830 28040240 		.word	1073873960
+ 1446 0834 40040240 		.word	1073873984
+ 1447 0838 58040240 		.word	1073874008
+ 1448 083c 70040240 		.word	1073874032
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 31
+
+
+ 1449 0840 88040240 		.word	1073874056
+ 1450 0844 A0040240 		.word	1073874080
+ 1451 0848 B8040240 		.word	1073874104
+ 1452 084c 00000000 		.word	huart3
+ 1453 0850 0C000000 		.word	UART3_data+12
+ 1454              		.cfi_endproc
+ 1455              	.LFE150:
+ 1457              		.section	.text.HAL_UART_RxCpltCallback,"ax",%progbits
+ 1458              		.align	1
+ 1459              		.global	HAL_UART_RxCpltCallback
+ 1460              		.syntax unified
+ 1461              		.thumb
+ 1462              		.thumb_func
+ 1464              	HAL_UART_RxCpltCallback:
+ 1465              	.LFB151:
+ 146:User/BSP/UART_data_txrx.c **** 
+ 147:User/BSP/UART_data_txrx.c **** /**
+ 148:User/BSP/UART_data_txrx.c ****  * @brief 串口接受完成中断回调函数，用于接受定长数据
+ 149:User/BSP/UART_data_txrx.c ****  *
+ 150:User/BSP/UART_data_txrx.c ****  * @param huart 接受串口号
+ 151:User/BSP/UART_data_txrx.c ****  */
+ 152:User/BSP/UART_data_txrx.c **** void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+ 153:User/BSP/UART_data_txrx.c **** {
+ 1466              		.loc 1 153 1
+ 1467              		.cfi_startproc
+ 1468              		@ args = 0, pretend = 0, frame = 8
+ 1469              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1470              		@ link register save eliminated.
+ 1471 0000 80B4     		push	{r7}
+ 1472              	.LCFI18:
+ 1473              		.cfi_def_cfa_offset 4
+ 1474              		.cfi_offset 7, -4
+ 1475 0002 83B0     		sub	sp, sp, #12
+ 1476              	.LCFI19:
+ 1477              		.cfi_def_cfa_offset 16
+ 1478 0004 00AF     		add	r7, sp, #0
+ 1479              	.LCFI20:
+ 1480              		.cfi_def_cfa_register 7
+ 1481 0006 7860     		str	r0, [r7, #4]
+ 154:User/BSP/UART_data_txrx.c **** }
+ 1482              		.loc 1 154 1
+ 1483 0008 00BF     		nop
+ 1484 000a 0C37     		adds	r7, r7, #12
+ 1485              	.LCFI21:
+ 1486              		.cfi_def_cfa_offset 4
+ 1487 000c BD46     		mov	sp, r7
+ 1488              	.LCFI22:
+ 1489              		.cfi_def_cfa_register 13
+ 1490              		@ sp needed
+ 1491 000e 5DF8047B 		ldr	r7, [sp], #4
+ 1492              	.LCFI23:
+ 1493              		.cfi_restore 7
+ 1494              		.cfi_def_cfa_offset 0
+ 1495 0012 7047     		bx	lr
+ 1496              		.cfi_endproc
+ 1497              	.LFE151:
+ 1499              		.section	.text.HAL_UART_ErrorCallback,"ax",%progbits
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 32
+
+
+ 1500              		.align	1
+ 1501              		.global	HAL_UART_ErrorCallback
+ 1502              		.syntax unified
+ 1503              		.thumb
+ 1504              		.thumb_func
+ 1506              	HAL_UART_ErrorCallback:
+ 1507              	.LFB152:
+ 155:User/BSP/UART_data_txrx.c **** 
+ 156:User/BSP/UART_data_txrx.c **** // 发生错误重启串口
+ 157:User/BSP/UART_data_txrx.c **** void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart)
+ 158:User/BSP/UART_data_txrx.c **** {
+ 1508              		.loc 1 158 1
+ 1509              		.cfi_startproc
+ 1510              		@ args = 0, pretend = 0, frame = 8
+ 1511              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1512 0000 80B5     		push	{r7, lr}
+ 1513              	.LCFI24:
+ 1514              		.cfi_def_cfa_offset 8
+ 1515              		.cfi_offset 7, -8
+ 1516              		.cfi_offset 14, -4
+ 1517 0002 82B0     		sub	sp, sp, #8
+ 1518              	.LCFI25:
+ 1519              		.cfi_def_cfa_offset 16
+ 1520 0004 00AF     		add	r7, sp, #0
+ 1521              	.LCFI26:
+ 1522              		.cfi_def_cfa_register 7
+ 1523 0006 7860     		str	r0, [r7, #4]
+ 159:User/BSP/UART_data_txrx.c ****   if (huart == &huart7)
+ 1524              		.loc 1 159 6
+ 1525 0008 7B68     		ldr	r3, [r7, #4]
+ 1526 000a 944A     		ldr	r2, .L61
+ 1527 000c 9342     		cmp	r3, r2
+ 1528 000e 40F09080 		bne	.L45
+ 160:User/BSP/UART_data_txrx.c ****   {
+ 161:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart7, UART7_data.rev_data, UART_BUFFER_SIZE);
+ 1529              		.loc 1 161 5
+ 1530 0012 4FF48072 		mov	r2, #256
+ 1531 0016 9249     		ldr	r1, .L61+4
+ 1532 0018 9048     		ldr	r0, .L61
+ 1533 001a FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 162:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 1534              		.loc 1 162 5
+ 1535 001e 7B68     		ldr	r3, [r7, #4]
+ 1536 0020 D3F88030 		ldr	r3, [r3, #128]
+ 1537 0024 1B68     		ldr	r3, [r3]
+ 1538 0026 8F4A     		ldr	r2, .L61+8
+ 1539 0028 9342     		cmp	r3, r2
+ 1540 002a 68D0     		beq	.L46
+ 1541              		.loc 1 162 5 is_stmt 0 discriminator 2
+ 1542 002c 7B68     		ldr	r3, [r7, #4]
+ 1543 002e D3F88030 		ldr	r3, [r3, #128]
+ 1544 0032 1B68     		ldr	r3, [r3]
+ 1545 0034 8C4A     		ldr	r2, .L61+12
+ 1546 0036 9342     		cmp	r3, r2
+ 1547 0038 61D0     		beq	.L46
+ 1548              		.loc 1 162 5 discriminator 4
+ 1549 003a 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 33
+
+
+ 1550 003c D3F88030 		ldr	r3, [r3, #128]
+ 1551 0040 1B68     		ldr	r3, [r3]
+ 1552 0042 8A4A     		ldr	r2, .L61+16
+ 1553 0044 9342     		cmp	r3, r2
+ 1554 0046 5AD0     		beq	.L46
+ 1555              		.loc 1 162 5 discriminator 6
+ 1556 0048 7B68     		ldr	r3, [r7, #4]
+ 1557 004a D3F88030 		ldr	r3, [r3, #128]
+ 1558 004e 1B68     		ldr	r3, [r3]
+ 1559 0050 874A     		ldr	r2, .L61+20
+ 1560 0052 9342     		cmp	r3, r2
+ 1561 0054 53D0     		beq	.L46
+ 1562              		.loc 1 162 5 discriminator 8
+ 1563 0056 7B68     		ldr	r3, [r7, #4]
+ 1564 0058 D3F88030 		ldr	r3, [r3, #128]
+ 1565 005c 1B68     		ldr	r3, [r3]
+ 1566 005e 854A     		ldr	r2, .L61+24
+ 1567 0060 9342     		cmp	r3, r2
+ 1568 0062 4CD0     		beq	.L46
+ 1569              		.loc 1 162 5 discriminator 10
+ 1570 0064 7B68     		ldr	r3, [r7, #4]
+ 1571 0066 D3F88030 		ldr	r3, [r3, #128]
+ 1572 006a 1B68     		ldr	r3, [r3]
+ 1573 006c 824A     		ldr	r2, .L61+28
+ 1574 006e 9342     		cmp	r3, r2
+ 1575 0070 45D0     		beq	.L46
+ 1576              		.loc 1 162 5 discriminator 12
+ 1577 0072 7B68     		ldr	r3, [r7, #4]
+ 1578 0074 D3F88030 		ldr	r3, [r3, #128]
+ 1579 0078 1B68     		ldr	r3, [r3]
+ 1580 007a 804A     		ldr	r2, .L61+32
+ 1581 007c 9342     		cmp	r3, r2
+ 1582 007e 3ED0     		beq	.L46
+ 1583              		.loc 1 162 5 discriminator 14
+ 1584 0080 7B68     		ldr	r3, [r7, #4]
+ 1585 0082 D3F88030 		ldr	r3, [r3, #128]
+ 1586 0086 1B68     		ldr	r3, [r3]
+ 1587 0088 7D4A     		ldr	r2, .L61+36
+ 1588 008a 9342     		cmp	r3, r2
+ 1589 008c 37D0     		beq	.L46
+ 1590              		.loc 1 162 5 discriminator 16
+ 1591 008e 7B68     		ldr	r3, [r7, #4]
+ 1592 0090 D3F88030 		ldr	r3, [r3, #128]
+ 1593 0094 1B68     		ldr	r3, [r3]
+ 1594 0096 7B4A     		ldr	r2, .L61+40
+ 1595 0098 9342     		cmp	r3, r2
+ 1596 009a 30D0     		beq	.L46
+ 1597              		.loc 1 162 5 discriminator 18
+ 1598 009c 7B68     		ldr	r3, [r7, #4]
+ 1599 009e D3F88030 		ldr	r3, [r3, #128]
+ 1600 00a2 1B68     		ldr	r3, [r3]
+ 1601 00a4 784A     		ldr	r2, .L61+44
+ 1602 00a6 9342     		cmp	r3, r2
+ 1603 00a8 29D0     		beq	.L46
+ 1604              		.loc 1 162 5 discriminator 20
+ 1605 00aa 7B68     		ldr	r3, [r7, #4]
+ 1606 00ac D3F88030 		ldr	r3, [r3, #128]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 34
+
+
+ 1607 00b0 1B68     		ldr	r3, [r3]
+ 1608 00b2 764A     		ldr	r2, .L61+48
+ 1609 00b4 9342     		cmp	r3, r2
+ 1610 00b6 22D0     		beq	.L46
+ 1611              		.loc 1 162 5 discriminator 22
+ 1612 00b8 7B68     		ldr	r3, [r7, #4]
+ 1613 00ba D3F88030 		ldr	r3, [r3, #128]
+ 1614 00be 1B68     		ldr	r3, [r3]
+ 1615 00c0 734A     		ldr	r2, .L61+52
+ 1616 00c2 9342     		cmp	r3, r2
+ 1617 00c4 1BD0     		beq	.L46
+ 1618              		.loc 1 162 5 discriminator 24
+ 1619 00c6 7B68     		ldr	r3, [r7, #4]
+ 1620 00c8 D3F88030 		ldr	r3, [r3, #128]
+ 1621 00cc 1B68     		ldr	r3, [r3]
+ 1622 00ce 714A     		ldr	r2, .L61+56
+ 1623 00d0 9342     		cmp	r3, r2
+ 1624 00d2 14D0     		beq	.L46
+ 1625              		.loc 1 162 5 discriminator 26
+ 1626 00d4 7B68     		ldr	r3, [r7, #4]
+ 1627 00d6 D3F88030 		ldr	r3, [r3, #128]
+ 1628 00da 1B68     		ldr	r3, [r3]
+ 1629 00dc 6E4A     		ldr	r2, .L61+60
+ 1630 00de 9342     		cmp	r3, r2
+ 1631 00e0 0DD0     		beq	.L46
+ 1632              		.loc 1 162 5 discriminator 28
+ 1633 00e2 7B68     		ldr	r3, [r7, #4]
+ 1634 00e4 D3F88030 		ldr	r3, [r3, #128]
+ 1635 00e8 1B68     		ldr	r3, [r3]
+ 1636 00ea 6C4A     		ldr	r2, .L61+64
+ 1637 00ec 9342     		cmp	r3, r2
+ 1638 00ee 06D0     		beq	.L46
+ 1639              		.loc 1 162 5 discriminator 30
+ 1640 00f0 7B68     		ldr	r3, [r7, #4]
+ 1641 00f2 D3F88030 		ldr	r3, [r3, #128]
+ 1642 00f6 1B68     		ldr	r3, [r3]
+ 1643 00f8 694A     		ldr	r2, .L61+68
+ 1644 00fa 9342     		cmp	r3, r2
+ 1645 00fc 0CD1     		bne	.L47
+ 1646              	.L46:
+ 1647              		.loc 1 162 5 discriminator 31
+ 1648 00fe 7B68     		ldr	r3, [r7, #4]
+ 1649 0100 D3F88030 		ldr	r3, [r3, #128]
+ 1650 0104 1B68     		ldr	r3, [r3]
+ 1651 0106 1A68     		ldr	r2, [r3]
+ 1652 0108 7B68     		ldr	r3, [r7, #4]
+ 1653 010a D3F88030 		ldr	r3, [r3, #128]
+ 1654 010e 1B68     		ldr	r3, [r3]
+ 1655 0110 22F00802 		bic	r2, r2, #8
+ 1656 0114 1A60     		str	r2, [r3]
+ 1657              		.loc 1 162 5
+ 1658 0116 F3E1     		b	.L49
+ 1659              	.L47:
+ 1660              		.loc 1 162 5 discriminator 32
+ 1661 0118 7B68     		ldr	r3, [r7, #4]
+ 1662 011a D3F88030 		ldr	r3, [r3, #128]
+ 1663 011e 1B68     		ldr	r3, [r3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 35
+
+
+ 1664 0120 1A68     		ldr	r2, [r3]
+ 1665 0122 7B68     		ldr	r3, [r7, #4]
+ 1666 0124 D3F88030 		ldr	r3, [r3, #128]
+ 1667 0128 1B68     		ldr	r3, [r3]
+ 1668 012a 22F00402 		bic	r2, r2, #4
+ 1669 012e 1A60     		str	r2, [r3]
+ 163:User/BSP/UART_data_txrx.c ****   }
+ 164:User/BSP/UART_data_txrx.c ****   else if (huart == &huart10)
+ 165:User/BSP/UART_data_txrx.c ****   {
+ 166:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart10, UART10_data.rev_data, UART_BUFFER_SIZE);
+ 167:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 168:User/BSP/UART_data_txrx.c ****   }
+ 169:User/BSP/UART_data_txrx.c ****   else if (huart == &huart5)
+ 170:User/BSP/UART_data_txrx.c ****   {
+ 171:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart5, UART5_data.rev_data, UART_BUFFER_SIZE);
+ 172:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 173:User/BSP/UART_data_txrx.c ****   }
+ 174:User/BSP/UART_data_txrx.c ****   else if (huart == &huart1)
+ 175:User/BSP/UART_data_txrx.c ****   {
+ 176:User/BSP/UART_data_txrx.c ****     HAL_UARTEx_ReceiveToIdle_DMA(&huart1, UART1_data.rev_data, UART_BUFFER_SIZE);
+ 177:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 178:User/BSP/UART_data_txrx.c ****   }
+ 179:User/BSP/UART_data_txrx.c **** }
+ 1670              		.loc 1 179 1 is_stmt 1
+ 1671 0130 E6E1     		b	.L60
+ 1672              	.L45:
+ 164:User/BSP/UART_data_txrx.c ****   {
+ 1673              		.loc 1 164 11
+ 1674 0132 7B68     		ldr	r3, [r7, #4]
+ 1675 0134 5B4A     		ldr	r2, .L61+72
+ 1676 0136 9342     		cmp	r3, r2
+ 1677 0138 40F0B880 		bne	.L50
+ 166:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 1678              		.loc 1 166 5
+ 1679 013c 4FF48072 		mov	r2, #256
+ 1680 0140 5949     		ldr	r1, .L61+76
+ 1681 0142 5848     		ldr	r0, .L61+72
+ 1682 0144 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1683              		.loc 1 167 5
+ 1684 0148 7B68     		ldr	r3, [r7, #4]
+ 1685 014a D3F88030 		ldr	r3, [r3, #128]
+ 1686 014e 1B68     		ldr	r3, [r3]
+ 1687 0150 444A     		ldr	r2, .L61+8
+ 1688 0152 9342     		cmp	r3, r2
+ 1689 0154 68D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1690              		.loc 1 167 5 is_stmt 0 discriminator 2
+ 1691 0156 7B68     		ldr	r3, [r7, #4]
+ 1692 0158 D3F88030 		ldr	r3, [r3, #128]
+ 1693 015c 1B68     		ldr	r3, [r3]
+ 1694 015e 424A     		ldr	r2, .L61+12
+ 1695 0160 9342     		cmp	r3, r2
+ 1696 0162 61D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1697              		.loc 1 167 5 discriminator 4
+ 1698 0164 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 36
+
+
+ 1699 0166 D3F88030 		ldr	r3, [r3, #128]
+ 1700 016a 1B68     		ldr	r3, [r3]
+ 1701 016c 3F4A     		ldr	r2, .L61+16
+ 1702 016e 9342     		cmp	r3, r2
+ 1703 0170 5AD0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1704              		.loc 1 167 5 discriminator 6
+ 1705 0172 7B68     		ldr	r3, [r7, #4]
+ 1706 0174 D3F88030 		ldr	r3, [r3, #128]
+ 1707 0178 1B68     		ldr	r3, [r3]
+ 1708 017a 3D4A     		ldr	r2, .L61+20
+ 1709 017c 9342     		cmp	r3, r2
+ 1710 017e 53D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1711              		.loc 1 167 5 discriminator 8
+ 1712 0180 7B68     		ldr	r3, [r7, #4]
+ 1713 0182 D3F88030 		ldr	r3, [r3, #128]
+ 1714 0186 1B68     		ldr	r3, [r3]
+ 1715 0188 3A4A     		ldr	r2, .L61+24
+ 1716 018a 9342     		cmp	r3, r2
+ 1717 018c 4CD0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1718              		.loc 1 167 5 discriminator 10
+ 1719 018e 7B68     		ldr	r3, [r7, #4]
+ 1720 0190 D3F88030 		ldr	r3, [r3, #128]
+ 1721 0194 1B68     		ldr	r3, [r3]
+ 1722 0196 384A     		ldr	r2, .L61+28
+ 1723 0198 9342     		cmp	r3, r2
+ 1724 019a 45D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1725              		.loc 1 167 5 discriminator 12
+ 1726 019c 7B68     		ldr	r3, [r7, #4]
+ 1727 019e D3F88030 		ldr	r3, [r3, #128]
+ 1728 01a2 1B68     		ldr	r3, [r3]
+ 1729 01a4 354A     		ldr	r2, .L61+32
+ 1730 01a6 9342     		cmp	r3, r2
+ 1731 01a8 3ED0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1732              		.loc 1 167 5 discriminator 14
+ 1733 01aa 7B68     		ldr	r3, [r7, #4]
+ 1734 01ac D3F88030 		ldr	r3, [r3, #128]
+ 1735 01b0 1B68     		ldr	r3, [r3]
+ 1736 01b2 334A     		ldr	r2, .L61+36
+ 1737 01b4 9342     		cmp	r3, r2
+ 1738 01b6 37D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1739              		.loc 1 167 5 discriminator 16
+ 1740 01b8 7B68     		ldr	r3, [r7, #4]
+ 1741 01ba D3F88030 		ldr	r3, [r3, #128]
+ 1742 01be 1B68     		ldr	r3, [r3]
+ 1743 01c0 304A     		ldr	r2, .L61+40
+ 1744 01c2 9342     		cmp	r3, r2
+ 1745 01c4 30D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1746              		.loc 1 167 5 discriminator 18
+ 1747 01c6 7B68     		ldr	r3, [r7, #4]
+ 1748 01c8 D3F88030 		ldr	r3, [r3, #128]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 37
+
+
+ 1749 01cc 1B68     		ldr	r3, [r3]
+ 1750 01ce 2E4A     		ldr	r2, .L61+44
+ 1751 01d0 9342     		cmp	r3, r2
+ 1752 01d2 29D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1753              		.loc 1 167 5 discriminator 20
+ 1754 01d4 7B68     		ldr	r3, [r7, #4]
+ 1755 01d6 D3F88030 		ldr	r3, [r3, #128]
+ 1756 01da 1B68     		ldr	r3, [r3]
+ 1757 01dc 2B4A     		ldr	r2, .L61+48
+ 1758 01de 9342     		cmp	r3, r2
+ 1759 01e0 22D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1760              		.loc 1 167 5 discriminator 22
+ 1761 01e2 7B68     		ldr	r3, [r7, #4]
+ 1762 01e4 D3F88030 		ldr	r3, [r3, #128]
+ 1763 01e8 1B68     		ldr	r3, [r3]
+ 1764 01ea 294A     		ldr	r2, .L61+52
+ 1765 01ec 9342     		cmp	r3, r2
+ 1766 01ee 1BD0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1767              		.loc 1 167 5 discriminator 24
+ 1768 01f0 7B68     		ldr	r3, [r7, #4]
+ 1769 01f2 D3F88030 		ldr	r3, [r3, #128]
+ 1770 01f6 1B68     		ldr	r3, [r3]
+ 1771 01f8 264A     		ldr	r2, .L61+56
+ 1772 01fa 9342     		cmp	r3, r2
+ 1773 01fc 14D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1774              		.loc 1 167 5 discriminator 26
+ 1775 01fe 7B68     		ldr	r3, [r7, #4]
+ 1776 0200 D3F88030 		ldr	r3, [r3, #128]
+ 1777 0204 1B68     		ldr	r3, [r3]
+ 1778 0206 244A     		ldr	r2, .L61+60
+ 1779 0208 9342     		cmp	r3, r2
+ 1780 020a 0DD0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1781              		.loc 1 167 5 discriminator 28
+ 1782 020c 7B68     		ldr	r3, [r7, #4]
+ 1783 020e D3F88030 		ldr	r3, [r3, #128]
+ 1784 0212 1B68     		ldr	r3, [r3]
+ 1785 0214 214A     		ldr	r2, .L61+64
+ 1786 0216 9342     		cmp	r3, r2
+ 1787 0218 06D0     		beq	.L51
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1788              		.loc 1 167 5 discriminator 30
+ 1789 021a 7B68     		ldr	r3, [r7, #4]
+ 1790 021c D3F88030 		ldr	r3, [r3, #128]
+ 1791 0220 1B68     		ldr	r3, [r3]
+ 1792 0222 1F4A     		ldr	r2, .L61+68
+ 1793 0224 9342     		cmp	r3, r2
+ 1794 0226 0CD1     		bne	.L52
+ 1795              	.L51:
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1796              		.loc 1 167 5 discriminator 31
+ 1797 0228 7B68     		ldr	r3, [r7, #4]
+ 1798 022a D3F88030 		ldr	r3, [r3, #128]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 38
+
+
+ 1799 022e 1B68     		ldr	r3, [r3]
+ 1800 0230 1A68     		ldr	r2, [r3]
+ 1801 0232 7B68     		ldr	r3, [r7, #4]
+ 1802 0234 D3F88030 		ldr	r3, [r3, #128]
+ 1803 0238 1B68     		ldr	r3, [r3]
+ 1804 023a 22F00802 		bic	r2, r2, #8
+ 1805 023e 1A60     		str	r2, [r3]
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1806              		.loc 1 167 5
+ 1807 0240 5EE1     		b	.L49
+ 1808              	.L52:
+ 167:User/BSP/UART_data_txrx.c ****   }
+ 1809              		.loc 1 167 5 discriminator 32
+ 1810 0242 7B68     		ldr	r3, [r7, #4]
+ 1811 0244 D3F88030 		ldr	r3, [r3, #128]
+ 1812 0248 1B68     		ldr	r3, [r3]
+ 1813 024a 1A68     		ldr	r2, [r3]
+ 1814 024c 7B68     		ldr	r3, [r7, #4]
+ 1815 024e D3F88030 		ldr	r3, [r3, #128]
+ 1816 0252 1B68     		ldr	r3, [r3]
+ 1817 0254 22F00402 		bic	r2, r2, #4
+ 1818 0258 1A60     		str	r2, [r3]
+ 1819              		.loc 1 179 1 is_stmt 1
+ 1820 025a 51E1     		b	.L60
+ 1821              	.L62:
+ 1822              		.align	2
+ 1823              	.L61:
+ 1824 025c 00000000 		.word	huart7
+ 1825 0260 0C000000 		.word	UART7_data+12
+ 1826 0264 10000240 		.word	1073872912
+ 1827 0268 28000240 		.word	1073872936
+ 1828 026c 40000240 		.word	1073872960
+ 1829 0270 58000240 		.word	1073872984
+ 1830 0274 70000240 		.word	1073873008
+ 1831 0278 88000240 		.word	1073873032
+ 1832 027c A0000240 		.word	1073873056
+ 1833 0280 B8000240 		.word	1073873080
+ 1834 0284 10040240 		.word	1073873936
+ 1835 0288 28040240 		.word	1073873960
+ 1836 028c 40040240 		.word	1073873984
+ 1837 0290 58040240 		.word	1073874008
+ 1838 0294 70040240 		.word	1073874032
+ 1839 0298 88040240 		.word	1073874056
+ 1840 029c A0040240 		.word	1073874080
+ 1841 02a0 B8040240 		.word	1073874104
+ 1842 02a4 00000000 		.word	huart10
+ 1843 02a8 0C000000 		.word	UART10_data+12
+ 1844              	.L50:
+ 169:User/BSP/UART_data_txrx.c ****   {
+ 1845              		.loc 1 169 11
+ 1846 02ac 7B68     		ldr	r3, [r7, #4]
+ 1847 02ae 964A     		ldr	r2, .L63
+ 1848 02b0 9342     		cmp	r3, r2
+ 1849 02b2 40F09080 		bne	.L54
+ 171:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 1850              		.loc 1 171 5
+ 1851 02b6 4FF48072 		mov	r2, #256
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 39
+
+
+ 1852 02ba 9449     		ldr	r1, .L63+4
+ 1853 02bc 9248     		ldr	r0, .L63
+ 1854 02be FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1855              		.loc 1 172 5
+ 1856 02c2 7B68     		ldr	r3, [r7, #4]
+ 1857 02c4 D3F88030 		ldr	r3, [r3, #128]
+ 1858 02c8 1B68     		ldr	r3, [r3]
+ 1859 02ca 914A     		ldr	r2, .L63+8
+ 1860 02cc 9342     		cmp	r3, r2
+ 1861 02ce 68D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1862              		.loc 1 172 5 is_stmt 0 discriminator 2
+ 1863 02d0 7B68     		ldr	r3, [r7, #4]
+ 1864 02d2 D3F88030 		ldr	r3, [r3, #128]
+ 1865 02d6 1B68     		ldr	r3, [r3]
+ 1866 02d8 8E4A     		ldr	r2, .L63+12
+ 1867 02da 9342     		cmp	r3, r2
+ 1868 02dc 61D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1869              		.loc 1 172 5 discriminator 4
+ 1870 02de 7B68     		ldr	r3, [r7, #4]
+ 1871 02e0 D3F88030 		ldr	r3, [r3, #128]
+ 1872 02e4 1B68     		ldr	r3, [r3]
+ 1873 02e6 8C4A     		ldr	r2, .L63+16
+ 1874 02e8 9342     		cmp	r3, r2
+ 1875 02ea 5AD0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1876              		.loc 1 172 5 discriminator 6
+ 1877 02ec 7B68     		ldr	r3, [r7, #4]
+ 1878 02ee D3F88030 		ldr	r3, [r3, #128]
+ 1879 02f2 1B68     		ldr	r3, [r3]
+ 1880 02f4 894A     		ldr	r2, .L63+20
+ 1881 02f6 9342     		cmp	r3, r2
+ 1882 02f8 53D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1883              		.loc 1 172 5 discriminator 8
+ 1884 02fa 7B68     		ldr	r3, [r7, #4]
+ 1885 02fc D3F88030 		ldr	r3, [r3, #128]
+ 1886 0300 1B68     		ldr	r3, [r3]
+ 1887 0302 874A     		ldr	r2, .L63+24
+ 1888 0304 9342     		cmp	r3, r2
+ 1889 0306 4CD0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1890              		.loc 1 172 5 discriminator 10
+ 1891 0308 7B68     		ldr	r3, [r7, #4]
+ 1892 030a D3F88030 		ldr	r3, [r3, #128]
+ 1893 030e 1B68     		ldr	r3, [r3]
+ 1894 0310 844A     		ldr	r2, .L63+28
+ 1895 0312 9342     		cmp	r3, r2
+ 1896 0314 45D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1897              		.loc 1 172 5 discriminator 12
+ 1898 0316 7B68     		ldr	r3, [r7, #4]
+ 1899 0318 D3F88030 		ldr	r3, [r3, #128]
+ 1900 031c 1B68     		ldr	r3, [r3]
+ 1901 031e 824A     		ldr	r2, .L63+32
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 40
+
+
+ 1902 0320 9342     		cmp	r3, r2
+ 1903 0322 3ED0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1904              		.loc 1 172 5 discriminator 14
+ 1905 0324 7B68     		ldr	r3, [r7, #4]
+ 1906 0326 D3F88030 		ldr	r3, [r3, #128]
+ 1907 032a 1B68     		ldr	r3, [r3]
+ 1908 032c 7F4A     		ldr	r2, .L63+36
+ 1909 032e 9342     		cmp	r3, r2
+ 1910 0330 37D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1911              		.loc 1 172 5 discriminator 16
+ 1912 0332 7B68     		ldr	r3, [r7, #4]
+ 1913 0334 D3F88030 		ldr	r3, [r3, #128]
+ 1914 0338 1B68     		ldr	r3, [r3]
+ 1915 033a 7D4A     		ldr	r2, .L63+40
+ 1916 033c 9342     		cmp	r3, r2
+ 1917 033e 30D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1918              		.loc 1 172 5 discriminator 18
+ 1919 0340 7B68     		ldr	r3, [r7, #4]
+ 1920 0342 D3F88030 		ldr	r3, [r3, #128]
+ 1921 0346 1B68     		ldr	r3, [r3]
+ 1922 0348 7A4A     		ldr	r2, .L63+44
+ 1923 034a 9342     		cmp	r3, r2
+ 1924 034c 29D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1925              		.loc 1 172 5 discriminator 20
+ 1926 034e 7B68     		ldr	r3, [r7, #4]
+ 1927 0350 D3F88030 		ldr	r3, [r3, #128]
+ 1928 0354 1B68     		ldr	r3, [r3]
+ 1929 0356 784A     		ldr	r2, .L63+48
+ 1930 0358 9342     		cmp	r3, r2
+ 1931 035a 22D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1932              		.loc 1 172 5 discriminator 22
+ 1933 035c 7B68     		ldr	r3, [r7, #4]
+ 1934 035e D3F88030 		ldr	r3, [r3, #128]
+ 1935 0362 1B68     		ldr	r3, [r3]
+ 1936 0364 754A     		ldr	r2, .L63+52
+ 1937 0366 9342     		cmp	r3, r2
+ 1938 0368 1BD0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1939              		.loc 1 172 5 discriminator 24
+ 1940 036a 7B68     		ldr	r3, [r7, #4]
+ 1941 036c D3F88030 		ldr	r3, [r3, #128]
+ 1942 0370 1B68     		ldr	r3, [r3]
+ 1943 0372 734A     		ldr	r2, .L63+56
+ 1944 0374 9342     		cmp	r3, r2
+ 1945 0376 14D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1946              		.loc 1 172 5 discriminator 26
+ 1947 0378 7B68     		ldr	r3, [r7, #4]
+ 1948 037a D3F88030 		ldr	r3, [r3, #128]
+ 1949 037e 1B68     		ldr	r3, [r3]
+ 1950 0380 704A     		ldr	r2, .L63+60
+ 1951 0382 9342     		cmp	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 41
+
+
+ 1952 0384 0DD0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1953              		.loc 1 172 5 discriminator 28
+ 1954 0386 7B68     		ldr	r3, [r7, #4]
+ 1955 0388 D3F88030 		ldr	r3, [r3, #128]
+ 1956 038c 1B68     		ldr	r3, [r3]
+ 1957 038e 6E4A     		ldr	r2, .L63+64
+ 1958 0390 9342     		cmp	r3, r2
+ 1959 0392 06D0     		beq	.L55
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1960              		.loc 1 172 5 discriminator 30
+ 1961 0394 7B68     		ldr	r3, [r7, #4]
+ 1962 0396 D3F88030 		ldr	r3, [r3, #128]
+ 1963 039a 1B68     		ldr	r3, [r3]
+ 1964 039c 6B4A     		ldr	r2, .L63+68
+ 1965 039e 9342     		cmp	r3, r2
+ 1966 03a0 0CD1     		bne	.L56
+ 1967              	.L55:
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1968              		.loc 1 172 5 discriminator 31
+ 1969 03a2 7B68     		ldr	r3, [r7, #4]
+ 1970 03a4 D3F88030 		ldr	r3, [r3, #128]
+ 1971 03a8 1B68     		ldr	r3, [r3]
+ 1972 03aa 1A68     		ldr	r2, [r3]
+ 1973 03ac 7B68     		ldr	r3, [r7, #4]
+ 1974 03ae D3F88030 		ldr	r3, [r3, #128]
+ 1975 03b2 1B68     		ldr	r3, [r3]
+ 1976 03b4 22F00802 		bic	r2, r2, #8
+ 1977 03b8 1A60     		str	r2, [r3]
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1978              		.loc 1 172 5
+ 1979 03ba A1E0     		b	.L49
+ 1980              	.L56:
+ 172:User/BSP/UART_data_txrx.c ****   }
+ 1981              		.loc 1 172 5 discriminator 32
+ 1982 03bc 7B68     		ldr	r3, [r7, #4]
+ 1983 03be D3F88030 		ldr	r3, [r3, #128]
+ 1984 03c2 1B68     		ldr	r3, [r3]
+ 1985 03c4 1A68     		ldr	r2, [r3]
+ 1986 03c6 7B68     		ldr	r3, [r7, #4]
+ 1987 03c8 D3F88030 		ldr	r3, [r3, #128]
+ 1988 03cc 1B68     		ldr	r3, [r3]
+ 1989 03ce 22F00402 		bic	r2, r2, #4
+ 1990 03d2 1A60     		str	r2, [r3]
+ 1991              		.loc 1 179 1 is_stmt 1
+ 1992 03d4 94E0     		b	.L60
+ 1993              	.L54:
+ 174:User/BSP/UART_data_txrx.c ****   {
+ 1994              		.loc 1 174 11
+ 1995 03d6 7B68     		ldr	r3, [r7, #4]
+ 1996 03d8 5D4A     		ldr	r2, .L63+72
+ 1997 03da 9342     		cmp	r3, r2
+ 1998 03dc 40F09080 		bne	.L60
+ 176:User/BSP/UART_data_txrx.c ****     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
+ 1999              		.loc 1 176 5
+ 2000 03e0 4FF48072 		mov	r2, #256
+ 2001 03e4 5B49     		ldr	r1, .L63+76
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 42
+
+
+ 2002 03e6 5A48     		ldr	r0, .L63+72
+ 2003 03e8 FFF7FEFF 		bl	HAL_UARTEx_ReceiveToIdle_DMA
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2004              		.loc 1 177 5
+ 2005 03ec 7B68     		ldr	r3, [r7, #4]
+ 2006 03ee D3F88030 		ldr	r3, [r3, #128]
+ 2007 03f2 1B68     		ldr	r3, [r3]
+ 2008 03f4 464A     		ldr	r2, .L63+8
+ 2009 03f6 9342     		cmp	r3, r2
+ 2010 03f8 68D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2011              		.loc 1 177 5 is_stmt 0 discriminator 2
+ 2012 03fa 7B68     		ldr	r3, [r7, #4]
+ 2013 03fc D3F88030 		ldr	r3, [r3, #128]
+ 2014 0400 1B68     		ldr	r3, [r3]
+ 2015 0402 444A     		ldr	r2, .L63+12
+ 2016 0404 9342     		cmp	r3, r2
+ 2017 0406 61D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2018              		.loc 1 177 5 discriminator 4
+ 2019 0408 7B68     		ldr	r3, [r7, #4]
+ 2020 040a D3F88030 		ldr	r3, [r3, #128]
+ 2021 040e 1B68     		ldr	r3, [r3]
+ 2022 0410 414A     		ldr	r2, .L63+16
+ 2023 0412 9342     		cmp	r3, r2
+ 2024 0414 5AD0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2025              		.loc 1 177 5 discriminator 6
+ 2026 0416 7B68     		ldr	r3, [r7, #4]
+ 2027 0418 D3F88030 		ldr	r3, [r3, #128]
+ 2028 041c 1B68     		ldr	r3, [r3]
+ 2029 041e 3F4A     		ldr	r2, .L63+20
+ 2030 0420 9342     		cmp	r3, r2
+ 2031 0422 53D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2032              		.loc 1 177 5 discriminator 8
+ 2033 0424 7B68     		ldr	r3, [r7, #4]
+ 2034 0426 D3F88030 		ldr	r3, [r3, #128]
+ 2035 042a 1B68     		ldr	r3, [r3]
+ 2036 042c 3C4A     		ldr	r2, .L63+24
+ 2037 042e 9342     		cmp	r3, r2
+ 2038 0430 4CD0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2039              		.loc 1 177 5 discriminator 10
+ 2040 0432 7B68     		ldr	r3, [r7, #4]
+ 2041 0434 D3F88030 		ldr	r3, [r3, #128]
+ 2042 0438 1B68     		ldr	r3, [r3]
+ 2043 043a 3A4A     		ldr	r2, .L63+28
+ 2044 043c 9342     		cmp	r3, r2
+ 2045 043e 45D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2046              		.loc 1 177 5 discriminator 12
+ 2047 0440 7B68     		ldr	r3, [r7, #4]
+ 2048 0442 D3F88030 		ldr	r3, [r3, #128]
+ 2049 0446 1B68     		ldr	r3, [r3]
+ 2050 0448 374A     		ldr	r2, .L63+32
+ 2051 044a 9342     		cmp	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 43
+
+
+ 2052 044c 3ED0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2053              		.loc 1 177 5 discriminator 14
+ 2054 044e 7B68     		ldr	r3, [r7, #4]
+ 2055 0450 D3F88030 		ldr	r3, [r3, #128]
+ 2056 0454 1B68     		ldr	r3, [r3]
+ 2057 0456 354A     		ldr	r2, .L63+36
+ 2058 0458 9342     		cmp	r3, r2
+ 2059 045a 37D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2060              		.loc 1 177 5 discriminator 16
+ 2061 045c 7B68     		ldr	r3, [r7, #4]
+ 2062 045e D3F88030 		ldr	r3, [r3, #128]
+ 2063 0462 1B68     		ldr	r3, [r3]
+ 2064 0464 324A     		ldr	r2, .L63+40
+ 2065 0466 9342     		cmp	r3, r2
+ 2066 0468 30D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2067              		.loc 1 177 5 discriminator 18
+ 2068 046a 7B68     		ldr	r3, [r7, #4]
+ 2069 046c D3F88030 		ldr	r3, [r3, #128]
+ 2070 0470 1B68     		ldr	r3, [r3]
+ 2071 0472 304A     		ldr	r2, .L63+44
+ 2072 0474 9342     		cmp	r3, r2
+ 2073 0476 29D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2074              		.loc 1 177 5 discriminator 20
+ 2075 0478 7B68     		ldr	r3, [r7, #4]
+ 2076 047a D3F88030 		ldr	r3, [r3, #128]
+ 2077 047e 1B68     		ldr	r3, [r3]
+ 2078 0480 2D4A     		ldr	r2, .L63+48
+ 2079 0482 9342     		cmp	r3, r2
+ 2080 0484 22D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2081              		.loc 1 177 5 discriminator 22
+ 2082 0486 7B68     		ldr	r3, [r7, #4]
+ 2083 0488 D3F88030 		ldr	r3, [r3, #128]
+ 2084 048c 1B68     		ldr	r3, [r3]
+ 2085 048e 2B4A     		ldr	r2, .L63+52
+ 2086 0490 9342     		cmp	r3, r2
+ 2087 0492 1BD0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2088              		.loc 1 177 5 discriminator 24
+ 2089 0494 7B68     		ldr	r3, [r7, #4]
+ 2090 0496 D3F88030 		ldr	r3, [r3, #128]
+ 2091 049a 1B68     		ldr	r3, [r3]
+ 2092 049c 284A     		ldr	r2, .L63+56
+ 2093 049e 9342     		cmp	r3, r2
+ 2094 04a0 14D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2095              		.loc 1 177 5 discriminator 26
+ 2096 04a2 7B68     		ldr	r3, [r7, #4]
+ 2097 04a4 D3F88030 		ldr	r3, [r3, #128]
+ 2098 04a8 1B68     		ldr	r3, [r3]
+ 2099 04aa 264A     		ldr	r2, .L63+60
+ 2100 04ac 9342     		cmp	r3, r2
+ 2101 04ae 0DD0     		beq	.L58
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 44
+
+
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2102              		.loc 1 177 5 discriminator 28
+ 2103 04b0 7B68     		ldr	r3, [r7, #4]
+ 2104 04b2 D3F88030 		ldr	r3, [r3, #128]
+ 2105 04b6 1B68     		ldr	r3, [r3]
+ 2106 04b8 234A     		ldr	r2, .L63+64
+ 2107 04ba 9342     		cmp	r3, r2
+ 2108 04bc 06D0     		beq	.L58
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2109              		.loc 1 177 5 discriminator 30
+ 2110 04be 7B68     		ldr	r3, [r7, #4]
+ 2111 04c0 D3F88030 		ldr	r3, [r3, #128]
+ 2112 04c4 1B68     		ldr	r3, [r3]
+ 2113 04c6 214A     		ldr	r2, .L63+68
+ 2114 04c8 9342     		cmp	r3, r2
+ 2115 04ca 0CD1     		bne	.L59
+ 2116              	.L58:
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2117              		.loc 1 177 5 discriminator 31
+ 2118 04cc 7B68     		ldr	r3, [r7, #4]
+ 2119 04ce D3F88030 		ldr	r3, [r3, #128]
+ 2120 04d2 1B68     		ldr	r3, [r3]
+ 2121 04d4 1A68     		ldr	r2, [r3]
+ 2122 04d6 7B68     		ldr	r3, [r7, #4]
+ 2123 04d8 D3F88030 		ldr	r3, [r3, #128]
+ 2124 04dc 1B68     		ldr	r3, [r3]
+ 2125 04de 22F00802 		bic	r2, r2, #8
+ 2126 04e2 1A60     		str	r2, [r3]
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2127              		.loc 1 177 5
+ 2128 04e4 0CE0     		b	.L49
+ 2129              	.L59:
+ 177:User/BSP/UART_data_txrx.c ****   }
+ 2130              		.loc 1 177 5 discriminator 32
+ 2131 04e6 7B68     		ldr	r3, [r7, #4]
+ 2132 04e8 D3F88030 		ldr	r3, [r3, #128]
+ 2133 04ec 1B68     		ldr	r3, [r3]
+ 2134 04ee 1A68     		ldr	r2, [r3]
+ 2135 04f0 7B68     		ldr	r3, [r7, #4]
+ 2136 04f2 D3F88030 		ldr	r3, [r3, #128]
+ 2137 04f6 1B68     		ldr	r3, [r3]
+ 2138 04f8 22F00402 		bic	r2, r2, #4
+ 2139 04fc 1A60     		str	r2, [r3]
+ 2140              		.loc 1 179 1 is_stmt 1
+ 2141 04fe FFE7     		b	.L60
+ 2142              	.L49:
+ 2143              	.L60:
+ 2144 0500 00BF     		nop
+ 2145 0502 0837     		adds	r7, r7, #8
+ 2146              	.LCFI27:
+ 2147              		.cfi_def_cfa_offset 8
+ 2148 0504 BD46     		mov	sp, r7
+ 2149              	.LCFI28:
+ 2150              		.cfi_def_cfa_register 13
+ 2151              		@ sp needed
+ 2152 0506 80BD     		pop	{r7, pc}
+ 2153              	.L64:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 45
+
+
+ 2154              		.align	2
+ 2155              	.L63:
+ 2156 0508 00000000 		.word	huart5
+ 2157 050c 0C000000 		.word	UART5_data+12
+ 2158 0510 10000240 		.word	1073872912
+ 2159 0514 28000240 		.word	1073872936
+ 2160 0518 40000240 		.word	1073872960
+ 2161 051c 58000240 		.word	1073872984
+ 2162 0520 70000240 		.word	1073873008
+ 2163 0524 88000240 		.word	1073873032
+ 2164 0528 A0000240 		.word	1073873056
+ 2165 052c B8000240 		.word	1073873080
+ 2166 0530 10040240 		.word	1073873936
+ 2167 0534 28040240 		.word	1073873960
+ 2168 0538 40040240 		.word	1073873984
+ 2169 053c 58040240 		.word	1073874008
+ 2170 0540 70040240 		.word	1073874032
+ 2171 0544 88040240 		.word	1073874056
+ 2172 0548 A0040240 		.word	1073874080
+ 2173 054c B8040240 		.word	1073874104
+ 2174 0550 00000000 		.word	huart1
+ 2175 0554 0C000000 		.word	UART1_data+12
+ 2176              		.cfi_endproc
+ 2177              	.LFE152:
+ 2179              		.text
+ 2180              	.Letext0:
+ 2181              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 2182              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 2183              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 2184              		.file 5 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 2185              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_dma.h"
+ 2186              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h"
+ 2187              		.file 8 "Algorithm/fifo.h"
+ 2188              		.file 9 "Core/Inc/usart.h"
+ 2189              		.file 10 "User/BSP/UART_data_txrx.h"
+ 2190              		.file 11 "User/Hardware/referee_system.h"
+ 2191              		.file 12 "User/Software/Global_status.h"
+ 2192              		.file 13 "User/Software/Auto_control.h"
+ 2193              		.file 14 "User/Hardware/DT7.h"
+ 2194              		.file 15 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 46
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 UART_data_txrx.c
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:24     .bss.UART1_data:00000000 UART1_data
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:21     .bss.UART1_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:31     .bss.UART2_data:00000000 UART2_data
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:28     .bss.UART2_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:38     .bss.UART3_data:00000000 UART3_data
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:35     .bss.UART3_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:45     .bss.UART5_data:00000000 UART5_data
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:42     .bss.UART5_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:52     .bss.UART7_data:00000000 UART7_data
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:49     .bss.UART7_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:59     .bss.UART10_data:00000000 UART10_data
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:56     .bss.UART10_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:62     .text.uart_init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:68     .text.uart_init:00000000 uart_init
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:154    .text.UART_DMA_rxtx_start:00000000 UART_DMA_rxtx_start
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:124    .text.uart_init:00000050 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:148    .text.UART_DMA_rxtx_start:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:346    .text.UART_DMA_rxtx_start:0000014c $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:366    .text.UART_send_data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:372    .text.UART_send_data:00000000 UART_send_data
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:416    .text.HAL_UARTEx_RxEventCallback:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:422    .text.HAL_UARTEx_RxEventCallback:00000000 HAL_UARTEx_RxEventCallback
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:751    .text.HAL_UARTEx_RxEventCallback:00000274 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:774    .text.HAL_UARTEx_RxEventCallback:000002c8 $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1085   .text.HAL_UARTEx_RxEventCallback:0000052c $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1111   .text.HAL_UARTEx_RxEventCallback:0000058c $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1434   .text.HAL_UARTEx_RxEventCallback:00000804 $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1458   .text.HAL_UART_RxCpltCallback:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1464   .text.HAL_UART_RxCpltCallback:00000000 HAL_UART_RxCpltCallback
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1500   .text.HAL_UART_ErrorCallback:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1506   .text.HAL_UART_ErrorCallback:00000000 HAL_UART_ErrorCallback
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1824   .text.HAL_UART_ErrorCallback:0000025c $d
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:1846   .text.HAL_UART_ErrorCallback:000002ac $t
+C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s:2156   .text.HAL_UART_ErrorCallback:00000508 $d
+
+UNDEFINED SYMBOLS
+hdma_usart1_rx
+huart1
+hdma_usart2_rx
+huart2
+hdma_usart3_rx
+huart3
+hdma_uart5_rx
+huart5
+hdma_uart7_tx
+hdma_uart7_rx
+huart7
+hdma_usart10_tx
+hdma_usart10_rx
+huart10
+HAL_UARTEx_ReceiveToIdle_DMA
+HAL_UART_Transmit_DMA
+DT7_decode_data
+fifo_s_puts
+referee_fifo
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccfPAzyq.s 			page 47
+
+
+decodeMINIPCdata
+MINIPC_to_STM32
+referee_image_fifo
+Global
+fromMINIPC

@@ -1,0 +1,2574 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"Chassis.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Software/Chassis.c"
+  19              		.global	chassis_speed_pid_FL
+  20              		.section	.bss.chassis_speed_pid_FL,"aw",%nobits
+  21              		.align	2
+  24              	chassis_speed_pid_FL:
+  25 0000 00000000 		.space	52
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	chassis_speed_pid_FR
+  27              		.section	.bss.chassis_speed_pid_FR,"aw",%nobits
+  28              		.align	2
+  31              	chassis_speed_pid_FR:
+  32 0000 00000000 		.space	52
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  33              		.global	chassis_speed_pid_BL
+  34              		.section	.bss.chassis_speed_pid_BL,"aw",%nobits
+  35              		.align	2
+  38              	chassis_speed_pid_BL:
+  39 0000 00000000 		.space	52
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.global	chassis_speed_pid_BR
+  41              		.section	.bss.chassis_speed_pid_BR,"aw",%nobits
+  42              		.align	2
+  45              	chassis_speed_pid_BR:
+  46 0000 00000000 		.space	52
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  47              		.global	chassis_T_pid_x
+  48              		.section	.bss.chassis_T_pid_x,"aw",%nobits
+  49              		.align	2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 2
+
+
+  52              	chassis_T_pid_x:
+  53 0000 00000000 		.space	52
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  54              		.global	chassis_T_pid_y
+  55              		.section	.bss.chassis_T_pid_y,"aw",%nobits
+  56              		.align	2
+  59              	chassis_T_pid_y:
+  60 0000 00000000 		.space	52
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  61              		.global	chassis_T_pid_w
+  62              		.section	.bss.chassis_T_pid_w,"aw",%nobits
+  63              		.align	2
+  66              	chassis_T_pid_w:
+  67 0000 00000000 		.space	52
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  68              		.global	chassis_follow_pid
+  69              		.section	.bss.chassis_follow_pid,"aw",%nobits
+  70              		.align	2
+  73              	chassis_follow_pid:
+  74 0000 00000000 		.space	52
+  74      00000000 
+  74      00000000 
+  74      00000000 
+  74      00000000 
+  75              		.global	Vx_ramp
+  76              		.section	.bss.Vx_ramp,"aw",%nobits
+  77              		.align	2
+  80              	Vx_ramp:
+  81 0000 00000000 		.space	28
+  81      00000000 
+  81      00000000 
+  81      00000000 
+  81      00000000 
+  82              		.global	Vy_ramp
+  83              		.section	.bss.Vy_ramp,"aw",%nobits
+  84              		.align	2
+  87              	Vy_ramp:
+  88 0000 00000000 		.space	28
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  88      00000000 
+  89              		.section	.text.power_limt,"ax",%progbits
+  90              		.align	1
+  91              		.global	power_limt
+  92              		.syntax unified
+  93              		.thumb
+  94              		.thumb_func
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 3
+
+
+  96              	power_limt:
+  97              	.LFB147:
+   1:User/Software/Chassis.c **** #include "Chassis.h"
+   2:User/Software/Chassis.c **** #include "Global_status.h"
+   3:User/Software/Chassis.c **** #include "Gimbal.h"
+   4:User/Software/Chassis.c **** #include "ui.h"
+   5:User/Software/Chassis.c **** 
+   6:User/Software/Chassis.c **** #include "referee_system.h"
+   7:User/Software/Chassis.c **** #include "supercup.h"
+   8:User/Software/Chassis.c **** #include "stm32_time.h"
+   9:User/Software/Chassis.c **** 
+  10:User/Software/Chassis.c **** #include "pid.h"
+  11:User/Software/Chassis.c **** #include "ramp_generator.h"
+  12:User/Software/Chassis.c **** #include "User_math.h"
+  13:User/Software/Chassis.c **** 
+  14:User/Software/Chassis.c **** pid_t chassis_speed_pid_FL, chassis_speed_pid_FR, chassis_speed_pid_BL, chassis_speed_pid_BR; // 轮
+  15:User/Software/Chassis.c **** pid_t chassis_T_pid_x, chassis_T_pid_y, chassis_T_pid_w;
+  16:User/Software/Chassis.c **** pid_t chassis_follow_pid; // 底盘跟随
+  17:User/Software/Chassis.c **** RampGenerator Vx_ramp, Vy_ramp;
+  18:User/Software/Chassis.c **** extern pid_t yaw_auto_location_pid;
+  19:User/Software/Chassis.c **** 
+  20:User/Software/Chassis.c **** float power_limt(float FL_current, float FR_current, float BL_current, float BR_current,
+  21:User/Software/Chassis.c ****                  float FL_speed, float FR_speed, float BL_speed, float BR_speed, float max_p)
+  22:User/Software/Chassis.c **** {
+  98              		.loc 1 22 1
+  99              		.cfi_startproc
+ 100              		@ args = 0, pretend = 0, frame = 104
+ 101              		@ frame_needed = 1, uses_anonymous_args = 0
+ 102 0000 80B5     		push	{r7, lr}
+ 103              	.LCFI0:
+ 104              		.cfi_def_cfa_offset 8
+ 105              		.cfi_offset 7, -8
+ 106              		.cfi_offset 14, -4
+ 107 0002 9AB0     		sub	sp, sp, #104
+ 108              	.LCFI1:
+ 109              		.cfi_def_cfa_offset 112
+ 110 0004 00AF     		add	r7, sp, #0
+ 111              	.LCFI2:
+ 112              		.cfi_def_cfa_register 7
+ 113 0006 87ED090A 		vstr.32	s0, [r7, #36]
+ 114 000a C7ED080A 		vstr.32	s1, [r7, #32]
+ 115 000e 87ED071A 		vstr.32	s2, [r7, #28]
+ 116 0012 C7ED061A 		vstr.32	s3, [r7, #24]
+ 117 0016 87ED052A 		vstr.32	s4, [r7, #20]
+ 118 001a C7ED042A 		vstr.32	s5, [r7, #16]
+ 119 001e 87ED033A 		vstr.32	s6, [r7, #12]
+ 120 0022 C7ED023A 		vstr.32	s7, [r7, #8]
+ 121 0026 87ED014A 		vstr.32	s8, [r7, #4]
+  23:User/Software/Chassis.c ****     float current[4] = {FL_current, FR_current, BL_current, BR_current};
+ 122              		.loc 1 23 11
+ 123 002a 7B6A     		ldr	r3, [r7, #36]	@ float
+ 124 002c BB63     		str	r3, [r7, #56]	@ float
+ 125 002e 3B6A     		ldr	r3, [r7, #32]	@ float
+ 126 0030 FB63     		str	r3, [r7, #60]	@ float
+ 127 0032 FB69     		ldr	r3, [r7, #28]	@ float
+ 128 0034 3B64     		str	r3, [r7, #64]	@ float
+ 129 0036 BB69     		ldr	r3, [r7, #24]	@ float
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 4
+
+
+ 130 0038 7B64     		str	r3, [r7, #68]	@ float
+  24:User/Software/Chassis.c ****     float speed[4] = {FL_speed, FR_speed, BL_speed, BR_speed};
+ 131              		.loc 1 24 11
+ 132 003a 7B69     		ldr	r3, [r7, #20]	@ float
+ 133 003c BB62     		str	r3, [r7, #40]	@ float
+ 134 003e 3B69     		ldr	r3, [r7, #16]	@ float
+ 135 0040 FB62     		str	r3, [r7, #44]	@ float
+ 136 0042 FB68     		ldr	r3, [r7, #12]	@ float
+ 137 0044 3B63     		str	r3, [r7, #48]	@ float
+ 138 0046 BB68     		ldr	r3, [r7, #8]	@ float
+ 139 0048 7B63     		str	r3, [r7, #52]	@ float
+  25:User/Software/Chassis.c ****     float now_p = 0.0f;
+ 140              		.loc 1 25 11
+ 141 004a 4FF00003 		mov	r3, #0
+ 142 004e 7B66     		str	r3, [r7, #100]	@ float
+  26:User/Software/Chassis.c ****     float b = 0.015f;
+ 143              		.loc 1 26 11
+ 144 0050 634B     		ldr	r3, .L17+8
+ 145 0052 FB65     		str	r3, [r7, #92]	@ float
+  27:User/Software/Chassis.c ****     const float a = 2.56e-07;   // k1  //2.56e-07
+ 146              		.loc 1 27 17
+ 147 0054 634B     		ldr	r3, .L17+12
+ 148 0056 BB65     		str	r3, [r7, #88]	@ float
+  28:User/Software/Chassis.c ****     const float k2 = 1.553e-07; // k2
+ 149              		.loc 1 28 17
+ 150 0058 634B     		ldr	r3, .L17+16
+ 151 005a 7B65     		str	r3, [r7, #84]	@ float
+  29:User/Software/Chassis.c ****     const float constant = 4.081f;
+ 152              		.loc 1 29 17
+ 153 005c 634B     		ldr	r3, .L17+20
+ 154 005e 3B65     		str	r3, [r7, #80]	@ float
+  30:User/Software/Chassis.c ****     // 减速比改为14用该系数，不改减速比为19为注释后系数
+  31:User/Software/Chassis.c ****     const float toque_coefficient = (20.0f / 16384.0f) * (0.22f) * (187.0f / 3591.0f) / 9.55f; // (
+ 155              		.loc 1 31 17
+ 156 0060 634B     		ldr	r3, .L17+24
+ 157 0062 FB64     		str	r3, [r7, #76]	@ float
+  32:User/Software/Chassis.c ****     /*最大功率设置*/
+  33:User/Software/Chassis.c ****     Supercap_set_power(max_p);
+ 158              		.loc 1 33 5
+ 159 0064 D7ED017A 		vldr.32	s15, [r7, #4]
+ 160 0068 FCEEE77A 		vcvt.u32.f32	s15, s15
+ 161 006c C7ED007A 		vstr.32	s15, [r7]	@ int
+ 162 0070 3B78     		ldrb	r3, [r7]
+ 163 0072 DBB2     		uxtb	r3, r3
+ 164 0074 1846     		mov	r0, r3
+ 165 0076 FFF7FEFF 		bl	Supercap_set_power
+  34:User/Software/Chassis.c ****     if (cap.remain_vol <= 9)
+ 166              		.loc 1 34 12
+ 167 007a 5E4B     		ldr	r3, .L17+28
+ 168 007c D3F80530 		ldr	r3, [r3, #5]	@ unaligned
+ 169              		.loc 1 34 8
+ 170 0080 F2EE027A 		vmov.f32	s15, #9.0e+0
+ 171 0084 07EE103A 		vmov	s14, r3
+ 172 0088 B4EEE77A 		vcmpe.f32	s14, s15
+ 173 008c F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 174 0090 08D8     		bhi	.L15
+  35:User/Software/Chassis.c ****         max_p -= 2.0f; // 2w余量
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 5
+
+
+ 175              		.loc 1 35 15
+ 176 0092 D7ED017A 		vldr.32	s15, [r7, #4]
+ 177 0096 B0EE007A 		vmov.f32	s14, #2.0e+0
+ 178 009a 77EEC77A 		vsub.f32	s15, s15, s14
+ 179 009e C7ED017A 		vstr.32	s15, [r7, #4]
+ 180 00a2 1AE0     		b	.L4
+ 181              	.L15:
+  36:User/Software/Chassis.c ****     else if (cap.remain_vol > 9)
+ 182              		.loc 1 36 17
+ 183 00a4 534B     		ldr	r3, .L17+28
+ 184 00a6 D3F80530 		ldr	r3, [r3, #5]	@ unaligned
+ 185              		.loc 1 36 13
+ 186 00aa F2EE027A 		vmov.f32	s15, #9.0e+0
+ 187 00ae 07EE103A 		vmov	s14, r3
+ 188 00b2 B4EEE77A 		vcmpe.f32	s14, s15
+ 189 00b6 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 190 00ba 0EDD     		ble	.L4
+  37:User/Software/Chassis.c ****     {
+  38:User/Software/Chassis.c ****         max_p += cap.remain_vol * 14;
+ 191              		.loc 1 38 21
+ 192 00bc 4D4B     		ldr	r3, .L17+28
+ 193 00be D3F80530 		ldr	r3, [r3, #5]	@ unaligned
+ 194              		.loc 1 38 33
+ 195 00c2 F2EE0C7A 		vmov.f32	s15, #1.4e+1
+ 196 00c6 07EE103A 		vmov	s14, r3
+ 197 00ca 67EE277A 		vmul.f32	s15, s14, s15
+ 198              		.loc 1 38 15
+ 199 00ce 97ED017A 		vldr.32	s14, [r7, #4]
+ 200 00d2 77EE277A 		vadd.f32	s15, s14, s15
+ 201 00d6 C7ED017A 		vstr.32	s15, [r7, #4]
+ 202              	.L4:
+ 203              	.LBB2:
+  39:User/Software/Chassis.c ****     }
+  40:User/Software/Chassis.c ****     /*估算当前功率*/
+  41:User/Software/Chassis.c ****     for (int i = 0; i < 4; i++)
+ 204              		.loc 1 41 14
+ 205 00da 0023     		movs	r3, #0
+ 206 00dc 3B66     		str	r3, [r7, #96]
+ 207              		.loc 1 41 5
+ 208 00de 58E0     		b	.L6
+ 209              	.L7:
+  42:User/Software/Chassis.c ****     {
+  43:User/Software/Chassis.c ****         // 估算功率
+  44:User/Software/Chassis.c ****         // 西交利物浦：https://github.com/MaxwellDemonLin/Motor-modeling-and-power-control/blob/mas
+  45:User/Software/Chassis.c ****         // 当前功率 = （电流 * 电流力矩转换系数 * 速度 + K2 * 速度的平方 + a * 电流的平方） / 效率
+  46:User/Software/Chassis.c ****         // K2 决定了速度上限，高速超功率升高K2
+  47:User/Software/Chassis.c ****         // a 决定了启动时的最大电流，起步超功率升高a
+  48:User/Software/Chassis.c ****         // 效率一般不用动，约为0.6-0.85
+  49:User/Software/Chassis.c ****         now_p += fabs(current[i] * toque_coefficient * speed[i] + // 电流 * 电流力矩转换系数 * 速度
+ 210              		.loc 1 49 15
+ 211 00e0 D7ED197A 		vldr.32	s15, [r7, #100]
+ 212 00e4 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 213              		.loc 1 49 30
+ 214 00e8 3B6E     		ldr	r3, [r7, #96]
+ 215 00ea 9B00     		lsls	r3, r3, #2
+ 216 00ec 6833     		adds	r3, r3, #104
+ 217 00ee 3B44     		add	r3, r3, r7
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 6
+
+
+ 218 00f0 303B     		subs	r3, r3, #48
+ 219 00f2 93ED007A 		vldr.32	s14, [r3]
+ 220              		.loc 1 49 34
+ 221 00f6 D7ED137A 		vldr.32	s15, [r7, #76]
+ 222 00fa 27EE277A 		vmul.f32	s14, s14, s15
+ 223              		.loc 1 49 61
+ 224 00fe 3B6E     		ldr	r3, [r7, #96]
+ 225 0100 9B00     		lsls	r3, r3, #2
+ 226 0102 6833     		adds	r3, r3, #104
+ 227 0104 3B44     		add	r3, r3, r7
+ 228 0106 403B     		subs	r3, r3, #64
+ 229 0108 D3ED007A 		vldr.32	s15, [r3]
+ 230              		.loc 1 49 54
+ 231 010c 27EE277A 		vmul.f32	s14, s14, s15
+  50:User/Software/Chassis.c ****                       k2 * speed[i] * speed[i] +                  // K2 * 速度的平方
+ 232              		.loc 1 50 33
+ 233 0110 3B6E     		ldr	r3, [r7, #96]
+ 234 0112 9B00     		lsls	r3, r3, #2
+ 235 0114 6833     		adds	r3, r3, #104
+ 236 0116 3B44     		add	r3, r3, r7
+ 237 0118 403B     		subs	r3, r3, #64
+ 238 011a D3ED005A 		vldr.32	s11, [r3]
+ 239              		.loc 1 50 26
+ 240 011e D7ED157A 		vldr.32	s15, [r7, #84]
+ 241 0122 65EEA75A 		vmul.f32	s11, s11, s15
+ 242              		.loc 1 50 44
+ 243 0126 3B6E     		ldr	r3, [r7, #96]
+ 244 0128 9B00     		lsls	r3, r3, #2
+ 245 012a 6833     		adds	r3, r3, #104
+ 246 012c 3B44     		add	r3, r3, r7
+ 247 012e 403B     		subs	r3, r3, #64
+ 248 0130 D3ED007A 		vldr.32	s15, [r3]
+ 249              		.loc 1 50 37
+ 250 0134 65EEA77A 		vmul.f32	s15, s11, s15
+  49:User/Software/Chassis.c ****                       k2 * speed[i] * speed[i] +                  // K2 * 速度的平方
+ 251              		.loc 1 49 65
+ 252 0138 37EE277A 		vadd.f32	s14, s14, s15
+  51:User/Software/Chassis.c ****                       a * current[i] * current[i] +               // a * 电流的平方
+ 253              		.loc 1 51 34
+ 254 013c 3B6E     		ldr	r3, [r7, #96]
+ 255 013e 9B00     		lsls	r3, r3, #2
+ 256 0140 6833     		adds	r3, r3, #104
+ 257 0142 3B44     		add	r3, r3, r7
+ 258 0144 303B     		subs	r3, r3, #48
+ 259 0146 D3ED005A 		vldr.32	s11, [r3]
+ 260              		.loc 1 51 25
+ 261 014a D7ED167A 		vldr.32	s15, [r7, #88]
+ 262 014e 65EEA75A 		vmul.f32	s11, s11, s15
+ 263              		.loc 1 51 47
+ 264 0152 3B6E     		ldr	r3, [r7, #96]
+ 265 0154 9B00     		lsls	r3, r3, #2
+ 266 0156 6833     		adds	r3, r3, #104
+ 267 0158 3B44     		add	r3, r3, r7
+ 268 015a 303B     		subs	r3, r3, #48
+ 269 015c D3ED007A 		vldr.32	s15, [r3]
+ 270              		.loc 1 51 38
+ 271 0160 65EEA77A 		vmul.f32	s15, s11, s15
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 7
+
+
+  50:User/Software/Chassis.c ****                       k2 * speed[i] * speed[i] +                  // K2 * 速度的平方
+ 272              		.loc 1 50 48
+ 273 0164 37EE277A 		vadd.f32	s14, s14, s15
+ 274              		.loc 1 51 51
+ 275 0168 D7ED147A 		vldr.32	s15, [r7, #80]
+ 276 016c 77EE277A 		vadd.f32	s15, s14, s15
+  49:User/Software/Chassis.c ****                       k2 * speed[i] * speed[i] +                  // K2 * 速度的平方
+ 277              		.loc 1 49 18
+ 278 0170 F0EEE77A 		vabs.f32	s15, s15
+ 279 0174 B7EEE75A 		vcvt.f64.f32	d5, s15
+  52:User/Software/Chassis.c ****                       constant) /
+ 280              		.loc 1 52 33
+ 281 0178 9FED174B 		vldr.64	d4, .L17
+ 282 017c 85EE047B 		vdiv.f64	d7, d5, d4
+  49:User/Software/Chassis.c ****                       k2 * speed[i] * speed[i] +                  // K2 * 速度的平方
+ 283              		.loc 1 49 15
+ 284 0180 36EE077B 		vadd.f64	d7, d6, d7
+ 285 0184 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 286 0188 C7ED197A 		vstr.32	s15, [r7, #100]
+  41:User/Software/Chassis.c ****     {
+ 287              		.loc 1 41 29 discriminator 3
+ 288 018c 3B6E     		ldr	r3, [r7, #96]
+ 289 018e 0133     		adds	r3, r3, #1
+ 290 0190 3B66     		str	r3, [r7, #96]
+ 291              	.L6:
+  41:User/Software/Chassis.c ****     {
+ 292              		.loc 1 41 23 discriminator 1
+ 293 0192 3B6E     		ldr	r3, [r7, #96]
+ 294 0194 032B     		cmp	r3, #3
+ 295 0196 A3DD     		ble	.L7
+ 296              	.LBE2:
+  53:User/Software/Chassis.c ****                  0.85f;
+  54:User/Software/Chassis.c ****     }
+  55:User/Software/Chassis.c ****     float percentage = max_p / now_p;
+ 297              		.loc 1 55 11
+ 298 0198 D7ED016A 		vldr.32	s13, [r7, #4]
+ 299 019c 97ED197A 		vldr.32	s14, [r7, #100]
+ 300 01a0 C6EE877A 		vdiv.f32	s15, s13, s14
+ 301 01a4 C7ED127A 		vstr.32	s15, [r7, #72]
+  56:User/Software/Chassis.c ****     if (percentage > 1.0f)
+ 302              		.loc 1 56 8
+ 303 01a8 D7ED127A 		vldr.32	s15, [r7, #72]
+ 304 01ac B7EE007A 		vmov.f32	s14, #1.0e+0
+ 305 01b0 F4EEC77A 		vcmpe.f32	s15, s14
+ 306 01b4 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 307 01b8 02DD     		ble	.L16
+  57:User/Software/Chassis.c ****         return 1.0f;
+ 308              		.loc 1 57 16
+ 309 01ba F7EE007A 		vmov.f32	s15, #1.0e+0
+ 310 01be 05E0     		b	.L11
+ 311              	.L16:
+  58:User/Software/Chassis.c ****     return percentage - b; // b 做一定玄学的补偿，用于补偿最大速度时功率超出的误差
+ 312              		.loc 1 58 23
+ 313 01c0 97ED127A 		vldr.32	s14, [r7, #72]
+ 314 01c4 D7ED177A 		vldr.32	s15, [r7, #92]
+ 315 01c8 77EE677A 		vsub.f32	s15, s14, s15
+ 316              	.L11:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 8
+
+
+  59:User/Software/Chassis.c **** }
+ 317              		.loc 1 59 1
+ 318 01cc B0EE670A 		vmov.f32	s0, s15
+ 319 01d0 6837     		adds	r7, r7, #104
+ 320              	.LCFI3:
+ 321              		.cfi_def_cfa_offset 8
+ 322 01d2 BD46     		mov	sp, r7
+ 323              	.LCFI4:
+ 324              		.cfi_def_cfa_register 13
+ 325              		@ sp needed
+ 326 01d4 80BD     		pop	{r7, pc}
+ 327              	.L18:
+ 328 01d6 00BF     		.align	3
+ 329              	.L17:
+ 330 01d8 00000040 		.word	1073741824
+ 331 01dc 3333EB3F 		.word	1072378675
+ 332 01e0 8FC2753C 		.word	1014350479
+ 333 01e4 5F708934 		.word	881422431
+ 334 01e8 8AC02634 		.word	874954890
+ 335 01ec 8D978240 		.word	1082300301
+ 336 01f0 EB8BC435 		.word	902073323
+ 337 01f4 00000000 		.word	cap
+ 338              		.cfi_endproc
+ 339              	.LFE147:
+ 341              		.section	.text.Chassis_init,"ax",%progbits
+ 342              		.align	1
+ 343              		.global	Chassis_init
+ 344              		.syntax unified
+ 345              		.thumb
+ 346              		.thumb_func
+ 348              	Chassis_init:
+ 349              	.LFB148:
+  60:User/Software/Chassis.c **** 
+  61:User/Software/Chassis.c **** /**
+  62:User/Software/Chassis.c ****  * @brief 底盘初始化
+  63:User/Software/Chassis.c ****  *
+  64:User/Software/Chassis.c ****  */
+  65:User/Software/Chassis.c **** void Chassis_init()
+  66:User/Software/Chassis.c **** {
+ 350              		.loc 1 66 1
+ 351              		.cfi_startproc
+ 352              		@ args = 0, pretend = 0, frame = 0
+ 353              		@ frame_needed = 1, uses_anonymous_args = 0
+ 354 0000 80B5     		push	{r7, lr}
+ 355              	.LCFI5:
+ 356              		.cfi_def_cfa_offset 8
+ 357              		.cfi_offset 7, -8
+ 358              		.cfi_offset 14, -4
+ 359 0002 00AF     		add	r7, sp, #0
+ 360              	.LCFI6:
+ 361              		.cfi_def_cfa_register 7
+  67:User/Software/Chassis.c ****     /*电机初始化*/
+  68:User/Software/Chassis.c ****     CHASSISMotor_init(M3508_P, WHEEL_FL);
+ 362              		.loc 1 68 5
+ 363 0004 0121     		movs	r1, #1
+ 364 0006 1320     		movs	r0, #19
+ 365 0008 FFF7FEFF 		bl	DJIMotor_init
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 9
+
+
+  69:User/Software/Chassis.c ****     CHASSISMotor_init(M3508_P, WHEEL_FR);
+ 366              		.loc 1 69 5
+ 367 000c 0021     		movs	r1, #0
+ 368 000e 1320     		movs	r0, #19
+ 369 0010 FFF7FEFF 		bl	DJIMotor_init
+  70:User/Software/Chassis.c ****     CHASSISMotor_init(M3508_P, WHEEL_BL);
+ 370              		.loc 1 70 5
+ 371 0014 0221     		movs	r1, #2
+ 372 0016 1320     		movs	r0, #19
+ 373 0018 FFF7FEFF 		bl	DJIMotor_init
+  71:User/Software/Chassis.c ****     CHASSISMotor_init(M3508_P, WHEEL_BR);
+ 374              		.loc 1 71 5
+ 375 001c 0321     		movs	r1, #3
+ 376 001e 1320     		movs	r0, #19
+ 377 0020 FFF7FEFF 		bl	DJIMotor_init
+  72:User/Software/Chassis.c ****     /*PID速度环初始化*/
+  73:User/Software/Chassis.c ****     // pid_set(&chassis_speed_pid_FL, 200.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+  74:User/Software/Chassis.c ****     // pid_set(&chassis_speed_pid_FR, 200.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+  75:User/Software/Chassis.c ****     // pid_set(&chassis_speed_pid_BL, 200.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+  76:User/Software/Chassis.c ****     // pid_set(&chassis_speed_pid_BR, 200.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+  77:User/Software/Chassis.c ****     pid_set(&chassis_speed_pid_FL, 2.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+ 378              		.loc 1 77 5
+ 379 0024 9FED402A 		vldr.32	s4, .L20
+ 380 0028 DFED401A 		vldr.32	s3, .L20+4
+ 381 002c 9FED401A 		vldr.32	s2, .L20+8
+ 382 0030 DFED3F0A 		vldr.32	s1, .L20+8
+ 383 0034 B0EE000A 		vmov.f32	s0, #2.0e+0
+ 384 0038 3E48     		ldr	r0, .L20+12
+ 385 003a FFF7FEFF 		bl	pid_set
+  78:User/Software/Chassis.c ****     pid_set(&chassis_speed_pid_FR, 2.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+ 386              		.loc 1 78 5
+ 387 003e 9FED3A2A 		vldr.32	s4, .L20
+ 388 0042 DFED3A1A 		vldr.32	s3, .L20+4
+ 389 0046 9FED3A1A 		vldr.32	s2, .L20+8
+ 390 004a DFED390A 		vldr.32	s1, .L20+8
+ 391 004e B0EE000A 		vmov.f32	s0, #2.0e+0
+ 392 0052 3948     		ldr	r0, .L20+16
+ 393 0054 FFF7FEFF 		bl	pid_set
+  79:User/Software/Chassis.c ****     pid_set(&chassis_speed_pid_BL, 2.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+ 394              		.loc 1 79 5
+ 395 0058 9FED332A 		vldr.32	s4, .L20
+ 396 005c DFED331A 		vldr.32	s3, .L20+4
+ 397 0060 9FED331A 		vldr.32	s2, .L20+8
+ 398 0064 DFED320A 		vldr.32	s1, .L20+8
+ 399 0068 B0EE000A 		vmov.f32	s0, #2.0e+0
+ 400 006c 3348     		ldr	r0, .L20+20
+ 401 006e FFF7FEFF 		bl	pid_set
+  80:User/Software/Chassis.c ****     pid_set(&chassis_speed_pid_BR, 2.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+ 402              		.loc 1 80 5
+ 403 0072 9FED2D2A 		vldr.32	s4, .L20
+ 404 0076 DFED2D1A 		vldr.32	s3, .L20+4
+ 405 007a 9FED2D1A 		vldr.32	s2, .L20+8
+ 406 007e DFED2C0A 		vldr.32	s1, .L20+8
+ 407 0082 B0EE000A 		vmov.f32	s0, #2.0e+0
+ 408 0086 2E48     		ldr	r0, .L20+24
+ 409 0088 FFF7FEFF 		bl	pid_set
+  81:User/Software/Chassis.c ****     /*底盘跟随PID*/
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 10
+
+
+  82:User/Software/Chassis.c ****     pid_set(&chassis_follow_pid, 5.0f, 0.0f, 10.0f, 200, 40);
+ 410              		.loc 1 82 5
+ 411 008c 9FED2D2A 		vldr.32	s4, .L20+28
+ 412 0090 DFED2D1A 		vldr.32	s3, .L20+32
+ 413 0094 B2EE041A 		vmov.f32	s2, #1.0e+1
+ 414 0098 DFED250A 		vldr.32	s1, .L20+8
+ 415 009c B1EE040A 		vmov.f32	s0, #5.0e+0
+ 416 00a0 2A48     		ldr	r0, .L20+36
+ 417 00a2 FFF7FEFF 		bl	pid_set
+  83:User/Software/Chassis.c ****     /*底盘力控PID*/
+  84:User/Software/Chassis.c ****     pid_set(&chassis_T_pid_x, 20.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+ 418              		.loc 1 84 5
+ 419 00a6 9FED202A 		vldr.32	s4, .L20
+ 420 00aa DFED201A 		vldr.32	s3, .L20+4
+ 421 00ae 9FED201A 		vldr.32	s2, .L20+8
+ 422 00b2 DFED1F0A 		vldr.32	s1, .L20+8
+ 423 00b6 B3EE040A 		vmov.f32	s0, #2.0e+1
+ 424 00ba 2548     		ldr	r0, .L20+40
+ 425 00bc FFF7FEFF 		bl	pid_set
+  85:User/Software/Chassis.c ****     pid_set(&chassis_T_pid_y, 20.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+ 426              		.loc 1 85 5
+ 427 00c0 9FED192A 		vldr.32	s4, .L20
+ 428 00c4 DFED191A 		vldr.32	s3, .L20+4
+ 429 00c8 9FED191A 		vldr.32	s2, .L20+8
+ 430 00cc DFED180A 		vldr.32	s1, .L20+8
+ 431 00d0 B3EE040A 		vmov.f32	s0, #2.0e+1
+ 432 00d4 1F48     		ldr	r0, .L20+44
+ 433 00d6 FFF7FEFF 		bl	pid_set
+  86:User/Software/Chassis.c ****     pid_set(&chassis_T_pid_w, 10.0f, 0.0, 0, CHASSISMOTOR_MAX_CURRENT, 10000);
+ 434              		.loc 1 86 5
+ 435 00da 9FED132A 		vldr.32	s4, .L20
+ 436 00de DFED131A 		vldr.32	s3, .L20+4
+ 437 00e2 9FED131A 		vldr.32	s2, .L20+8
+ 438 00e6 DFED120A 		vldr.32	s1, .L20+8
+ 439 00ea B2EE040A 		vmov.f32	s0, #1.0e+1
+ 440 00ee 1A48     		ldr	r0, .L20+48
+ 441 00f0 FFF7FEFF 		bl	pid_set
+  87:User/Software/Chassis.c ****     /*底盘运动斜坡*/
+  88:User/Software/Chassis.c ****     RampGenerator_Init(&Vx_ramp, CHASSIS_TASK_TIME, 4, 30, 2);
+ 442              		.loc 1 88 5
+ 443 00f4 B0EE001A 		vmov.f32	s2, #2.0e+0
+ 444 00f8 F3EE0E0A 		vmov.f32	s1, #3.0e+1
+ 445 00fc B1EE000A 		vmov.f32	s0, #4.0e+0
+ 446 0100 0121     		movs	r1, #1
+ 447 0102 1648     		ldr	r0, .L20+52
+ 448 0104 FFF7FEFF 		bl	RampGenerator_Init
+  89:User/Software/Chassis.c ****     RampGenerator_Init(&Vy_ramp, CHASSIS_TASK_TIME, 4, 30, 4);
+ 449              		.loc 1 89 5
+ 450 0108 B1EE001A 		vmov.f32	s2, #4.0e+0
+ 451 010c F3EE0E0A 		vmov.f32	s1, #3.0e+1
+ 452 0110 B1EE000A 		vmov.f32	s0, #4.0e+0
+ 453 0114 0121     		movs	r1, #1
+ 454 0116 1248     		ldr	r0, .L20+56
+ 455 0118 FFF7FEFF 		bl	RampGenerator_Init
+  90:User/Software/Chassis.c ****     /*默认地盘跟随模式*/
+  91:User/Software/Chassis.c ****     Global.Chssis.mode = FLOW;
+ 456              		.loc 1 91 24
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 11
+
+
+ 457 011c 114B     		ldr	r3, .L20+60
+ 458 011e 0022     		movs	r2, #0
+ 459 0120 1A70     		strb	r2, [r3]
+  92:User/Software/Chassis.c **** }
+ 460              		.loc 1 92 1
+ 461 0122 00BF     		nop
+ 462 0124 80BD     		pop	{r7, pc}
+ 463              	.L21:
+ 464 0126 00BF     		.align	2
+ 465              	.L20:
+ 466 0128 00401C46 		.word	1176256512
+ 467 012c 00008046 		.word	1182793728
+ 468 0130 00000000 		.word	0
+ 469 0134 00000000 		.word	chassis_speed_pid_FL
+ 470 0138 00000000 		.word	chassis_speed_pid_FR
+ 471 013c 00000000 		.word	chassis_speed_pid_BL
+ 472 0140 00000000 		.word	chassis_speed_pid_BR
+ 473 0144 00002042 		.word	1109393408
+ 474 0148 00004843 		.word	1128792064
+ 475 014c 00000000 		.word	chassis_follow_pid
+ 476 0150 00000000 		.word	chassis_T_pid_x
+ 477 0154 00000000 		.word	chassis_T_pid_y
+ 478 0158 00000000 		.word	chassis_T_pid_w
+ 479 015c 00000000 		.word	Vx_ramp
+ 480 0160 00000000 		.word	Vy_ramp
+ 481 0164 00000000 		.word	Global
+ 482              		.cfi_endproc
+ 483              	.LFE148:
+ 485              		.section	.text.Chassis_set_x,"ax",%progbits
+ 486              		.align	1
+ 487              		.global	Chassis_set_x
+ 488              		.syntax unified
+ 489              		.thumb
+ 490              		.thumb_func
+ 492              	Chassis_set_x:
+ 493              	.LFB149:
+  93:User/Software/Chassis.c **** 
+  94:User/Software/Chassis.c **** /**
+  95:User/Software/Chassis.c ****  * @brief 设置底盘移动速度
+  96:User/Software/Chassis.c ****  *
+  97:User/Software/Chassis.c ****  */
+  98:User/Software/Chassis.c **** void Chassis_set_x(float x)
+  99:User/Software/Chassis.c **** {
+ 494              		.loc 1 99 1
+ 495              		.cfi_startproc
+ 496              		@ args = 0, pretend = 0, frame = 8
+ 497              		@ frame_needed = 1, uses_anonymous_args = 0
+ 498 0000 80B5     		push	{r7, lr}
+ 499              	.LCFI7:
+ 500              		.cfi_def_cfa_offset 8
+ 501              		.cfi_offset 7, -8
+ 502              		.cfi_offset 14, -4
+ 503 0002 82B0     		sub	sp, sp, #8
+ 504              	.LCFI8:
+ 505              		.cfi_def_cfa_offset 16
+ 506 0004 00AF     		add	r7, sp, #0
+ 507              	.LCFI9:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 12
+
+
+ 508              		.cfi_def_cfa_register 7
+ 509 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 100:User/Software/Chassis.c ****     RampGenerator_SetTarget(&Vx_ramp, x);
+ 510              		.loc 1 100 5
+ 511 000a 97ED010A 		vldr.32	s0, [r7, #4]
+ 512 000e 0348     		ldr	r0, .L23
+ 513 0010 FFF7FEFF 		bl	RampGenerator_SetTarget
+ 101:User/Software/Chassis.c ****     // Global.Chssis.input.x = x;
+ 102:User/Software/Chassis.c **** }
+ 514              		.loc 1 102 1
+ 515 0014 00BF     		nop
+ 516 0016 0837     		adds	r7, r7, #8
+ 517              	.LCFI10:
+ 518              		.cfi_def_cfa_offset 8
+ 519 0018 BD46     		mov	sp, r7
+ 520              	.LCFI11:
+ 521              		.cfi_def_cfa_register 13
+ 522              		@ sp needed
+ 523 001a 80BD     		pop	{r7, pc}
+ 524              	.L24:
+ 525              		.align	2
+ 526              	.L23:
+ 527 001c 00000000 		.word	Vx_ramp
+ 528              		.cfi_endproc
+ 529              	.LFE149:
+ 531              		.section	.text.Chassis_set_y,"ax",%progbits
+ 532              		.align	1
+ 533              		.global	Chassis_set_y
+ 534              		.syntax unified
+ 535              		.thumb
+ 536              		.thumb_func
+ 538              	Chassis_set_y:
+ 539              	.LFB150:
+ 103:User/Software/Chassis.c **** void Chassis_set_y(float y)
+ 104:User/Software/Chassis.c **** {
+ 540              		.loc 1 104 1
+ 541              		.cfi_startproc
+ 542              		@ args = 0, pretend = 0, frame = 8
+ 543              		@ frame_needed = 1, uses_anonymous_args = 0
+ 544 0000 80B5     		push	{r7, lr}
+ 545              	.LCFI12:
+ 546              		.cfi_def_cfa_offset 8
+ 547              		.cfi_offset 7, -8
+ 548              		.cfi_offset 14, -4
+ 549 0002 82B0     		sub	sp, sp, #8
+ 550              	.LCFI13:
+ 551              		.cfi_def_cfa_offset 16
+ 552 0004 00AF     		add	r7, sp, #0
+ 553              	.LCFI14:
+ 554              		.cfi_def_cfa_register 7
+ 555 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 105:User/Software/Chassis.c ****     RampGenerator_SetTarget(&Vy_ramp, y);
+ 556              		.loc 1 105 5
+ 557 000a 97ED010A 		vldr.32	s0, [r7, #4]
+ 558 000e 0348     		ldr	r0, .L26
+ 559 0010 FFF7FEFF 		bl	RampGenerator_SetTarget
+ 106:User/Software/Chassis.c ****     // Global.Chssis.input.y = y;
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 13
+
+
+ 107:User/Software/Chassis.c **** }
+ 560              		.loc 1 107 1
+ 561 0014 00BF     		nop
+ 562 0016 0837     		adds	r7, r7, #8
+ 563              	.LCFI15:
+ 564              		.cfi_def_cfa_offset 8
+ 565 0018 BD46     		mov	sp, r7
+ 566              	.LCFI16:
+ 567              		.cfi_def_cfa_register 13
+ 568              		@ sp needed
+ 569 001a 80BD     		pop	{r7, pc}
+ 570              	.L27:
+ 571              		.align	2
+ 572              	.L26:
+ 573 001c 00000000 		.word	Vy_ramp
+ 574              		.cfi_endproc
+ 575              	.LFE150:
+ 577              		.section	.text.Chassis_set_r,"ax",%progbits
+ 578              		.align	1
+ 579              		.global	Chassis_set_r
+ 580              		.syntax unified
+ 581              		.thumb
+ 582              		.thumb_func
+ 584              	Chassis_set_r:
+ 585              	.LFB151:
+ 108:User/Software/Chassis.c **** void Chassis_set_r(float r)
+ 109:User/Software/Chassis.c **** {
+ 586              		.loc 1 109 1
+ 587              		.cfi_startproc
+ 588              		@ args = 0, pretend = 0, frame = 8
+ 589              		@ frame_needed = 1, uses_anonymous_args = 0
+ 590              		@ link register save eliminated.
+ 591 0000 80B4     		push	{r7}
+ 592              	.LCFI17:
+ 593              		.cfi_def_cfa_offset 4
+ 594              		.cfi_offset 7, -4
+ 595 0002 83B0     		sub	sp, sp, #12
+ 596              	.LCFI18:
+ 597              		.cfi_def_cfa_offset 16
+ 598 0004 00AF     		add	r7, sp, #0
+ 599              	.LCFI19:
+ 600              		.cfi_def_cfa_register 7
+ 601 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 110:User/Software/Chassis.c ****     Global.Chssis.input.r = r;
+ 602              		.loc 1 110 27
+ 603 000a 044A     		ldr	r2, .L29
+ 604 000c 7B68     		ldr	r3, [r7, #4]	@ float
+ 605 000e D360     		str	r3, [r2, #12]	@ float
+ 111:User/Software/Chassis.c **** }
+ 606              		.loc 1 111 1
+ 607 0010 00BF     		nop
+ 608 0012 0C37     		adds	r7, r7, #12
+ 609              	.LCFI20:
+ 610              		.cfi_def_cfa_offset 4
+ 611 0014 BD46     		mov	sp, r7
+ 612              	.LCFI21:
+ 613              		.cfi_def_cfa_register 13
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 14
+
+
+ 614              		@ sp needed
+ 615 0016 5DF8047B 		ldr	r7, [sp], #4
+ 616              	.LCFI22:
+ 617              		.cfi_restore 7
+ 618              		.cfi_def_cfa_offset 0
+ 619 001a 7047     		bx	lr
+ 620              	.L30:
+ 621              		.align	2
+ 622              	.L29:
+ 623 001c 00000000 		.word	Global
+ 624              		.cfi_endproc
+ 625              	.LFE151:
+ 627              		.section	.text.Chassis_set_accel,"ax",%progbits
+ 628              		.align	1
+ 629              		.global	Chassis_set_accel
+ 630              		.syntax unified
+ 631              		.thumb
+ 632              		.thumb_func
+ 634              	Chassis_set_accel:
+ 635              	.LFB152:
+ 112:User/Software/Chassis.c **** 
+ 113:User/Software/Chassis.c **** void Chassis_set_accel(float acc)
+ 114:User/Software/Chassis.c **** {
+ 636              		.loc 1 114 1
+ 637              		.cfi_startproc
+ 638              		@ args = 0, pretend = 0, frame = 8
+ 639              		@ frame_needed = 1, uses_anonymous_args = 0
+ 640 0000 80B5     		push	{r7, lr}
+ 641              	.LCFI23:
+ 642              		.cfi_def_cfa_offset 8
+ 643              		.cfi_offset 7, -8
+ 644              		.cfi_offset 14, -4
+ 645 0002 82B0     		sub	sp, sp, #8
+ 646              	.LCFI24:
+ 647              		.cfi_def_cfa_offset 16
+ 648 0004 00AF     		add	r7, sp, #0
+ 649              	.LCFI25:
+ 650              		.cfi_def_cfa_register 7
+ 651 0006 87ED010A 		vstr.32	s0, [r7, #4]
+ 115:User/Software/Chassis.c ****     RampGenerator_SetAccel(&Vx_ramp, acc);
+ 652              		.loc 1 115 5
+ 653 000a 97ED010A 		vldr.32	s0, [r7, #4]
+ 654 000e 0648     		ldr	r0, .L32
+ 655 0010 FFF7FEFF 		bl	RampGenerator_SetAccel
+ 116:User/Software/Chassis.c ****     RampGenerator_SetAccel(&Vy_ramp, acc);
+ 656              		.loc 1 116 5
+ 657 0014 97ED010A 		vldr.32	s0, [r7, #4]
+ 658 0018 0448     		ldr	r0, .L32+4
+ 659 001a FFF7FEFF 		bl	RampGenerator_SetAccel
+ 117:User/Software/Chassis.c **** }
+ 660              		.loc 1 117 1
+ 661 001e 00BF     		nop
+ 662 0020 0837     		adds	r7, r7, #8
+ 663              	.LCFI26:
+ 664              		.cfi_def_cfa_offset 8
+ 665 0022 BD46     		mov	sp, r7
+ 666              	.LCFI27:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 15
+
+
+ 667              		.cfi_def_cfa_register 13
+ 668              		@ sp needed
+ 669 0024 80BD     		pop	{r7, pc}
+ 670              	.L33:
+ 671 0026 00BF     		.align	2
+ 672              	.L32:
+ 673 0028 00000000 		.word	Vx_ramp
+ 674 002c 00000000 		.word	Vy_ramp
+ 675              		.cfi_endproc
+ 676              	.LFE152:
+ 678              		.global	Vx_now
+ 679              		.section	.bss.Vx_now,"aw",%nobits
+ 680              		.align	2
+ 683              	Vx_now:
+ 684 0000 00000000 		.space	4
+ 685              		.global	Vy_now
+ 686              		.section	.bss.Vy_now,"aw",%nobits
+ 687              		.align	2
+ 690              	Vy_now:
+ 691 0000 00000000 		.space	4
+ 692              		.global	W_now
+ 693              		.section	.bss.W_now,"aw",%nobits
+ 694              		.align	2
+ 697              	W_now:
+ 698 0000 00000000 		.space	4
+ 699              		.global	T_FR
+ 700              		.section	.bss.T_FR,"aw",%nobits
+ 701              		.align	2
+ 704              	T_FR:
+ 705 0000 00000000 		.space	4
+ 706              		.global	T_FL
+ 707              		.section	.bss.T_FL,"aw",%nobits
+ 708              		.align	2
+ 711              	T_FL:
+ 712 0000 00000000 		.space	4
+ 713              		.global	T_BR
+ 714              		.section	.bss.T_BR,"aw",%nobits
+ 715              		.align	2
+ 718              	T_BR:
+ 719 0000 00000000 		.space	4
+ 720              		.global	T_BL
+ 721              		.section	.bss.T_BL,"aw",%nobits
+ 722              		.align	2
+ 725              	T_BL:
+ 726 0000 00000000 		.space	4
+ 727              		.global	K
+ 728              		.section	.bss.K,"aw",%nobits
+ 729              		.align	2
+ 732              	K:
+ 733 0000 00000000 		.space	4
+ 734              		.section	.text.ChassisMotor_Control,"ax",%progbits
+ 735              		.align	1
+ 736              		.global	ChassisMotor_Control
+ 737              		.syntax unified
+ 738              		.thumb
+ 739              		.thumb_func
+ 741              	ChassisMotor_Control:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 16
+
+
+ 742              	.LFB153:
+ 118:User/Software/Chassis.c **** 
+ 119:User/Software/Chassis.c **** /**
+ 120:User/Software/Chassis.c ****  * @brief 底盘电机控制
+ 121:User/Software/Chassis.c ****  *
+ 122:User/Software/Chassis.c ****  * @param FL_speed 左前轮速度
+ 123:User/Software/Chassis.c ****  * @param FR_speed 右前轮速度
+ 124:User/Software/Chassis.c ****  * @param BL_speed 左后轮速度
+ 125:User/Software/Chassis.c ****  * @param BR_speed 右后轮速度
+ 126:User/Software/Chassis.c ****  */
+ 127:User/Software/Chassis.c **** float Vx_now, Vy_now, W_now;
+ 128:User/Software/Chassis.c **** float T_FR, T_FL, T_BR, T_BL, K;
+ 129:User/Software/Chassis.c **** void ChassisMotor_Control(float Vx_speed, float Vy_speed, float R_speed)
+ 130:User/Software/Chassis.c **** {
+ 743              		.loc 1 130 1
+ 744              		.cfi_startproc
+ 745              		@ args = 0, pretend = 0, frame = 1192
+ 746              		@ frame_needed = 1, uses_anonymous_args = 0
+ 747 0000 80B5     		push	{r7, lr}
+ 748              	.LCFI28:
+ 749              		.cfi_def_cfa_offset 8
+ 750              		.cfi_offset 7, -8
+ 751              		.cfi_offset 14, -4
+ 752 0002 2DED088B 		vpush.64	{d8, d9, d10, d11}
+ 753              	.LCFI29:
+ 754              		.cfi_def_cfa_offset 40
+ 755              		.cfi_offset 80, -40
+ 756              		.cfi_offset 81, -36
+ 757              		.cfi_offset 82, -32
+ 758              		.cfi_offset 83, -28
+ 759              		.cfi_offset 84, -24
+ 760              		.cfi_offset 85, -20
+ 761              		.cfi_offset 86, -16
+ 762              		.cfi_offset 87, -12
+ 763 0006 ADF5956D 		sub	sp, sp, #1192
+ 764              	.LCFI30:
+ 765              		.cfi_def_cfa_offset 1232
+ 766 000a 00AF     		add	r7, sp, #0
+ 767              	.LCFI31:
+ 768              		.cfi_def_cfa_register 7
+ 769 000c 07F59563 		add	r3, r7, #1192
+ 770 0010 A3F29C43 		subw	r3, r3, #1180
+ 771 0014 83ED000A 		vstr.32	s0, [r3]
+ 772 0018 07F59563 		add	r3, r7, #1192
+ 773 001c A3F59463 		sub	r3, r3, #1184
+ 774 0020 C3ED000A 		vstr.32	s1, [r3]
+ 775 0024 07F59563 		add	r3, r7, #1192
+ 776 0028 A3F2A443 		subw	r3, r3, #1188
+ 777 002c 83ED001A 		vstr.32	s2, [r3]
+ 131:User/Software/Chassis.c ****     float FL_speed, FR_speed, BL_speed, BR_speed;
+ 132:User/Software/Chassis.c ****     float Fx, Fy, T_w;
+ 133:User/Software/Chassis.c ****     /*逆解轮速*/
+ 134:User/Software/Chassis.c ****     FL_speed = RAD_S_TO_RPM * IK_WHEEL_FL(Vx_speed, Vy_speed, R_speed);
+ 778              		.loc 1 134 31
+ 779 0030 07F59563 		add	r3, r7, #1192
+ 780 0034 A3F59463 		sub	r3, r3, #1184
+ 781 0038 D3ED007A 		vldr.32	s15, [r3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 17
+
+
+ 782 003c 9FEDFC7A 		vldr.32	s14, .L43+24
+ 783 0040 27EE877A 		vmul.f32	s14, s15, s14
+ 784 0044 07F59563 		add	r3, r7, #1192
+ 785 0048 A3F29C43 		subw	r3, r3, #1180
+ 786 004c D3ED007A 		vldr.32	s15, [r3]
+ 787 0050 DFEDF76A 		vldr.32	s13, .L43+24
+ 788 0054 67EEA67A 		vmul.f32	s15, s15, s13
+ 789 0058 77EE277A 		vadd.f32	s15, s14, s15
+ 790 005c B7EEE76A 		vcvt.f64.f32	d6, s15
+ 791 0060 07F59563 		add	r3, r7, #1192
+ 792 0064 A3F2A443 		subw	r3, r3, #1188
+ 793 0068 D3ED007A 		vldr.32	s15, [r3]
+ 794 006c B7EEE77A 		vcvt.f64.f32	d7, s15
+ 795 0070 9FEDE95B 		vldr.64	d5, .L43
+ 796 0074 27EE057B 		vmul.f64	d7, d7, d5
+ 797 0078 36EE076B 		vadd.f64	d6, d6, d7
+ 798 007c 9FEDE85B 		vldr.64	d5, .L43+8
+ 799 0080 86EE057B 		vdiv.f64	d7, d6, d5
+ 800              		.loc 1 134 29
+ 801 0084 9FEDE86B 		vldr.64	d6, .L43+16
+ 802 0088 27EE067B 		vmul.f64	d7, d7, d6
+ 803              		.loc 1 134 14
+ 804 008c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 805 0090 07F59463 		add	r3, r7, #1184
+ 806 0094 C3ED007A 		vstr.32	s15, [r3]
+ 135:User/Software/Chassis.c ****     FR_speed = RAD_S_TO_RPM * IK_WHEEL_FR(Vx_speed, Vy_speed, R_speed);
+ 807              		.loc 1 135 31
+ 808 0098 07F59563 		add	r3, r7, #1192
+ 809 009c A3F59463 		sub	r3, r3, #1184
+ 810 00a0 D3ED007A 		vldr.32	s15, [r3]
+ 811 00a4 9FEDE37A 		vldr.32	s14, .L43+28
+ 812 00a8 27EE877A 		vmul.f32	s14, s15, s14
+ 813 00ac 07F59563 		add	r3, r7, #1192
+ 814 00b0 A3F29C43 		subw	r3, r3, #1180
+ 815 00b4 D3ED007A 		vldr.32	s15, [r3]
+ 816 00b8 DFEDDD6A 		vldr.32	s13, .L43+24
+ 817 00bc 67EEA67A 		vmul.f32	s15, s15, s13
+ 818 00c0 77EE277A 		vadd.f32	s15, s14, s15
+ 819 00c4 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 820 00c8 07F59563 		add	r3, r7, #1192
+ 821 00cc A3F2A443 		subw	r3, r3, #1188
+ 822 00d0 D3ED007A 		vldr.32	s15, [r3]
+ 823 00d4 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 824 00d8 9FEDCF5B 		vldr.64	d5, .L43
+ 825 00dc 27EE057B 		vmul.f64	d7, d7, d5
+ 826 00e0 36EE076B 		vadd.f64	d6, d6, d7
+ 827 00e4 9FEDCE5B 		vldr.64	d5, .L43+8
+ 828 00e8 86EE057B 		vdiv.f64	d7, d6, d5
+ 829              		.loc 1 135 29
+ 830 00ec 9FEDCE6B 		vldr.64	d6, .L43+16
+ 831 00f0 27EE067B 		vmul.f64	d7, d7, d6
+ 832              		.loc 1 135 14
+ 833 00f4 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 834 00f8 07F29C43 		addw	r3, r7, #1180
+ 835 00fc C3ED007A 		vstr.32	s15, [r3]
+ 136:User/Software/Chassis.c ****     BL_speed = RAD_S_TO_RPM * IK_WHEEL_BL(Vx_speed, Vy_speed, R_speed);
+ 836              		.loc 1 136 31
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 18
+
+
+ 837 0100 07F59563 		add	r3, r7, #1192
+ 838 0104 A3F59463 		sub	r3, r3, #1184
+ 839 0108 D3ED007A 		vldr.32	s15, [r3]
+ 840 010c 9FEDC87A 		vldr.32	s14, .L43+24
+ 841 0110 27EE877A 		vmul.f32	s14, s15, s14
+ 842 0114 07F59563 		add	r3, r7, #1192
+ 843 0118 A3F29C43 		subw	r3, r3, #1180
+ 844 011c D3ED007A 		vldr.32	s15, [r3]
+ 845 0120 DFEDC36A 		vldr.32	s13, .L43+24
+ 846 0124 67EEA67A 		vmul.f32	s15, s15, s13
+ 847 0128 77EE677A 		vsub.f32	s15, s14, s15
+ 848 012c B7EEE76A 		vcvt.f64.f32	d6, s15
+ 849 0130 07F59563 		add	r3, r7, #1192
+ 850 0134 A3F2A443 		subw	r3, r3, #1188
+ 851 0138 D3ED007A 		vldr.32	s15, [r3]
+ 852 013c B7EEE77A 		vcvt.f64.f32	d7, s15
+ 853 0140 9FEDB55B 		vldr.64	d5, .L43
+ 854 0144 27EE057B 		vmul.f64	d7, d7, d5
+ 855 0148 36EE076B 		vadd.f64	d6, d6, d7
+ 856 014c 9FEDB45B 		vldr.64	d5, .L43+8
+ 857 0150 86EE057B 		vdiv.f64	d7, d6, d5
+ 858              		.loc 1 136 29
+ 859 0154 9FEDB46B 		vldr.64	d6, .L43+16
+ 860 0158 27EE067B 		vmul.f64	d7, d7, d6
+ 861              		.loc 1 136 14
+ 862 015c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 863 0160 07F59363 		add	r3, r7, #1176
+ 864 0164 C3ED007A 		vstr.32	s15, [r3]
+ 137:User/Software/Chassis.c ****     BR_speed = RAD_S_TO_RPM * IK_WHEEL_BR(Vx_speed, Vy_speed, R_speed);
+ 865              		.loc 1 137 31
+ 866 0168 07F59563 		add	r3, r7, #1192
+ 867 016c A3F59463 		sub	r3, r3, #1184
+ 868 0170 D3ED007A 		vldr.32	s15, [r3]
+ 869 0174 9FEDAF7A 		vldr.32	s14, .L43+28
+ 870 0178 27EE877A 		vmul.f32	s14, s15, s14
+ 871 017c 07F59563 		add	r3, r7, #1192
+ 872 0180 A3F29C43 		subw	r3, r3, #1180
+ 873 0184 D3ED007A 		vldr.32	s15, [r3]
+ 874 0188 DFEDA96A 		vldr.32	s13, .L43+24
+ 875 018c 67EEA67A 		vmul.f32	s15, s15, s13
+ 876 0190 77EE677A 		vsub.f32	s15, s14, s15
+ 877 0194 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 878 0198 07F59563 		add	r3, r7, #1192
+ 879 019c A3F2A443 		subw	r3, r3, #1188
+ 880 01a0 D3ED007A 		vldr.32	s15, [r3]
+ 881 01a4 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 882 01a8 9FED9B5B 		vldr.64	d5, .L43
+ 883 01ac 27EE057B 		vmul.f64	d7, d7, d5
+ 884 01b0 36EE076B 		vadd.f64	d6, d6, d7
+ 885 01b4 9FED9A5B 		vldr.64	d5, .L43+8
+ 886 01b8 86EE057B 		vdiv.f64	d7, d6, d5
+ 887              		.loc 1 137 29
+ 888 01bc 9FED9A6B 		vldr.64	d6, .L43+16
+ 889 01c0 27EE067B 		vmul.f64	d7, d7, d6
+ 890              		.loc 1 137 14
+ 891 01c4 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 892 01c8 07F29443 		addw	r3, r7, #1172
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 19
+
+
+ 893 01cc C3ED007A 		vstr.32	s15, [r3]
+ 138:User/Software/Chassis.c ****     /*正解车速*/
+ 139:User/Software/Chassis.c ****     Vx_now = FK_VX(CHASSISMotor_get_data(WHEEL_FL).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 894              		.loc 1 139 14
+ 895 01d0 07F59563 		add	r3, r7, #1192
+ 896 01d4 A3F59163 		sub	r3, r3, #1160
+ 897 01d8 0021     		movs	r1, #0
+ 898 01da 1846     		mov	r0, r3
+ 899 01dc FFF7FEFF 		bl	DJIMotor_get_data
+ 900              		.loc 1 139 14 is_stmt 0 discriminator 1
+ 901 01e0 07F59563 		add	r3, r7, #1192
+ 902 01e4 A3F59163 		sub	r3, r3, #1160
+ 903 01e8 B3F90630 		ldrsh	r3, [r3, #6]
+ 904 01ec 07EE903A 		vmov	s15, r3	@ int
+ 905 01f0 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 906 01f4 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 907 01f8 C7EE267A 		vdiv.f32	s15, s14, s13
+ 908 01fc 9FED917A 		vldr.32	s14, .L43+44
+ 909 0200 27EE878A 		vmul.f32	s16, s15, s14
+ 910 0204 07F59563 		add	r3, r7, #1192
+ 911 0208 A3F58A63 		sub	r3, r3, #1104
+ 912 020c 0321     		movs	r1, #3
+ 913 020e 1846     		mov	r0, r3
+ 914 0210 FFF7FEFF 		bl	DJIMotor_get_data
+ 915              		.loc 1 139 14 discriminator 2
+ 916 0214 07F59563 		add	r3, r7, #1192
+ 917 0218 A3F58A63 		sub	r3, r3, #1104
+ 918 021c B3F90630 		ldrsh	r3, [r3, #6]
+ 919 0220 07EE903A 		vmov	s15, r3	@ int
+ 920 0224 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 921 0228 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 922 022c C7EE267A 		vdiv.f32	s15, s14, s13
+ 923 0230 9FED847A 		vldr.32	s14, .L43+44
+ 924 0234 67EE877A 		vmul.f32	s15, s15, s14
+ 925 0238 38EE678A 		vsub.f32	s16, s16, s15
+ 926 023c 07F59563 		add	r3, r7, #1192
+ 927 0240 A3F58363 		sub	r3, r3, #1048
+ 928 0244 0121     		movs	r1, #1
+ 929 0246 1846     		mov	r0, r3
+ 930 0248 FFF7FEFF 		bl	DJIMotor_get_data
+ 931              		.loc 1 139 14 discriminator 3
+ 932 024c 07F59563 		add	r3, r7, #1192
+ 933 0250 A3F58363 		sub	r3, r3, #1048
+ 934 0254 B3F90630 		ldrsh	r3, [r3, #6]
+ 935 0258 07EE903A 		vmov	s15, r3	@ int
+ 936 025c B8EEE77A 		vcvt.f32.s32	s14, s15
+ 937 0260 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 938 0264 C7EE267A 		vdiv.f32	s15, s14, s13
+ 939 0268 9FED767A 		vldr.32	s14, .L43+44
+ 940 026c 67EE877A 		vmul.f32	s15, s15, s14
+ 941 0270 38EE278A 		vadd.f32	s16, s16, s15
+ 942 0274 07F59563 		add	r3, r7, #1192
+ 943 0278 A3F57873 		sub	r3, r3, #992
+ 944 027c 0221     		movs	r1, #2
+ 945 027e 1846     		mov	r0, r3
+ 946 0280 FFF7FEFF 		bl	DJIMotor_get_data
+ 947              		.loc 1 139 14 discriminator 4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 20
+
+
+ 948 0284 07F59563 		add	r3, r7, #1192
+ 949 0288 A3F57873 		sub	r3, r3, #992
+ 950 028c B3F90630 		ldrsh	r3, [r3, #6]
+ 951 0290 07EE903A 		vmov	s15, r3	@ int
+ 952 0294 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 953 0298 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 954 029c C7EE267A 		vdiv.f32	s15, s14, s13
+ 955 02a0 9FED687A 		vldr.32	s14, .L43+44
+ 956 02a4 67EE877A 		vmul.f32	s15, s15, s14
+ 957 02a8 78EE677A 		vsub.f32	s15, s16, s15
+ 958 02ac 9FED627A 		vldr.32	s14, .L43+32
+ 959 02b0 67EE877A 		vmul.f32	s15, s15, s14
+ 960 02b4 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 961 02b8 9FED596B 		vldr.64	d6, .L43+8
+ 962 02bc 27EE066B 		vmul.f64	d6, d7, d6
+ 963 02c0 B1EE005B 		vmov.f64	d5, #4.0e+0
+ 964 02c4 86EE057B 		vdiv.f64	d7, d6, d5
+ 965 02c8 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 966              		.loc 1 139 12 is_stmt 1 discriminator 4
+ 967 02cc 5B4B     		ldr	r3, .L43+36
+ 968 02ce C3ED007A 		vstr.32	s15, [r3]
+ 140:User/Software/Chassis.c ****                    CHASSISMotor_get_data(WHEEL_FR).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 141:User/Software/Chassis.c ****                    CHASSISMotor_get_data(WHEEL_BL).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 142:User/Software/Chassis.c ****                    CHASSISMotor_get_data(WHEEL_BR).speed_rpm / 14.0f * RPM_TO_RAD_S);
+ 143:User/Software/Chassis.c ****     Vy_now = FK_VY(CHASSISMotor_get_data(WHEEL_FL).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 969              		.loc 1 143 14
+ 970 02d2 07F59563 		add	r3, r7, #1192
+ 971 02d6 A3F56A73 		sub	r3, r3, #936
+ 972 02da 0121     		movs	r1, #1
+ 973 02dc 1846     		mov	r0, r3
+ 974 02de FFF7FEFF 		bl	DJIMotor_get_data
+ 975              		.loc 1 143 14 is_stmt 0 discriminator 1
+ 976 02e2 07F59563 		add	r3, r7, #1192
+ 977 02e6 A3F56A73 		sub	r3, r3, #936
+ 978 02ea B3F90630 		ldrsh	r3, [r3, #6]
+ 979 02ee 07EE903A 		vmov	s15, r3	@ int
+ 980 02f2 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 981 02f6 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 982 02fa C7EE267A 		vdiv.f32	s15, s14, s13
+ 983 02fe 9FED517A 		vldr.32	s14, .L43+44
+ 984 0302 27EE878A 		vmul.f32	s16, s15, s14
+ 985 0306 07F59563 		add	r3, r7, #1192
+ 986 030a A3F55C73 		sub	r3, r3, #880
+ 987 030e 0321     		movs	r1, #3
+ 988 0310 1846     		mov	r0, r3
+ 989 0312 FFF7FEFF 		bl	DJIMotor_get_data
+ 990              		.loc 1 143 14 discriminator 2
+ 991 0316 07F59563 		add	r3, r7, #1192
+ 992 031a A3F55C73 		sub	r3, r3, #880
+ 993 031e B3F90630 		ldrsh	r3, [r3, #6]
+ 994 0322 07EE903A 		vmov	s15, r3	@ int
+ 995 0326 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 996 032a F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 997 032e C7EE267A 		vdiv.f32	s15, s14, s13
+ 998 0332 9FED447A 		vldr.32	s14, .L43+44
+ 999 0336 67EE877A 		vmul.f32	s15, s15, s14
+ 1000 033a 38EE678A 		vsub.f32	s16, s16, s15
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 21
+
+
+ 1001 033e 07F59563 		add	r3, r7, #1192
+ 1002 0342 A3F54E73 		sub	r3, r3, #824
+ 1003 0346 0021     		movs	r1, #0
+ 1004 0348 1846     		mov	r0, r3
+ 1005 034a FFF7FEFF 		bl	DJIMotor_get_data
+ 1006              		.loc 1 143 14 discriminator 3
+ 1007 034e 07F59563 		add	r3, r7, #1192
+ 1008 0352 A3F54E73 		sub	r3, r3, #824
+ 1009 0356 B3F90630 		ldrsh	r3, [r3, #6]
+ 1010 035a 07EE903A 		vmov	s15, r3	@ int
+ 1011 035e B8EEE77A 		vcvt.f32.s32	s14, s15
+ 1012 0362 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1013 0366 C7EE267A 		vdiv.f32	s15, s14, s13
+ 1014 036a 9FED367A 		vldr.32	s14, .L43+44
+ 1015 036e 67EE877A 		vmul.f32	s15, s15, s14
+ 1016 0372 38EE678A 		vsub.f32	s16, s16, s15
+ 1017 0376 07F59563 		add	r3, r7, #1192
+ 1018 037a A3F54073 		sub	r3, r3, #768
+ 1019 037e 0221     		movs	r1, #2
+ 1020 0380 1846     		mov	r0, r3
+ 1021 0382 FFF7FEFF 		bl	DJIMotor_get_data
+ 1022              		.loc 1 143 14 discriminator 4
+ 1023 0386 07F59563 		add	r3, r7, #1192
+ 1024 038a A3F54073 		sub	r3, r3, #768
+ 1025 038e B3F90630 		ldrsh	r3, [r3, #6]
+ 1026 0392 07EE903A 		vmov	s15, r3	@ int
+ 1027 0396 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 1028 039a F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1029 039e C7EE267A 		vdiv.f32	s15, s14, s13
+ 1030 03a2 9FED287A 		vldr.32	s14, .L43+44
+ 1031 03a6 67EE877A 		vmul.f32	s15, s15, s14
+ 1032 03aa 78EE277A 		vadd.f32	s15, s16, s15
+ 1033 03ae 9FED227A 		vldr.32	s14, .L43+32
+ 1034 03b2 67EE877A 		vmul.f32	s15, s15, s14
+ 1035 03b6 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 1036 03ba 9FED196B 		vldr.64	d6, .L43+8
+ 1037 03be 27EE066B 		vmul.f64	d6, d7, d6
+ 1038 03c2 B1EE005B 		vmov.f64	d5, #4.0e+0
+ 1039 03c6 86EE057B 		vdiv.f64	d7, d6, d5
+ 1040 03ca F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1041              		.loc 1 143 12 is_stmt 1 discriminator 4
+ 1042 03ce 1C4B     		ldr	r3, .L43+40
+ 1043 03d0 C3ED007A 		vstr.32	s15, [r3]
+ 144:User/Software/Chassis.c ****                    CHASSISMotor_get_data(WHEEL_FR).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 145:User/Software/Chassis.c ****                    CHASSISMotor_get_data(WHEEL_BL).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 146:User/Software/Chassis.c ****                    CHASSISMotor_get_data(WHEEL_BR).speed_rpm / 14.0f * RPM_TO_RAD_S);
+ 147:User/Software/Chassis.c ****     W_now = FK_OMEGA(CHASSISMotor_get_data(WHEEL_FL).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 1044              		.loc 1 147 13
+ 1045 03d4 07F59563 		add	r3, r7, #1192
+ 1046 03d8 A3F53273 		sub	r3, r3, #712
+ 1047 03dc 0121     		movs	r1, #1
+ 1048 03de 1846     		mov	r0, r3
+ 1049 03e0 FFF7FEFF 		bl	DJIMotor_get_data
+ 1050              		.loc 1 147 13 is_stmt 0 discriminator 1
+ 1051 03e4 07F59563 		add	r3, r7, #1192
+ 1052 03e8 A3F53273 		sub	r3, r3, #712
+ 1053 03ec B3F90630 		ldrsh	r3, [r3, #6]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 22
+
+
+ 1054 03f0 07EE903A 		vmov	s15, r3	@ int
+ 1055 03f4 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 1056 03f8 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1057 03fc C7EE267A 		vdiv.f32	s15, s14, s13
+ 1058 0400 9FED107A 		vldr.32	s14, .L43+44
+ 1059 0404 27EE878A 		vmul.f32	s16, s15, s14
+ 1060 0408 07F59563 		add	r3, r7, #1192
+ 1061 040c A3F52473 		sub	r3, r3, #656
+ 1062 0410 0021     		movs	r1, #0
+ 1063 0412 1846     		mov	r0, r3
+ 1064 0414 18E0     		b	.L44
+ 1065              	.L45:
+ 1066 0416 00BF     		.align	3
+ 1067              	.L43:
+ 1068 0418 46B6F3FD 		.word	-34359738
+ 1069 041c D478D13F 		.word	1070692564
+ 1070 0420 83C0CAA1 		.word	-1580547965
+ 1071 0424 45B6B33F 		.word	1068742213
+ 1072 0428 00000080 		.word	-2147483648
+ 1073 042c 3D192340 		.word	1076042045
+ 1074 0430 F304353F 		.word	1060439283
+ 1075 0434 F30435BF 		.word	-1087044365
+ 1076 0438 F304B53F 		.word	1068827891
+ 1077 043c 00000000 		.word	Vx_now
+ 1078 0440 00000000 		.word	Vy_now
+ 1079 0444 4F77D63D 		.word	1037465423
+ 1080              	.L44:
+ 1081 0448 FFF7FEFF 		bl	DJIMotor_get_data
+ 1082              		.loc 1 147 13 discriminator 2
+ 1083 044c 07F59563 		add	r3, r7, #1192
+ 1084 0450 A3F52473 		sub	r3, r3, #656
+ 1085 0454 B3F90630 		ldrsh	r3, [r3, #6]
+ 1086 0458 07EE903A 		vmov	s15, r3	@ int
+ 1087 045c B8EEE77A 		vcvt.f32.s32	s14, s15
+ 1088 0460 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1089 0464 C7EE267A 		vdiv.f32	s15, s14, s13
+ 1090 0468 1FED0A7A 		vldr.32	s14, .L43+44
+ 1091 046c 67EE877A 		vmul.f32	s15, s15, s14
+ 1092 0470 38EE278A 		vadd.f32	s16, s16, s15
+ 1093 0474 07F59563 		add	r3, r7, #1192
+ 1094 0478 A3F51673 		sub	r3, r3, #600
+ 1095 047c 0221     		movs	r1, #2
+ 1096 047e 1846     		mov	r0, r3
+ 1097 0480 FFF7FEFF 		bl	DJIMotor_get_data
+ 1098              		.loc 1 147 13 discriminator 3
+ 1099 0484 07F59563 		add	r3, r7, #1192
+ 1100 0488 A3F51673 		sub	r3, r3, #600
+ 1101 048c B3F90630 		ldrsh	r3, [r3, #6]
+ 1102 0490 07EE903A 		vmov	s15, r3	@ int
+ 1103 0494 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 1104 0498 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1105 049c C7EE267A 		vdiv.f32	s15, s14, s13
+ 1106 04a0 1FED187A 		vldr.32	s14, .L43+44
+ 1107 04a4 67EE877A 		vmul.f32	s15, s15, s14
+ 1108 04a8 38EE278A 		vadd.f32	s16, s16, s15
+ 1109 04ac 07F59563 		add	r3, r7, #1192
+ 1110 04b0 A3F50873 		sub	r3, r3, #544
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 23
+
+
+ 1111 04b4 0321     		movs	r1, #3
+ 1112 04b6 1846     		mov	r0, r3
+ 1113 04b8 FFF7FEFF 		bl	DJIMotor_get_data
+ 1114              		.loc 1 147 13 discriminator 4
+ 1115 04bc 07F59563 		add	r3, r7, #1192
+ 1116 04c0 A3F50873 		sub	r3, r3, #544
+ 1117 04c4 B3F90630 		ldrsh	r3, [r3, #6]
+ 1118 04c8 07EE903A 		vmov	s15, r3	@ int
+ 1119 04cc B8EEE77A 		vcvt.f32.s32	s14, s15
+ 1120 04d0 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1121 04d4 C7EE267A 		vdiv.f32	s15, s14, s13
+ 1122 04d8 1FED267A 		vldr.32	s14, .L43+44
+ 1123 04dc 67EE877A 		vmul.f32	s15, s15, s14
+ 1124 04e0 78EE277A 		vadd.f32	s15, s16, s15
+ 1125 04e4 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 1126 04e8 9FEDEF6B 		vldr.64	d6, .L46
+ 1127 04ec 27EE066B 		vmul.f64	d6, d7, d6
+ 1128 04f0 9FEDEF5B 		vldr.64	d5, .L46+8
+ 1129 04f4 86EE057B 		vdiv.f64	d7, d6, d5
+ 1130 04f8 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1131              		.loc 1 147 11 is_stmt 1 discriminator 4
+ 1132 04fc F44B     		ldr	r3, .L46+40
+ 1133 04fe C3ED007A 		vstr.32	s15, [r3]
+ 148:User/Software/Chassis.c ****                      CHASSISMotor_get_data(WHEEL_FR).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 149:User/Software/Chassis.c ****                      CHASSISMotor_get_data(WHEEL_BL).speed_rpm / 14.0f * RPM_TO_RAD_S,
+ 150:User/Software/Chassis.c ****                      CHASSISMotor_get_data(WHEEL_BR).speed_rpm / 14.0f * RPM_TO_RAD_S);
+ 151:User/Software/Chassis.c ****     /*PID计算得出前馈力矩*/
+ 152:User/Software/Chassis.c ****     Fx = pid_cal(&chassis_T_pid_x, Vx_now, Vx_speed);
+ 1134              		.loc 1 152 10
+ 1135 0502 F44B     		ldr	r3, .L46+44
+ 1136 0504 D3ED007A 		vldr.32	s15, [r3]
+ 1137 0508 07F59563 		add	r3, r7, #1192
+ 1138 050c A3F29C43 		subw	r3, r3, #1180
+ 1139 0510 D3ED000A 		vldr.32	s1, [r3]
+ 1140 0514 B0EE670A 		vmov.f32	s0, s15
+ 1141 0518 EF48     		ldr	r0, .L46+48
+ 1142 051a FFF7FEFF 		bl	pid_cal
+ 1143 051e 07F59263 		add	r3, r7, #1168
+ 1144 0522 83ED000A 		vstr.32	s0, [r3]
+ 153:User/Software/Chassis.c ****     Fy = pid_cal(&chassis_T_pid_y, Vy_now, Vy_speed);
+ 1145              		.loc 1 153 10
+ 1146 0526 ED4B     		ldr	r3, .L46+52
+ 1147 0528 D3ED007A 		vldr.32	s15, [r3]
+ 1148 052c 07F59563 		add	r3, r7, #1192
+ 1149 0530 A3F59463 		sub	r3, r3, #1184
+ 1150 0534 D3ED000A 		vldr.32	s1, [r3]
+ 1151 0538 B0EE670A 		vmov.f32	s0, s15
+ 1152 053c E848     		ldr	r0, .L46+56
+ 1153 053e FFF7FEFF 		bl	pid_cal
+ 1154 0542 07F28C43 		addw	r3, r7, #1164
+ 1155 0546 83ED000A 		vstr.32	s0, [r3]
+ 154:User/Software/Chassis.c ****     T_w = pid_cal(&chassis_T_pid_w, W_now, R_speed);
+ 1156              		.loc 1 154 11
+ 1157 054a E14B     		ldr	r3, .L46+40
+ 1158 054c D3ED007A 		vldr.32	s15, [r3]
+ 1159 0550 07F59563 		add	r3, r7, #1192
+ 1160 0554 A3F2A443 		subw	r3, r3, #1188
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 24
+
+
+ 1161 0558 D3ED000A 		vldr.32	s1, [r3]
+ 1162 055c B0EE670A 		vmov.f32	s0, s15
+ 1163 0560 E048     		ldr	r0, .L46+60
+ 1164 0562 FFF7FEFF 		bl	pid_cal
+ 1165 0566 07F59163 		add	r3, r7, #1160
+ 1166 056a 83ED000A 		vstr.32	s0, [r3]
+ 155:User/Software/Chassis.c ****     T_FR = IK_WHEEL_FR_T(Fx, Fy, T_w) / CHASSISMOTOR_T_A * CHASSISMOTOR_MAX_CURRENT / 20.0f;
+ 1167              		.loc 1 155 12
+ 1168 056e 07F28C43 		addw	r3, r7, #1164
+ 1169 0572 D3ED007A 		vldr.32	s15, [r3]
+ 1170 0576 9FEDDC7A 		vldr.32	s14, .L46+64
+ 1171 057a 27EE877A 		vmul.f32	s14, s15, s14
+ 1172 057e 07F59263 		add	r3, r7, #1168
+ 1173 0582 D3ED007A 		vldr.32	s15, [r3]
+ 1174 0586 DFEDD96A 		vldr.32	s13, .L46+68
+ 1175 058a 67EEA67A 		vmul.f32	s15, s15, s13
+ 1176 058e 77EE277A 		vadd.f32	s15, s14, s15
+ 1177 0592 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 1178 0596 07F59163 		add	r3, r7, #1160
+ 1179 059a 93ED007A 		vldr.32	s14, [r3]
+ 1180 059e F1EE005A 		vmov.f32	s11, #4.0e+0
+ 1181 05a2 C7EE257A 		vdiv.f32	s15, s14, s11
+ 1182 05a6 B7EEE75A 		vcvt.f64.f32	d5, s15
+ 1183 05aa 9FEDC34B 		vldr.64	d4, .L46+16
+ 1184 05ae 85EE047B 		vdiv.f64	d7, d5, d4
+ 1185 05b2 36EE077B 		vadd.f64	d7, d6, d7
+ 1186 05b6 9FEDBC6B 		vldr.64	d6, .L46
+ 1187 05ba 27EE066B 		vmul.f64	d6, d7, d6
+ 1188              		.loc 1 155 39
+ 1189 05be 9FEDC05B 		vldr.64	d5, .L46+24
+ 1190 05c2 86EE057B 		vdiv.f64	d7, d6, d5
+ 1191              		.loc 1 155 58
+ 1192 05c6 9FEDC06B 		vldr.64	d6, .L46+32
+ 1193 05ca 27EE066B 		vmul.f64	d6, d7, d6
+ 1194              		.loc 1 155 85
+ 1195 05ce B3EE045B 		vmov.f64	d5, #2.0e+1
+ 1196 05d2 86EE057B 		vdiv.f64	d7, d6, d5
+ 1197 05d6 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1198              		.loc 1 155 10
+ 1199 05da C54B     		ldr	r3, .L46+72
+ 1200 05dc C3ED007A 		vstr.32	s15, [r3]
+ 156:User/Software/Chassis.c ****     T_FL = IK_WHEEL_FL_T(Fx, Fy, T_w) / CHASSISMOTOR_T_A * CHASSISMOTOR_MAX_CURRENT / 20.0f;
+ 1201              		.loc 1 156 12
+ 1202 05e0 07F28C43 		addw	r3, r7, #1164
+ 1203 05e4 D3ED007A 		vldr.32	s15, [r3]
+ 1204 05e8 9FEDC07A 		vldr.32	s14, .L46+68
+ 1205 05ec 27EE877A 		vmul.f32	s14, s15, s14
+ 1206 05f0 07F59263 		add	r3, r7, #1168
+ 1207 05f4 D3ED007A 		vldr.32	s15, [r3]
+ 1208 05f8 DFEDBC6A 		vldr.32	s13, .L46+68
+ 1209 05fc 67EEA67A 		vmul.f32	s15, s15, s13
+ 1210 0600 77EE277A 		vadd.f32	s15, s14, s15
+ 1211 0604 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 1212 0608 07F59163 		add	r3, r7, #1160
+ 1213 060c 93ED007A 		vldr.32	s14, [r3]
+ 1214 0610 F1EE005A 		vmov.f32	s11, #4.0e+0
+ 1215 0614 C7EE257A 		vdiv.f32	s15, s14, s11
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 25
+
+
+ 1216 0618 B7EEE75A 		vcvt.f64.f32	d5, s15
+ 1217 061c 9FEDA64B 		vldr.64	d4, .L46+16
+ 1218 0620 85EE047B 		vdiv.f64	d7, d5, d4
+ 1219 0624 36EE077B 		vadd.f64	d7, d6, d7
+ 1220 0628 9FED9F6B 		vldr.64	d6, .L46
+ 1221 062c 27EE066B 		vmul.f64	d6, d7, d6
+ 1222              		.loc 1 156 39
+ 1223 0630 9FEDA35B 		vldr.64	d5, .L46+24
+ 1224 0634 86EE057B 		vdiv.f64	d7, d6, d5
+ 1225              		.loc 1 156 58
+ 1226 0638 9FEDA36B 		vldr.64	d6, .L46+32
+ 1227 063c 27EE066B 		vmul.f64	d6, d7, d6
+ 1228              		.loc 1 156 85
+ 1229 0640 B3EE045B 		vmov.f64	d5, #2.0e+1
+ 1230 0644 86EE057B 		vdiv.f64	d7, d6, d5
+ 1231 0648 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1232              		.loc 1 156 10
+ 1233 064c A94B     		ldr	r3, .L46+76
+ 1234 064e C3ED007A 		vstr.32	s15, [r3]
+ 157:User/Software/Chassis.c ****     T_BR = IK_WHEEL_BR_T(Fx, Fy, T_w) / CHASSISMOTOR_T_A * CHASSISMOTOR_MAX_CURRENT / 20.0f;
+ 1235              		.loc 1 157 12
+ 1236 0652 07F28C43 		addw	r3, r7, #1164
+ 1237 0656 D3ED007A 		vldr.32	s15, [r3]
+ 1238 065a 9FEDA37A 		vldr.32	s14, .L46+64
+ 1239 065e 27EE877A 		vmul.f32	s14, s15, s14
+ 1240 0662 07F59263 		add	r3, r7, #1168
+ 1241 0666 D3ED007A 		vldr.32	s15, [r3]
+ 1242 066a DFEDA06A 		vldr.32	s13, .L46+68
+ 1243 066e 67EEA67A 		vmul.f32	s15, s15, s13
+ 1244 0672 77EE677A 		vsub.f32	s15, s14, s15
+ 1245 0676 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 1246 067a 07F59163 		add	r3, r7, #1160
+ 1247 067e 93ED007A 		vldr.32	s14, [r3]
+ 1248 0682 F1EE005A 		vmov.f32	s11, #4.0e+0
+ 1249 0686 C7EE257A 		vdiv.f32	s15, s14, s11
+ 1250 068a B7EEE75A 		vcvt.f64.f32	d5, s15
+ 1251 068e 9FED8A4B 		vldr.64	d4, .L46+16
+ 1252 0692 85EE047B 		vdiv.f64	d7, d5, d4
+ 1253 0696 36EE077B 		vadd.f64	d7, d6, d7
+ 1254 069a 9FED836B 		vldr.64	d6, .L46
+ 1255 069e 27EE066B 		vmul.f64	d6, d7, d6
+ 1256              		.loc 1 157 39
+ 1257 06a2 9FED875B 		vldr.64	d5, .L46+24
+ 1258 06a6 86EE057B 		vdiv.f64	d7, d6, d5
+ 1259              		.loc 1 157 58
+ 1260 06aa 9FED876B 		vldr.64	d6, .L46+32
+ 1261 06ae 27EE066B 		vmul.f64	d6, d7, d6
+ 1262              		.loc 1 157 85
+ 1263 06b2 B3EE045B 		vmov.f64	d5, #2.0e+1
+ 1264 06b6 86EE057B 		vdiv.f64	d7, d6, d5
+ 1265 06ba F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1266              		.loc 1 157 10
+ 1267 06be 8E4B     		ldr	r3, .L46+80
+ 1268 06c0 C3ED007A 		vstr.32	s15, [r3]
+ 158:User/Software/Chassis.c ****     T_BL = IK_WHEEL_BL_T(Fx, Fy, T_w) / CHASSISMOTOR_T_A * CHASSISMOTOR_MAX_CURRENT / 20.0f;
+ 1269              		.loc 1 158 12
+ 1270 06c4 07F28C43 		addw	r3, r7, #1164
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 26
+
+
+ 1271 06c8 D3ED007A 		vldr.32	s15, [r3]
+ 1272 06cc 9FED877A 		vldr.32	s14, .L46+68
+ 1273 06d0 27EE877A 		vmul.f32	s14, s15, s14
+ 1274 06d4 07F59263 		add	r3, r7, #1168
+ 1275 06d8 D3ED007A 		vldr.32	s15, [r3]
+ 1276 06dc DFED836A 		vldr.32	s13, .L46+68
+ 1277 06e0 67EEA67A 		vmul.f32	s15, s15, s13
+ 1278 06e4 77EE677A 		vsub.f32	s15, s14, s15
+ 1279 06e8 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 1280 06ec 07F59163 		add	r3, r7, #1160
+ 1281 06f0 93ED007A 		vldr.32	s14, [r3]
+ 1282 06f4 F1EE005A 		vmov.f32	s11, #4.0e+0
+ 1283 06f8 C7EE257A 		vdiv.f32	s15, s14, s11
+ 1284 06fc B7EEE75A 		vcvt.f64.f32	d5, s15
+ 1285 0700 9FED6D4B 		vldr.64	d4, .L46+16
+ 1286 0704 85EE047B 		vdiv.f64	d7, d5, d4
+ 1287 0708 36EE077B 		vadd.f64	d7, d6, d7
+ 1288 070c 9FED666B 		vldr.64	d6, .L46
+ 1289 0710 27EE066B 		vmul.f64	d6, d7, d6
+ 1290              		.loc 1 158 39
+ 1291 0714 9FED6A5B 		vldr.64	d5, .L46+24
+ 1292 0718 86EE057B 		vdiv.f64	d7, d6, d5
+ 1293              		.loc 1 158 58
+ 1294 071c 9FED6A6B 		vldr.64	d6, .L46+32
+ 1295 0720 27EE066B 		vmul.f64	d6, d7, d6
+ 1296              		.loc 1 158 85
+ 1297 0724 B3EE045B 		vmov.f64	d5, #2.0e+1
+ 1298 0728 86EE057B 		vdiv.f64	d7, d6, d5
+ 1299 072c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1300              		.loc 1 158 10
+ 1301 0730 724B     		ldr	r3, .L46+84
+ 1302 0732 C3ED007A 		vstr.32	s15, [r3]
+ 159:User/Software/Chassis.c ****     float Plimit = 0.0f;
+ 1303              		.loc 1 159 11
+ 1304 0736 4FF00003 		mov	r3, #0
+ 1305 073a 07F28442 		addw	r2, r7, #1156
+ 1306 073e 1360     		str	r3, [r2]	@ float
+ 160:User/Software/Chassis.c **** 
+ 161:User/Software/Chassis.c ****     /*电流计算*/
+ 162:User/Software/Chassis.c ****     float current[4] = {T_FL + pid_cal(&chassis_speed_pid_FL, CHASSISMotor_get_data(WHEEL_FL).speed
+ 1307              		.loc 1 162 63
+ 1308 0740 07F59563 		add	r3, r7, #1192
+ 1309 0744 A3F5F473 		sub	r3, r3, #488
+ 1310 0748 0121     		movs	r1, #1
+ 1311 074a 1846     		mov	r0, r3
+ 1312 074c FFF7FEFF 		bl	DJIMotor_get_data
+ 1313              		.loc 1 162 94 discriminator 1
+ 1314 0750 07F59563 		add	r3, r7, #1192
+ 1315 0754 A3F5F473 		sub	r3, r3, #488
+ 1316 0758 B3F90630 		ldrsh	r3, [r3, #6]
+ 1317              		.loc 1 162 32 discriminator 1
+ 1318 075c 07EE903A 		vmov	s15, r3	@ int
+ 1319 0760 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 1320 0764 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1321 0768 87EEA67A 		vdiv.f32	s14, s15, s13
+ 1322 076c 07F59463 		add	r3, r7, #1184
+ 1323 0770 D3ED000A 		vldr.32	s1, [r3]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 27
+
+
+ 1324 0774 B0EE470A 		vmov.f32	s0, s14
+ 1325 0778 6148     		ldr	r0, .L46+88
+ 1326 077a FFF7FEFF 		bl	pid_cal
+ 1327 077e B0EE407A 		vmov.f32	s14, s0
+ 1328              		.loc 1 162 30 discriminator 2
+ 1329 0782 5C4B     		ldr	r3, .L46+76
+ 1330 0784 D3ED007A 		vldr.32	s15, [r3]
+ 1331 0788 77EE277A 		vadd.f32	s15, s14, s15
+ 1332              		.loc 1 162 11 discriminator 2
+ 1333 078c 07F59563 		add	r3, r7, #1192
+ 1334 0790 A3F59363 		sub	r3, r3, #1176
+ 1335 0794 C3ED007A 		vstr.32	s15, [r3]
+ 163:User/Software/Chassis.c ****                         T_FR + pid_cal(&chassis_speed_pid_FR, CHASSISMotor_get_data(WHEEL_FR).speed
+ 1336              		.loc 1 163 63
+ 1337 0798 07F59563 		add	r3, r7, #1192
+ 1338 079c A3F5D873 		sub	r3, r3, #432
+ 1339 07a0 0021     		movs	r1, #0
+ 1340 07a2 1846     		mov	r0, r3
+ 1341 07a4 FFF7FEFF 		bl	DJIMotor_get_data
+ 1342              		.loc 1 163 94 discriminator 1
+ 1343 07a8 07F59563 		add	r3, r7, #1192
+ 1344 07ac A3F5D873 		sub	r3, r3, #432
+ 1345 07b0 B3F90630 		ldrsh	r3, [r3, #6]
+ 1346              		.loc 1 163 32 discriminator 1
+ 1347 07b4 07EE903A 		vmov	s15, r3	@ int
+ 1348 07b8 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 1349 07bc F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1350 07c0 87EEA67A 		vdiv.f32	s14, s15, s13
+ 1351 07c4 07F29C43 		addw	r3, r7, #1180
+ 1352 07c8 D3ED000A 		vldr.32	s1, [r3]
+ 1353 07cc B0EE470A 		vmov.f32	s0, s14
+ 1354 07d0 4C48     		ldr	r0, .L46+92
+ 1355 07d2 FFF7FEFF 		bl	pid_cal
+ 1356 07d6 B0EE407A 		vmov.f32	s14, s0
+ 1357              		.loc 1 163 30 discriminator 2
+ 1358 07da 454B     		ldr	r3, .L46+72
+ 1359 07dc D3ED007A 		vldr.32	s15, [r3]
+ 1360 07e0 77EE277A 		vadd.f32	s15, s14, s15
+ 162:User/Software/Chassis.c ****                         T_FR + pid_cal(&chassis_speed_pid_FR, CHASSISMotor_get_data(WHEEL_FR).speed
+ 1361              		.loc 1 162 11
+ 1362 07e4 07F59563 		add	r3, r7, #1192
+ 1363 07e8 A3F59363 		sub	r3, r3, #1176
+ 1364 07ec C3ED017A 		vstr.32	s15, [r3, #4]
+ 164:User/Software/Chassis.c ****                         T_BL + pid_cal(&chassis_speed_pid_BL, CHASSISMotor_get_data(WHEEL_BL).speed
+ 1365              		.loc 1 164 63
+ 1366 07f0 07F59563 		add	r3, r7, #1192
+ 1367 07f4 A3F5BC73 		sub	r3, r3, #376
+ 1368 07f8 0221     		movs	r1, #2
+ 1369 07fa 1846     		mov	r0, r3
+ 1370 07fc FFF7FEFF 		bl	DJIMotor_get_data
+ 1371              		.loc 1 164 94 discriminator 1
+ 1372 0800 07F59563 		add	r3, r7, #1192
+ 1373 0804 A3F5BC73 		sub	r3, r3, #376
+ 1374 0808 B3F90630 		ldrsh	r3, [r3, #6]
+ 1375              		.loc 1 164 32 discriminator 1
+ 1376 080c 07EE903A 		vmov	s15, r3	@ int
+ 1377 0810 F8EEE77A 		vcvt.f32.s32	s15, s15
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 28
+
+
+ 1378 0814 F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1379 0818 87EEA67A 		vdiv.f32	s14, s15, s13
+ 1380 081c 07F59363 		add	r3, r7, #1176
+ 1381 0820 D3ED000A 		vldr.32	s1, [r3]
+ 1382 0824 B0EE470A 		vmov.f32	s0, s14
+ 1383 0828 3748     		ldr	r0, .L46+96
+ 1384 082a FFF7FEFF 		bl	pid_cal
+ 1385 082e B0EE407A 		vmov.f32	s14, s0
+ 1386              		.loc 1 164 30 discriminator 2
+ 1387 0832 324B     		ldr	r3, .L46+84
+ 1388 0834 D3ED007A 		vldr.32	s15, [r3]
+ 1389 0838 77EE277A 		vadd.f32	s15, s14, s15
+ 162:User/Software/Chassis.c ****                         T_FR + pid_cal(&chassis_speed_pid_FR, CHASSISMotor_get_data(WHEEL_FR).speed
+ 1390              		.loc 1 162 11
+ 1391 083c 07F59563 		add	r3, r7, #1192
+ 1392 0840 A3F59363 		sub	r3, r3, #1176
+ 1393 0844 C3ED027A 		vstr.32	s15, [r3, #8]
+ 165:User/Software/Chassis.c ****                         T_BR + pid_cal(&chassis_speed_pid_BR, CHASSISMotor_get_data(WHEEL_BR).speed
+ 1394              		.loc 1 165 63
+ 1395 0848 07F59563 		add	r3, r7, #1192
+ 1396 084c A3F5A073 		sub	r3, r3, #320
+ 1397 0850 0321     		movs	r1, #3
+ 1398 0852 1846     		mov	r0, r3
+ 1399 0854 FFF7FEFF 		bl	DJIMotor_get_data
+ 1400              		.loc 1 165 94 discriminator 1
+ 1401 0858 07F59563 		add	r3, r7, #1192
+ 1402 085c A3F5A073 		sub	r3, r3, #320
+ 1403 0860 B3F90630 		ldrsh	r3, [r3, #6]
+ 1404              		.loc 1 165 32 discriminator 1
+ 1405 0864 07EE903A 		vmov	s15, r3	@ int
+ 1406 0868 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 1407 086c F2EE0C6A 		vmov.f32	s13, #1.4e+1
+ 1408 0870 87EEA67A 		vdiv.f32	s14, s15, s13
+ 1409 0874 07F29443 		addw	r3, r7, #1172
+ 1410 0878 D3ED000A 		vldr.32	s1, [r3]
+ 1411 087c B0EE470A 		vmov.f32	s0, s14
+ 1412 0880 2248     		ldr	r0, .L46+100
+ 1413 0882 FFF7FEFF 		bl	pid_cal
+ 1414 0886 B0EE407A 		vmov.f32	s14, s0
+ 1415              		.loc 1 165 30 discriminator 2
+ 1416 088a 1B4B     		ldr	r3, .L46+80
+ 1417 088c D3ED007A 		vldr.32	s15, [r3]
+ 1418 0890 77EE277A 		vadd.f32	s15, s14, s15
+ 162:User/Software/Chassis.c ****                         T_FR + pid_cal(&chassis_speed_pid_FR, CHASSISMotor_get_data(WHEEL_FR).speed
+ 1419              		.loc 1 162 11
+ 1420 0894 07F59563 		add	r3, r7, #1192
+ 1421 0898 A3F59363 		sub	r3, r3, #1176
+ 1422 089c C3ED037A 		vstr.32	s15, [r3, #12]
+ 1423 08a0 38E0     		b	.L47
+ 1424              	.L48:
+ 1425 08a2 00BFAFF3 		.align	3
+ 1425      0080
+ 1426              	.L46:
+ 1427 08a8 83C0CAA1 		.word	-1580547965
+ 1428 08ac 45B6B33F 		.word	1068742213
+ 1429 08b0 46B6F3FD 		.word	-34359738
+ 1430 08b4 D478F13F 		.word	1072789716
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 29
+
+
+ 1431 08b8 46B6F3FD 		.word	-34359738
+ 1432 08bc D478D13F 		.word	1070692564
+ 1433 08c0 33333333 		.word	858993459
+ 1434 08c4 3333D33F 		.word	1070805811
+ 1435 08c8 00000000 		.word	0
+ 1436 08cc 0000D040 		.word	1087373312
+ 1437 08d0 00000000 		.word	W_now
+ 1438 08d4 00000000 		.word	Vx_now
+ 1439 08d8 00000000 		.word	chassis_T_pid_x
+ 1440 08dc 00000000 		.word	Vy_now
+ 1441 08e0 00000000 		.word	chassis_T_pid_y
+ 1442 08e4 00000000 		.word	chassis_T_pid_w
+ 1443 08e8 F304B5BF 		.word	-1078655757
+ 1444 08ec F304B53F 		.word	1068827891
+ 1445 08f0 00000000 		.word	T_FR
+ 1446 08f4 00000000 		.word	T_FL
+ 1447 08f8 00000000 		.word	T_BR
+ 1448 08fc 00000000 		.word	T_BL
+ 1449 0900 00000000 		.word	chassis_speed_pid_FL
+ 1450 0904 00000000 		.word	chassis_speed_pid_FR
+ 1451 0908 00000000 		.word	chassis_speed_pid_BL
+ 1452 090c 00000000 		.word	chassis_speed_pid_BR
+ 1453 0910 00FC7F46 		.word	1182792704
+ 1454              	.L47:
+ 1455              	.LBB3:
+ 166:User/Software/Chassis.c ****     for (int i = 0; i < 4; i++)
+ 1456              		.loc 1 166 14
+ 1457 0914 0023     		movs	r3, #0
+ 1458 0916 C7F8A434 		str	r3, [r7, #1188]
+ 1459              		.loc 1 166 5
+ 1460 091a 3AE0     		b	.L35
+ 1461              	.L40:
+ 167:User/Software/Chassis.c ****     {
+ 168:User/Software/Chassis.c ****         if (current[i] >= (CHASSISMOTOR_MAX_CURRENT - 1))
+ 1462              		.loc 1 168 20
+ 1463 091c 07F59563 		add	r3, r7, #1192
+ 1464 0920 A3F59362 		sub	r2, r3, #1176
+ 1465 0924 D7F8A434 		ldr	r3, [r7, #1188]
+ 1466 0928 9B00     		lsls	r3, r3, #2
+ 1467 092a 1344     		add	r3, r3, r2
+ 1468 092c D3ED007A 		vldr.32	s15, [r3]
+ 1469              		.loc 1 168 12
+ 1470 0930 1FED097A 		vldr.32	s14, .L46+104
+ 1471 0934 F4EEC77A 		vcmpe.f32	s15, s14
+ 1472 0938 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1473 093c 09DB     		blt	.L36
+ 169:User/Software/Chassis.c ****             current[i] = CHASSISMOTOR_MAX_CURRENT - 1;
+ 1474              		.loc 1 169 24
+ 1475 093e 07F59563 		add	r3, r7, #1192
+ 1476 0942 A3F59362 		sub	r2, r3, #1176
+ 1477 0946 D7F8A434 		ldr	r3, [r7, #1188]
+ 1478 094a 9B00     		lsls	r3, r3, #2
+ 1479 094c 1344     		add	r3, r3, r2
+ 1480 094e 794A     		ldr	r2, .L49
+ 1481 0950 1A60     		str	r2, [r3]	@ float
+ 1482              	.L36:
+ 170:User/Software/Chassis.c ****         if (current[i] <= -(CHASSISMOTOR_MAX_CURRENT - 1))
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 30
+
+
+ 1483              		.loc 1 170 20
+ 1484 0952 07F59563 		add	r3, r7, #1192
+ 1485 0956 A3F59362 		sub	r2, r3, #1176
+ 1486 095a D7F8A434 		ldr	r3, [r7, #1188]
+ 1487 095e 9B00     		lsls	r3, r3, #2
+ 1488 0960 1344     		add	r3, r3, r2
+ 1489 0962 D3ED007A 		vldr.32	s15, [r3]
+ 1490              		.loc 1 170 12
+ 1491 0966 9FED747A 		vldr.32	s14, .L49+4
+ 1492 096a F4EEC77A 		vcmpe.f32	s15, s14
+ 1493 096e F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1494 0972 09D8     		bhi	.L38
+ 171:User/Software/Chassis.c ****             current[i] = -(CHASSISMOTOR_MAX_CURRENT - 1);
+ 1495              		.loc 1 171 24
+ 1496 0974 07F59563 		add	r3, r7, #1192
+ 1497 0978 A3F59362 		sub	r2, r3, #1176
+ 1498 097c D7F8A434 		ldr	r3, [r7, #1188]
+ 1499 0980 9B00     		lsls	r3, r3, #2
+ 1500 0982 1344     		add	r3, r3, r2
+ 1501 0984 6D4A     		ldr	r2, .L49+8
+ 1502 0986 1A60     		str	r2, [r3]	@ float
+ 1503              	.L38:
+ 166:User/Software/Chassis.c ****     {
+ 1504              		.loc 1 166 29 discriminator 2
+ 1505 0988 D7F8A434 		ldr	r3, [r7, #1188]
+ 1506 098c 0133     		adds	r3, r3, #1
+ 1507 098e C7F8A434 		str	r3, [r7, #1188]
+ 1508              	.L35:
+ 166:User/Software/Chassis.c ****     {
+ 1509              		.loc 1 166 23 discriminator 1
+ 1510 0992 D7F8A434 		ldr	r3, [r7, #1188]
+ 1511 0996 032B     		cmp	r3, #3
+ 1512 0998 C0DD     		ble	.L40
+ 1513              	.LBE3:
+ 172:User/Software/Chassis.c ****     }
+ 173:User/Software/Chassis.c ****     /*功率限制*/
+ 174:User/Software/Chassis.c ****     Plimit = power_limt(current[0], current[1], current[2], current[3],
+ 1514              		.loc 1 174 14
+ 1515 099a 07F59563 		add	r3, r7, #1192
+ 1516 099e A3F59363 		sub	r3, r3, #1176
+ 1517 09a2 93ED008A 		vldr.32	s16, [r3]
+ 1518 09a6 07F59563 		add	r3, r7, #1192
+ 1519 09aa A3F59363 		sub	r3, r3, #1176
+ 1520 09ae D3ED018A 		vldr.32	s17, [r3, #4]
+ 1521 09b2 07F59563 		add	r3, r7, #1192
+ 1522 09b6 A3F59363 		sub	r3, r3, #1176
+ 1523 09ba 93ED029A 		vldr.32	s18, [r3, #8]
+ 1524 09be 07F59563 		add	r3, r7, #1192
+ 1525 09c2 A3F59363 		sub	r3, r3, #1176
+ 1526 09c6 D3ED039A 		vldr.32	s19, [r3, #12]
+ 175:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_FL).speed_rpm,
+ 1527              		.loc 1 175 25
+ 1528 09ca 07F59563 		add	r3, r7, #1192
+ 1529 09ce A3F58473 		sub	r3, r3, #264
+ 1530 09d2 0121     		movs	r1, #1
+ 1531 09d4 1846     		mov	r0, r3
+ 1532 09d6 FFF7FEFF 		bl	DJIMotor_get_data
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 31
+
+
+ 1533              		.loc 1 175 56 discriminator 1
+ 1534 09da 07F59563 		add	r3, r7, #1192
+ 1535 09de A3F58473 		sub	r3, r3, #264
+ 1536 09e2 B3F90630 		ldrsh	r3, [r3, #6]
+ 174:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_FL).speed_rpm,
+ 1537              		.loc 1 174 14
+ 1538 09e6 07EE903A 		vmov	s15, r3	@ int
+ 1539 09ea B8EEE7AA 		vcvt.f32.s32	s20, s15
+ 176:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_FR).speed_rpm,
+ 1540              		.loc 1 176 25
+ 1541 09ee 07F57673 		add	r3, r7, #984
+ 1542 09f2 0021     		movs	r1, #0
+ 1543 09f4 1846     		mov	r0, r3
+ 1544 09f6 FFF7FEFF 		bl	DJIMotor_get_data
+ 1545              		.loc 1 176 56 discriminator 1
+ 1546 09fa B7F9DE33 		ldrsh	r3, [r7, #990]
+ 174:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_FL).speed_rpm,
+ 1547              		.loc 1 174 14
+ 1548 09fe 07EE903A 		vmov	s15, r3	@ int
+ 1549 0a02 F8EEE7AA 		vcvt.f32.s32	s21, s15
+ 177:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_BL).speed_rpm,
+ 1550              		.loc 1 177 25
+ 1551 0a06 07F58263 		add	r3, r7, #1040
+ 1552 0a0a 0221     		movs	r1, #2
+ 1553 0a0c 1846     		mov	r0, r3
+ 1554 0a0e FFF7FEFF 		bl	DJIMotor_get_data
+ 1555              		.loc 1 177 56 discriminator 1
+ 1556 0a12 B7F91634 		ldrsh	r3, [r7, #1046]
+ 174:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_FL).speed_rpm,
+ 1557              		.loc 1 174 14
+ 1558 0a16 07EE903A 		vmov	s15, r3	@ int
+ 1559 0a1a B8EEE7BA 		vcvt.f32.s32	s22, s15
+ 178:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_BR).speed_rpm,
+ 1560              		.loc 1 178 25
+ 1561 0a1e 07F58963 		add	r3, r7, #1096
+ 1562 0a22 0321     		movs	r1, #3
+ 1563 0a24 1846     		mov	r0, r3
+ 1564 0a26 FFF7FEFF 		bl	DJIMotor_get_data
+ 1565              		.loc 1 178 56 discriminator 1
+ 1566 0a2a B7F94E34 		ldrsh	r3, [r7, #1102]
+ 174:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_FL).speed_rpm,
+ 1567              		.loc 1 174 14
+ 1568 0a2e 07EE903A 		vmov	s15, r3	@ int
+ 1569 0a32 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 179:User/Software/Chassis.c ****                         Referee_data.Chassis_Power_Limit);
+ 1570              		.loc 1 179 37
+ 1571 0a36 424B     		ldr	r3, .L49+12
+ 1572 0a38 5B8A     		ldrh	r3, [r3, #18]
+ 174:User/Software/Chassis.c ****                         CHASSISMotor_get_data(WHEEL_FL).speed_rpm,
+ 1573              		.loc 1 174 14
+ 1574 0a3a 07EE103A 		vmov	s14, r3	@ int
+ 1575 0a3e B8EE477A 		vcvt.f32.u32	s14, s14
+ 1576 0a42 B0EE474A 		vmov.f32	s8, s14
+ 1577 0a46 F0EE673A 		vmov.f32	s7, s15
+ 1578 0a4a B0EE4B3A 		vmov.f32	s6, s22
+ 1579 0a4e F0EE6A2A 		vmov.f32	s5, s21
+ 1580 0a52 B0EE4A2A 		vmov.f32	s4, s20
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 32
+
+
+ 1581 0a56 F0EE691A 		vmov.f32	s3, s19
+ 1582 0a5a B0EE491A 		vmov.f32	s2, s18
+ 1583 0a5e F0EE680A 		vmov.f32	s1, s17
+ 1584 0a62 B0EE480A 		vmov.f32	s0, s16
+ 1585 0a66 FFF7FEFF 		bl	power_limt
+ 1586 0a6a 07F28443 		addw	r3, r7, #1156
+ 1587 0a6e 83ED000A 		vstr.32	s0, [r3]
+ 180:User/Software/Chassis.c ****     Plimit = 1; // 关闭功率控制
+ 1588              		.loc 1 180 12
+ 1589 0a72 4FF07E53 		mov	r3, #1065353216
+ 1590 0a76 07F28442 		addw	r2, r7, #1156
+ 1591 0a7a 1360     		str	r3, [r2]	@ float
+ 181:User/Software/Chassis.c ****     /*电流设置*/
+ 182:User/Software/Chassis.c ****     CHASSISMotor_set(Plimit * current[0], WHEEL_FL);
+ 1592              		.loc 1 182 38
+ 1593 0a7c 07F59563 		add	r3, r7, #1192
+ 1594 0a80 A3F59363 		sub	r3, r3, #1176
+ 1595 0a84 93ED007A 		vldr.32	s14, [r3]
+ 1596              		.loc 1 182 29
+ 1597 0a88 07F28443 		addw	r3, r7, #1156
+ 1598 0a8c D3ED007A 		vldr.32	s15, [r3]
+ 1599 0a90 67EE277A 		vmul.f32	s15, s14, s15
+ 1600              		.loc 1 182 5
+ 1601 0a94 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 1602 0a98 17EE903A 		vmov	r3, s15	@ int
+ 1603 0a9c 1BB2     		sxth	r3, r3
+ 1604 0a9e 0121     		movs	r1, #1
+ 1605 0aa0 1846     		mov	r0, r3
+ 1606 0aa2 FFF7FEFF 		bl	DJIMotor_set
+ 183:User/Software/Chassis.c ****     CHASSISMotor_set(Plimit * current[1], WHEEL_FR);
+ 1607              		.loc 1 183 38
+ 1608 0aa6 07F59563 		add	r3, r7, #1192
+ 1609 0aaa A3F59363 		sub	r3, r3, #1176
+ 1610 0aae 93ED017A 		vldr.32	s14, [r3, #4]
+ 1611              		.loc 1 183 29
+ 1612 0ab2 07F28443 		addw	r3, r7, #1156
+ 1613 0ab6 D3ED007A 		vldr.32	s15, [r3]
+ 1614 0aba 67EE277A 		vmul.f32	s15, s14, s15
+ 1615              		.loc 1 183 5
+ 1616 0abe FDEEE77A 		vcvt.s32.f32	s15, s15
+ 1617 0ac2 17EE903A 		vmov	r3, s15	@ int
+ 1618 0ac6 1BB2     		sxth	r3, r3
+ 1619 0ac8 0021     		movs	r1, #0
+ 1620 0aca 1846     		mov	r0, r3
+ 1621 0acc FFF7FEFF 		bl	DJIMotor_set
+ 184:User/Software/Chassis.c ****     CHASSISMotor_set(Plimit * current[2], WHEEL_BL);
+ 1622              		.loc 1 184 38
+ 1623 0ad0 07F59563 		add	r3, r7, #1192
+ 1624 0ad4 A3F59363 		sub	r3, r3, #1176
+ 1625 0ad8 93ED027A 		vldr.32	s14, [r3, #8]
+ 1626              		.loc 1 184 29
+ 1627 0adc 07F28443 		addw	r3, r7, #1156
+ 1628 0ae0 D3ED007A 		vldr.32	s15, [r3]
+ 1629 0ae4 67EE277A 		vmul.f32	s15, s14, s15
+ 1630              		.loc 1 184 5
+ 1631 0ae8 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 1632 0aec 17EE903A 		vmov	r3, s15	@ int
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 33
+
+
+ 1633 0af0 1BB2     		sxth	r3, r3
+ 1634 0af2 0221     		movs	r1, #2
+ 1635 0af4 1846     		mov	r0, r3
+ 1636 0af6 FFF7FEFF 		bl	DJIMotor_set
+ 185:User/Software/Chassis.c ****     CHASSISMotor_set(Plimit * current[3], WHEEL_BR);
+ 1637              		.loc 1 185 38
+ 1638 0afa 07F59563 		add	r3, r7, #1192
+ 1639 0afe A3F59363 		sub	r3, r3, #1176
+ 1640 0b02 93ED037A 		vldr.32	s14, [r3, #12]
+ 1641              		.loc 1 185 29
+ 1642 0b06 07F28443 		addw	r3, r7, #1156
+ 1643 0b0a D3ED007A 		vldr.32	s15, [r3]
+ 1644 0b0e 67EE277A 		vmul.f32	s15, s14, s15
+ 1645              		.loc 1 185 5
+ 1646 0b12 FDEEE77A 		vcvt.s32.f32	s15, s15
+ 1647 0b16 17EE903A 		vmov	r3, s15	@ int
+ 1648 0b1a 1BB2     		sxth	r3, r3
+ 1649 0b1c 0321     		movs	r1, #3
+ 1650 0b1e 1846     		mov	r0, r3
+ 1651 0b20 FFF7FEFF 		bl	DJIMotor_set
+ 186:User/Software/Chassis.c **** }
+ 1652              		.loc 1 186 1
+ 1653 0b24 00BF     		nop
+ 1654 0b26 07F59567 		add	r7, r7, #1192
+ 1655              	.LCFI32:
+ 1656              		.cfi_def_cfa_offset 40
+ 1657 0b2a BD46     		mov	sp, r7
+ 1658              	.LCFI33:
+ 1659              		.cfi_def_cfa_register 13
+ 1660              		@ sp needed
+ 1661 0b2c BDEC088B 		vldm	sp!, {d8-d11}
+ 1662              	.LCFI34:
+ 1663              		.cfi_restore 86
+ 1664              		.cfi_restore 87
+ 1665              		.cfi_restore 84
+ 1666              		.cfi_restore 85
+ 1667              		.cfi_restore 82
+ 1668              		.cfi_restore 83
+ 1669              		.cfi_restore 80
+ 1670              		.cfi_restore 81
+ 1671              		.cfi_def_cfa_offset 8
+ 1672 0b30 80BD     		pop	{r7, pc}
+ 1673              	.L50:
+ 1674 0b32 00BF     		.align	2
+ 1675              	.L49:
+ 1676 0b34 00FC7F46 		.word	1182792704
+ 1677 0b38 00FC7FC6 		.word	-964690944
+ 1678 0b3c 00FC7FC6 		.word	-964690944
+ 1679 0b40 00000000 		.word	Referee_data
+ 1680              		.cfi_endproc
+ 1681              	.LFE153:
+ 1683              		.section	.text.Chassis_move,"ax",%progbits
+ 1684              		.align	1
+ 1685              		.global	Chassis_move
+ 1686              		.syntax unified
+ 1687              		.thumb
+ 1688              		.thumb_func
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 34
+
+
+ 1690              	Chassis_move:
+ 1691              	.LFB154:
+ 187:User/Software/Chassis.c **** 
+ 188:User/Software/Chassis.c **** /**
+ 189:User/Software/Chassis.c ****  * @brief 底盘移动解算
+ 190:User/Software/Chassis.c ****  *
+ 191:User/Software/Chassis.c ****  */
+ 192:User/Software/Chassis.c **** 
+ 193:User/Software/Chassis.c **** void Chassis_move()
+ 194:User/Software/Chassis.c **** {
+ 1692              		.loc 1 194 1
+ 1693              		.cfi_startproc
+ 1694              		@ args = 0, pretend = 0, frame = 360
+ 1695              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1696 0000 80B5     		push	{r7, lr}
+ 1697              	.LCFI35:
+ 1698              		.cfi_def_cfa_offset 8
+ 1699              		.cfi_offset 7, -8
+ 1700              		.cfi_offset 14, -4
+ 1701 0002 2DED028B 		vpush.64	{d8}
+ 1702              	.LCFI36:
+ 1703              		.cfi_def_cfa_offset 16
+ 1704              		.cfi_offset 80, -16
+ 1705              		.cfi_offset 81, -12
+ 1706 0006 DAB0     		sub	sp, sp, #360
+ 1707              	.LCFI37:
+ 1708              		.cfi_def_cfa_offset 376
+ 1709 0008 00AF     		add	r7, sp, #0
+ 1710              	.LCFI38:
+ 1711              		.cfi_def_cfa_register 7
+ 195:User/Software/Chassis.c ****     float X_speed, Y_speed, R_speed;
+ 196:User/Software/Chassis.c ****     float relative_angle;
+ 197:User/Software/Chassis.c ****     /*底盘速度更新*/
+ 198:User/Software/Chassis.c ****     RampGenerator_Update(&Vx_ramp, Get_sys_time_ms());
+ 1712              		.loc 1 198 5
+ 1713 000a FFF7FEFF 		bl	Get_sys_time_ms
+ 1714 000e 0346     		mov	r3, r0
+ 1715              		.loc 1 198 5 is_stmt 0 discriminator 1
+ 1716 0010 1946     		mov	r1, r3
+ 1717 0012 D148     		ldr	r0, .L67+24
+ 1718 0014 FFF7FEFF 		bl	RampGenerator_Update
+ 199:User/Software/Chassis.c ****     RampGenerator_Update(&Vy_ramp, Get_sys_time_ms());
+ 1719              		.loc 1 199 5 is_stmt 1
+ 1720 0018 FFF7FEFF 		bl	Get_sys_time_ms
+ 1721 001c 0346     		mov	r3, r0
+ 1722              		.loc 1 199 5 is_stmt 0 discriminator 1
+ 1723 001e 1946     		mov	r1, r3
+ 1724 0020 CE48     		ldr	r0, .L67+28
+ 1725 0022 FFF7FEFF 		bl	RampGenerator_Update
+ 200:User/Software/Chassis.c ****     Global.Chssis.input.x = RampGenerator_GetCurrent(&Vx_ramp);
+ 1726              		.loc 1 200 29 is_stmt 1
+ 1727 0026 CC48     		ldr	r0, .L67+24
+ 1728 0028 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 1729 002c F0EE407A 		vmov.f32	s15, s0
+ 1730              		.loc 1 200 27 discriminator 1
+ 1731 0030 CB4B     		ldr	r3, .L67+32
+ 1732 0032 C3ED017A 		vstr.32	s15, [r3, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 35
+
+
+ 201:User/Software/Chassis.c ****     Global.Chssis.input.y = RampGenerator_GetCurrent(&Vy_ramp);
+ 1733              		.loc 1 201 29
+ 1734 0036 C948     		ldr	r0, .L67+28
+ 1735 0038 FFF7FEFF 		bl	RampGenerator_GetCurrent
+ 1736 003c F0EE407A 		vmov.f32	s15, s0
+ 1737              		.loc 1 201 27 discriminator 1
+ 1738 0040 C74B     		ldr	r3, .L67+32
+ 1739 0042 C3ED027A 		vstr.32	s15, [r3, #8]
+ 202:User/Software/Chassis.c ****     relative_angle = GIMBALMotor_get_data(YAWMotor).angle_cnt - GIMBALMotor_get_data(YAWMotor).angl
+ 1740              		.loc 1 202 22
+ 1741 0046 07F5B473 		add	r3, r7, #360
+ 1742 004a A3F5B473 		sub	r3, r3, #360
+ 1743 004e 0F21     		movs	r1, #15
+ 1744 0050 1846     		mov	r0, r3
+ 1745 0052 FFF7FEFF 		bl	DJIMotor_get_data
+ 1746              		.loc 1 202 52 discriminator 1
+ 1747 0056 07F5B473 		add	r3, r7, #360
+ 1748 005a A3F5B473 		sub	r3, r3, #360
+ 1749 005e 93ED068B 		vldr.64	d8, [r3, #24]
+ 1750              		.loc 1 202 65 discriminator 1
+ 1751 0062 07F5B473 		add	r3, r7, #360
+ 1752 0066 A3F59873 		sub	r3, r3, #304
+ 1753 006a 0F21     		movs	r1, #15
+ 1754 006c 1846     		mov	r0, r3
+ 1755 006e FFF7FEFF 		bl	DJIMotor_get_data
+ 1756              		.loc 1 202 95 discriminator 2
+ 1757 0072 07F5B473 		add	r3, r7, #360
+ 1758 0076 A3F59873 		sub	r3, r3, #304
+ 1759 007a 93ED087B 		vldr.64	d7, [r3, #32]
+ 1760              		.loc 1 202 63 discriminator 2
+ 1761 007e 38EE477B 		vsub.f64	d7, d8, d7
+ 1762              		.loc 1 202 20 discriminator 2
+ 1763 0082 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1764 0086 C7ED587A 		vstr.32	s15, [r7, #352]
+ 203:User/Software/Chassis.c ****     // 运动分解
+ 204:User/Software/Chassis.c ****     Y_speed = Global.Chssis.input.x * sinf(DEG_TO_RAD * GIMBALMotor_get_data(YAWMotor).angle) +
+ 1765              		.loc 1 204 34
+ 1766 008a B54B     		ldr	r3, .L67+32
+ 1767 008c 93ED018A 		vldr.32	s16, [r3, #4]
+ 1768              		.loc 1 204 57
+ 1769 0090 07F17003 		add	r3, r7, #112
+ 1770 0094 0F21     		movs	r1, #15
+ 1771 0096 1846     		mov	r0, r3
+ 1772 0098 FFF7FEFF 		bl	DJIMotor_get_data
+ 1773              		.loc 1 204 87 discriminator 1
+ 1774 009c 97ED267B 		vldr.64	d7, [r7, #152]
+ 1775              		.loc 1 204 55 discriminator 1
+ 1776 00a0 9FEDA76B 		vldr.64	d6, .L67
+ 1777 00a4 27EE067B 		vmul.f64	d7, d7, d6
+ 1778              		.loc 1 204 39 discriminator 1
+ 1779 00a8 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1780 00ac B0EE670A 		vmov.f32	s0, s15
+ 1781 00b0 FFF7FEFF 		bl	sinf
+ 1782 00b4 F0EE407A 		vmov.f32	s15, s0
+ 1783              		.loc 1 204 37 discriminator 2
+ 1784 00b8 28EE278A 		vmul.f32	s16, s16, s15
+ 205:User/Software/Chassis.c ****               Global.Chssis.input.y * cosf(DEG_TO_RAD * GIMBALMotor_get_data(YAWMotor).angle);
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 36
+
+
+ 1785              		.loc 1 205 34
+ 1786 00bc A84B     		ldr	r3, .L67+32
+ 1787 00be D3ED028A 		vldr.32	s17, [r3, #8]
+ 1788              		.loc 1 205 57
+ 1789 00c2 07F1A803 		add	r3, r7, #168
+ 1790 00c6 0F21     		movs	r1, #15
+ 1791 00c8 1846     		mov	r0, r3
+ 1792 00ca FFF7FEFF 		bl	DJIMotor_get_data
+ 1793              		.loc 1 205 87 discriminator 1
+ 1794 00ce 97ED347B 		vldr.64	d7, [r7, #208]
+ 1795              		.loc 1 205 55 discriminator 1
+ 1796 00d2 9FED9B6B 		vldr.64	d6, .L67
+ 1797 00d6 27EE067B 		vmul.f64	d7, d7, d6
+ 1798              		.loc 1 205 39 discriminator 1
+ 1799 00da F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1800 00de B0EE670A 		vmov.f32	s0, s15
+ 1801 00e2 FFF7FEFF 		bl	cosf
+ 1802 00e6 F0EE407A 		vmov.f32	s15, s0
+ 1803              		.loc 1 205 37 discriminator 2
+ 1804 00ea 68EEA77A 		vmul.f32	s15, s17, s15
+ 204:User/Software/Chassis.c ****               Global.Chssis.input.y * cosf(DEG_TO_RAD * GIMBALMotor_get_data(YAWMotor).angle);
+ 1805              		.loc 1 204 13
+ 1806 00ee 78EE277A 		vadd.f32	s15, s16, s15
+ 1807 00f2 C7ED577A 		vstr.32	s15, [r7, #348]
+ 206:User/Software/Chassis.c ****     X_speed = Global.Chssis.input.x * cosf(DEG_TO_RAD * GIMBALMotor_get_data(YAWMotor).angle) -
+ 1808              		.loc 1 206 34
+ 1809 00f6 9A4B     		ldr	r3, .L67+32
+ 1810 00f8 93ED018A 		vldr.32	s16, [r3, #4]
+ 1811              		.loc 1 206 57
+ 1812 00fc 07F1E003 		add	r3, r7, #224
+ 1813 0100 0F21     		movs	r1, #15
+ 1814 0102 1846     		mov	r0, r3
+ 1815 0104 FFF7FEFF 		bl	DJIMotor_get_data
+ 1816              		.loc 1 206 87 discriminator 1
+ 1817 0108 97ED427B 		vldr.64	d7, [r7, #264]
+ 1818              		.loc 1 206 55 discriminator 1
+ 1819 010c 9FED8C6B 		vldr.64	d6, .L67
+ 1820 0110 27EE067B 		vmul.f64	d7, d7, d6
+ 1821              		.loc 1 206 39 discriminator 1
+ 1822 0114 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1823 0118 B0EE670A 		vmov.f32	s0, s15
+ 1824 011c FFF7FEFF 		bl	cosf
+ 1825 0120 F0EE407A 		vmov.f32	s15, s0
+ 1826              		.loc 1 206 37 discriminator 2
+ 1827 0124 28EE278A 		vmul.f32	s16, s16, s15
+ 207:User/Software/Chassis.c ****               sinf(DEG_TO_RAD * GIMBALMotor_get_data(YAWMotor).angle) * Global.Chssis.input.y;
+ 1828              		.loc 1 207 33
+ 1829 0128 07F58C73 		add	r3, r7, #280
+ 1830 012c 0F21     		movs	r1, #15
+ 1831 012e 1846     		mov	r0, r3
+ 1832 0130 FFF7FEFF 		bl	DJIMotor_get_data
+ 1833              		.loc 1 207 63 discriminator 1
+ 1834 0134 97ED507B 		vldr.64	d7, [r7, #320]
+ 1835              		.loc 1 207 31 discriminator 1
+ 1836 0138 9FED816B 		vldr.64	d6, .L67
+ 1837 013c 27EE067B 		vmul.f64	d7, d7, d6
+ 1838              		.loc 1 207 15 discriminator 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 37
+
+
+ 1839 0140 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1840 0144 B0EE670A 		vmov.f32	s0, s15
+ 1841 0148 FFF7FEFF 		bl	sinf
+ 1842 014c B0EE407A 		vmov.f32	s14, s0
+ 1843              		.loc 1 207 92 discriminator 2
+ 1844 0150 834B     		ldr	r3, .L67+32
+ 1845 0152 D3ED027A 		vldr.32	s15, [r3, #8]
+ 1846              		.loc 1 207 71 discriminator 2
+ 1847 0156 67EE277A 		vmul.f32	s15, s14, s15
+ 206:User/Software/Chassis.c ****     X_speed = Global.Chssis.input.x * cosf(DEG_TO_RAD * GIMBALMotor_get_data(YAWMotor).angle) -
+ 1848              		.loc 1 206 13
+ 1849 015a 78EE677A 		vsub.f32	s15, s16, s15
+ 1850 015e C7ED567A 		vstr.32	s15, [r7, #344]
+ 208:User/Software/Chassis.c ****     R_speed = Global.Chssis.input.r;
+ 1851              		.loc 1 208 13
+ 1852 0162 7F4B     		ldr	r3, .L67+32
+ 1853 0164 DB68     		ldr	r3, [r3, #12]	@ float
+ 1854 0166 C7F86431 		str	r3, [r7, #356]	@ float
+ 209:User/Software/Chassis.c ****     /*化简多圈角度*/
+ 210:User/Software/Chassis.c ****     uint32_t mul = fabs(relative_angle) / 180.0f;
+ 1855              		.loc 1 210 20
+ 1856 016a D7ED587A 		vldr.32	s15, [r7, #352]
+ 1857 016e F0EEE77A 		vabs.f32	s15, s15
+ 1858 0172 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 1859              		.loc 1 210 41
+ 1860 0176 9FED745B 		vldr.64	d5, .L67+8
+ 1861 017a 86EE057B 		vdiv.f64	d7, d6, d5
+ 1862              		.loc 1 210 14
+ 1863 017e FCEEC77B 		vcvt.u32.f64	s15, d7
+ 1864 0182 17EE903A 		vmov	r3, s15	@ int
+ 1865 0186 C7F85431 		str	r3, [r7, #340]
+ 211:User/Software/Chassis.c ****     if (relative_angle > 180.0f)
+ 1866              		.loc 1 211 8
+ 1867 018a D7ED587A 		vldr.32	s15, [r7, #352]
+ 1868 018e 9FED757A 		vldr.32	s14, .L67+36
+ 1869 0192 F4EEC77A 		vcmpe.f32	s15, s14
+ 1870 0196 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1871 019a 27DD     		ble	.L52
+ 212:User/Software/Chassis.c ****     {
+ 213:User/Software/Chassis.c ****         if (mul % 2 == 1) // 处于-180度
+ 1872              		.loc 1 213 17
+ 1873 019c D7F85431 		ldr	r3, [r7, #340]
+ 1874 01a0 03F00103 		and	r3, r3, #1
+ 1875              		.loc 1 213 12
+ 1876 01a4 002B     		cmp	r3, #0
+ 1877 01a6 11D0     		beq	.L54
+ 214:User/Software/Chassis.c ****             relative_angle -= (mul + 1) * 180.0f;
+ 1878              		.loc 1 214 36
+ 1879 01a8 D7F85431 		ldr	r3, [r7, #340]
+ 1880 01ac 0133     		adds	r3, r3, #1
+ 1881              		.loc 1 214 41
+ 1882 01ae 07EE903A 		vmov	s15, r3	@ int
+ 1883 01b2 F8EE677A 		vcvt.f32.u32	s15, s15
+ 1884 01b6 9FED6B7A 		vldr.32	s14, .L67+36
+ 1885 01ba 67EE877A 		vmul.f32	s15, s15, s14
+ 1886              		.loc 1 214 28
+ 1887 01be 97ED587A 		vldr.32	s14, [r7, #352]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 38
+
+
+ 1888 01c2 77EE677A 		vsub.f32	s15, s14, s15
+ 1889 01c6 C7ED587A 		vstr.32	s15, [r7, #352]
+ 1890 01ca 0FE0     		b	.L52
+ 1891              	.L54:
+ 215:User/Software/Chassis.c ****         else // 处于180度
+ 216:User/Software/Chassis.c ****             relative_angle -= mul * 180.0f;
+ 1892              		.loc 1 216 35
+ 1893 01cc D7F85431 		ldr	r3, [r7, #340]
+ 1894 01d0 07EE903A 		vmov	s15, r3	@ int
+ 1895 01d4 F8EE677A 		vcvt.f32.u32	s15, s15
+ 1896 01d8 9FED627A 		vldr.32	s14, .L67+36
+ 1897 01dc 67EE877A 		vmul.f32	s15, s15, s14
+ 1898              		.loc 1 216 28
+ 1899 01e0 97ED587A 		vldr.32	s14, [r7, #352]
+ 1900 01e4 77EE677A 		vsub.f32	s15, s14, s15
+ 1901 01e8 C7ED587A 		vstr.32	s15, [r7, #352]
+ 1902              	.L52:
+ 217:User/Software/Chassis.c ****     }
+ 218:User/Software/Chassis.c ****     if (relative_angle < -180.0f)
+ 1903              		.loc 1 218 8
+ 1904 01ec D7ED587A 		vldr.32	s15, [r7, #352]
+ 1905 01f0 9FED5D7A 		vldr.32	s14, .L67+40
+ 1906 01f4 F4EEC77A 		vcmpe.f32	s15, s14
+ 1907 01f8 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 1908 01fc 27D5     		bpl	.L55
+ 219:User/Software/Chassis.c ****     {
+ 220:User/Software/Chassis.c ****         if (mul % 2 == 1) // 处于180度
+ 1909              		.loc 1 220 17
+ 1910 01fe D7F85431 		ldr	r3, [r7, #340]
+ 1911 0202 03F00103 		and	r3, r3, #1
+ 1912              		.loc 1 220 12
+ 1913 0206 002B     		cmp	r3, #0
+ 1914 0208 11D0     		beq	.L57
+ 221:User/Software/Chassis.c ****             relative_angle += (mul + 1) * 180.0f;
+ 1915              		.loc 1 221 36
+ 1916 020a D7F85431 		ldr	r3, [r7, #340]
+ 1917 020e 0133     		adds	r3, r3, #1
+ 1918              		.loc 1 221 41
+ 1919 0210 07EE903A 		vmov	s15, r3	@ int
+ 1920 0214 F8EE677A 		vcvt.f32.u32	s15, s15
+ 1921 0218 9FED527A 		vldr.32	s14, .L67+36
+ 1922 021c 67EE877A 		vmul.f32	s15, s15, s14
+ 1923              		.loc 1 221 28
+ 1924 0220 97ED587A 		vldr.32	s14, [r7, #352]
+ 1925 0224 77EE277A 		vadd.f32	s15, s14, s15
+ 1926 0228 C7ED587A 		vstr.32	s15, [r7, #352]
+ 1927 022c 0FE0     		b	.L55
+ 1928              	.L57:
+ 222:User/Software/Chassis.c ****         else // 处于-180度
+ 223:User/Software/Chassis.c ****             relative_angle += mul * 180.0f;
+ 1929              		.loc 1 223 35
+ 1930 022e D7F85431 		ldr	r3, [r7, #340]
+ 1931 0232 07EE903A 		vmov	s15, r3	@ int
+ 1932 0236 F8EE677A 		vcvt.f32.u32	s15, s15
+ 1933 023a 9FED4A7A 		vldr.32	s14, .L67+36
+ 1934 023e 67EE877A 		vmul.f32	s15, s15, s14
+ 1935              		.loc 1 223 28
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 39
+
+
+ 1936 0242 97ED587A 		vldr.32	s14, [r7, #352]
+ 1937 0246 77EE277A 		vadd.f32	s15, s14, s15
+ 1938 024a C7ED587A 		vstr.32	s15, [r7, #352]
+ 1939              	.L55:
+ 224:User/Software/Chassis.c ****     }
+ 225:User/Software/Chassis.c ****     Chassisui_change(relative_angle);
+ 1940              		.loc 1 225 5
+ 1941 024e 97ED580A 		vldr.32	s0, [r7, #352]
+ 1942 0252 FFF7FEFF 		bl	Chassisui_change
+ 226:User/Software/Chassis.c ****     /*模式选择*/
+ 227:User/Software/Chassis.c ****     switch (Global.Chssis.mode)
+ 1943              		.loc 1 227 26
+ 1944 0256 424B     		ldr	r3, .L67+32
+ 1945 0258 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1946              		.loc 1 227 5
+ 1947 025a 022B     		cmp	r3, #2
+ 1948 025c 5DD0     		beq	.L58
+ 1949 025e 022B     		cmp	r3, #2
+ 1950 0260 5FDC     		bgt	.L59
+ 1951 0262 002B     		cmp	r3, #0
+ 1952 0264 02D0     		beq	.L60
+ 1953 0266 012B     		cmp	r3, #1
+ 1954 0268 53D0     		beq	.L61
+ 1955 026a 5AE0     		b	.L59
+ 1956              	.L60:
+ 228:User/Software/Chassis.c ****     {
+ 229:User/Software/Chassis.c ****     case FLOW:
+ 230:User/Software/Chassis.c ****         if(Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE)
+ 1957              		.loc 1 230 29
+ 1958 026c 3C4B     		ldr	r3, .L67+32
+ 1959 026e 1B6B     		ldr	r3, [r3, #48]
+ 1960              		.loc 1 230 11
+ 1961 0270 002B     		cmp	r3, #0
+ 1962 0272 04DD     		ble	.L62
+ 1963              		.loc 1 230 69 discriminator 1
+ 1964 0274 3A4B     		ldr	r3, .L67+32
+ 1965 0276 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
+ 1966              		.loc 1 230 55 discriminator 1
+ 1967 027a 002B     		cmp	r3, #0
+ 1968 027c 24D1     		bne	.L63
+ 1969              	.L62:
+ 231:User/Software/Chassis.c ****         R_speed = pid_cal(&chassis_follow_pid, DEG_TO_RAD * relative_angle, 0.0f) - 0.9 * yaw_locat
+ 1970              		.loc 1 231 19
+ 1971 027e D7ED587A 		vldr.32	s15, [r7, #352]
+ 1972 0282 9FED3A7A 		vldr.32	s14, .L67+44
+ 1973 0286 67EE877A 		vmul.f32	s15, s15, s14
+ 1974 028a DFED390A 		vldr.32	s1, .L67+48
+ 1975 028e B0EE670A 		vmov.f32	s0, s15
+ 1976 0292 3848     		ldr	r0, .L67+52
+ 1977 0294 FFF7FEFF 		bl	pid_cal
+ 1978 0298 F0EE407A 		vmov.f32	s15, s0
+ 1979              		.loc 1 231 19 is_stmt 0 discriminator 1
+ 1980 029c B7EEE76A 		vcvt.f64.f32	d6, s15
+ 1981              		.loc 1 231 107 is_stmt 1 discriminator 1
+ 1982 02a0 354B     		ldr	r3, .L67+56
+ 1983 02a2 D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 1984 02a6 B7EEE77A 		vcvt.f64.f32	d7, s15
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 40
+
+
+ 1985              		.loc 1 231 89 discriminator 1
+ 1986 02aa 9FED295B 		vldr.64	d5, .L67+16
+ 1987 02ae 27EE057B 		vmul.f64	d7, d7, d5
+ 1988              		.loc 1 231 118 discriminator 1
+ 1989 02b2 9FED235B 		vldr.64	d5, .L67
+ 1990 02b6 27EE057B 		vmul.f64	d7, d7, d5
+ 1991              		.loc 1 231 83 discriminator 1
+ 1992 02ba 36EE477B 		vsub.f64	d7, d6, d7
+ 1993              		.loc 1 231 17 discriminator 1
+ 1994 02be F7EEC77B 		vcvt.f32.f64	s15, d7
+ 1995 02c2 C7ED597A 		vstr.32	s15, [r7, #356]
+ 232:User/Software/Chassis.c ****         else
+ 233:User/Software/Chassis.c ****         R_speed = pid_cal(&chassis_follow_pid, DEG_TO_RAD * relative_angle, 0.0f) - 0.9 * yaw_auto_
+ 234:User/Software/Chassis.c ****         break;
+ 1996              		.loc 1 234 9
+ 1997 02c6 2CE0     		b	.L59
+ 1998              	.L63:
+ 233:User/Software/Chassis.c ****         break;
+ 1999              		.loc 1 233 19
+ 2000 02c8 D7ED587A 		vldr.32	s15, [r7, #352]
+ 2001 02cc 9FED277A 		vldr.32	s14, .L67+44
+ 2002 02d0 67EE877A 		vmul.f32	s15, s15, s14
+ 2003 02d4 DFED260A 		vldr.32	s1, .L67+48
+ 2004 02d8 B0EE670A 		vmov.f32	s0, s15
+ 2005 02dc 2548     		ldr	r0, .L67+52
+ 2006 02de FFF7FEFF 		bl	pid_cal
+ 2007 02e2 F0EE407A 		vmov.f32	s15, s0
+ 233:User/Software/Chassis.c ****         break;
+ 2008              		.loc 1 233 19 is_stmt 0 discriminator 1
+ 2009 02e6 B7EEE76A 		vcvt.f64.f32	d6, s15
+ 233:User/Software/Chassis.c ****         break;
+ 2010              		.loc 1 233 112 is_stmt 1 discriminator 1
+ 2011 02ea 244B     		ldr	r3, .L67+60
+ 2012 02ec D3ED0A7A 		vldr.32	s15, [r3, #40]
+ 2013 02f0 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 233:User/Software/Chassis.c ****         break;
+ 2014              		.loc 1 233 89 discriminator 1
+ 2015 02f4 9FED165B 		vldr.64	d5, .L67+16
+ 2016 02f8 27EE057B 		vmul.f64	d7, d7, d5
+ 233:User/Software/Chassis.c ****         break;
+ 2017              		.loc 1 233 123 discriminator 1
+ 2018 02fc 9FED105B 		vldr.64	d5, .L67
+ 2019 0300 27EE057B 		vmul.f64	d7, d7, d5
+ 233:User/Software/Chassis.c ****         break;
+ 2020              		.loc 1 233 83 discriminator 1
+ 2021 0304 36EE477B 		vsub.f64	d7, d6, d7
+ 233:User/Software/Chassis.c ****         break;
+ 2022              		.loc 1 233 17 discriminator 1
+ 2023 0308 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 2024 030c C7ED597A 		vstr.32	s15, [r7, #356]
+ 2025              		.loc 1 234 9
+ 2026 0310 07E0     		b	.L59
+ 2027              	.L61:
+ 235:User/Software/Chassis.c ****     case SPIN_P:
+ 236:User/Software/Chassis.c ****         R_speed = 60 * RPM_TO_RAD_S;
+ 2028              		.loc 1 236 17
+ 2029 0312 1B4B     		ldr	r3, .L67+64
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 41
+
+
+ 2030 0314 C7F86431 		str	r3, [r7, #356]	@ float
+ 237:User/Software/Chassis.c ****         break;
+ 2031              		.loc 1 237 9
+ 2032 0318 03E0     		b	.L59
+ 2033              	.L58:
+ 238:User/Software/Chassis.c ****     case SPIN_N:
+ 239:User/Software/Chassis.c ****         R_speed = -60 * RPM_TO_RAD_S;
+ 2034              		.loc 1 239 17
+ 2035 031a 1A4B     		ldr	r3, .L67+68
+ 2036 031c C7F86431 		str	r3, [r7, #356]	@ float
+ 240:User/Software/Chassis.c ****         break;
+ 2037              		.loc 1 240 9
+ 2038 0320 00BF     		nop
+ 2039              	.L59:
+ 241:User/Software/Chassis.c ****     }
+ 242:User/Software/Chassis.c ****     ChassisMotor_Control(X_speed, Y_speed, R_speed);
+ 2040              		.loc 1 242 5
+ 2041 0322 97ED591A 		vldr.32	s2, [r7, #356]
+ 2042 0326 D7ED570A 		vldr.32	s1, [r7, #348]
+ 2043 032a 97ED560A 		vldr.32	s0, [r7, #344]
+ 2044 032e FFF7FEFF 		bl	ChassisMotor_Control
+ 243:User/Software/Chassis.c **** }...
+ 2045              		.loc 1 243 1
+ 2046 0332 00BF     		nop
+ 2047 0334 07F5B477 		add	r7, r7, #360
+ 2048              	.LCFI39:
+ 2049              		.cfi_def_cfa_offset 16
+ 2050 0338 BD46     		mov	sp, r7
+ 2051              	.LCFI40:
+ 2052              		.cfi_def_cfa_register 13
+ 2053              		@ sp needed
+ 2054 033a BDEC028B 		vldm	sp!, {d8}
+ 2055              	.LCFI41:
+ 2056              		.cfi_restore 80
+ 2057              		.cfi_restore 81
+ 2058              		.cfi_def_cfa_offset 8
+ 2059 033e 80BD     		pop	{r7, pc}
+ 2060              	.L68:
+ 2061              		.align	3
+ 2062              	.L67:
+ 2063 0340 000000A0 		.word	-1610612736
+ 2064 0344 46DF913F 		.word	1066524486
+ 2065 0348 00000000 		.word	0
+ 2066 034c 00806640 		.word	1080459264
+ 2067 0350 CDCCCCCC 		.word	-858993459
+ 2068 0354 CCCCEC3F 		.word	1072483532
+ 2069 0358 00000000 		.word	Vx_ramp
+ 2070 035c 00000000 		.word	Vy_ramp
+ 2071 0360 00000000 		.word	Global
+ 2072 0364 00003443 		.word	1127481344
+ 2073 0368 000034C3 		.word	-1020002304
+ 2074 036c 35FA8E3C 		.word	1016003125
+ 2075 0370 00000000 		.word	0
+ 2076 0374 00000000 		.word	chassis_follow_pid
+ 2077 0378 00000000 		.word	yaw_location_pid
+ 2078 037c 00000000 		.word	yaw_auto_location_pid
+ 2079 0380 DA0FC940 		.word	1086918618
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 42
+
+
+ 2080 0384 DA0FC9C0 		.word	-1060565030
+ 2081              		.cfi_endproc
+ 2082              	.LFE154:
+ 2084              		.text
+ 2085              	.Letext0:
+ 2086              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 2087              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 2088              		.file 4 "User/Hardware/motor.h"
+ 2089              		.file 5 "User/Software/Global_status.h"
+ 2090              		.file 6 "User/Hardware/referee_system.h"
+ 2091              		.file 7 "User/Hardware/supercup.h"
+ 2092              		.file 8 "Algorithm/pid.h"
+ 2093              		.file 9 "Algorithm/ramp_generator.h"
+ 2094              		.file 10 "D:/MSYS2/mingw64/arm-none-eabi/include/math.h"
+ 2095              		.file 11 "User/Software/ui.h"
+ 2096              		.file 12 "User/Software/Gimbal.h"
+ 2097              		.file 13 "User/BSP/stm32_time.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 43
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 Chassis.c
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:24     .bss.chassis_speed_pid_FL:00000000 chassis_speed_pid_FL
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:21     .bss.chassis_speed_pid_FL:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:31     .bss.chassis_speed_pid_FR:00000000 chassis_speed_pid_FR
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:28     .bss.chassis_speed_pid_FR:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:38     .bss.chassis_speed_pid_BL:00000000 chassis_speed_pid_BL
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:35     .bss.chassis_speed_pid_BL:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:45     .bss.chassis_speed_pid_BR:00000000 chassis_speed_pid_BR
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:42     .bss.chassis_speed_pid_BR:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:52     .bss.chassis_T_pid_x:00000000 chassis_T_pid_x
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:49     .bss.chassis_T_pid_x:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:59     .bss.chassis_T_pid_y:00000000 chassis_T_pid_y
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:56     .bss.chassis_T_pid_y:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:66     .bss.chassis_T_pid_w:00000000 chassis_T_pid_w
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:63     .bss.chassis_T_pid_w:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:73     .bss.chassis_follow_pid:00000000 chassis_follow_pid
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:70     .bss.chassis_follow_pid:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:80     .bss.Vx_ramp:00000000 Vx_ramp
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:77     .bss.Vx_ramp:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:87     .bss.Vy_ramp:00000000 Vy_ramp
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:84     .bss.Vy_ramp:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:90     .text.power_limt:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:96     .text.power_limt:00000000 power_limt
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:330    .text.power_limt:000001d8 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:342    .text.Chassis_init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:348    .text.Chassis_init:00000000 Chassis_init
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:466    .text.Chassis_init:00000128 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:486    .text.Chassis_set_x:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:492    .text.Chassis_set_x:00000000 Chassis_set_x
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:527    .text.Chassis_set_x:0000001c $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:532    .text.Chassis_set_y:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:538    .text.Chassis_set_y:00000000 Chassis_set_y
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:573    .text.Chassis_set_y:0000001c $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:578    .text.Chassis_set_r:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:584    .text.Chassis_set_r:00000000 Chassis_set_r
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:623    .text.Chassis_set_r:0000001c $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:628    .text.Chassis_set_accel:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:634    .text.Chassis_set_accel:00000000 Chassis_set_accel
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:673    .text.Chassis_set_accel:00000028 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:683    .bss.Vx_now:00000000 Vx_now
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:680    .bss.Vx_now:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:690    .bss.Vy_now:00000000 Vy_now
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:687    .bss.Vy_now:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:697    .bss.W_now:00000000 W_now
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:694    .bss.W_now:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:704    .bss.T_FR:00000000 T_FR
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:701    .bss.T_FR:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:711    .bss.T_FL:00000000 T_FL
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:708    .bss.T_FL:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:718    .bss.T_BR:00000000 T_BR
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:715    .bss.T_BR:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:725    .bss.T_BL:00000000 T_BL
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:722    .bss.T_BL:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:732    .bss.K:00000000 K
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:729    .bss.K:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:735    .text.ChassisMotor_Control:00000000 $t
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cc77VJbW.s 			page 44
+
+
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:741    .text.ChassisMotor_Control:00000000 ChassisMotor_Control
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:1068   .text.ChassisMotor_Control:00000418 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:1081   .text.ChassisMotor_Control:00000448 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:1427   .text.ChassisMotor_Control:000008a8 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:1457   .text.ChassisMotor_Control:00000914 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:1676   .text.ChassisMotor_Control:00000b34 $d
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:1684   .text.Chassis_move:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:1690   .text.Chassis_move:00000000 Chassis_move
+C:\Users\23671\AppData\Local\Temp\cc77VJbW.s:2063   .text.Chassis_move:00000340 $d
+
+UNDEFINED SYMBOLS
+Supercap_set_power
+cap
+DJIMotor_init
+pid_set
+RampGenerator_Init
+Global
+RampGenerator_SetTarget
+RampGenerator_SetAccel
+DJIMotor_get_data
+pid_cal
+DJIMotor_set
+Referee_data
+Get_sys_time_ms
+RampGenerator_Update
+RampGenerator_GetCurrent
+sinf
+cosf
+Chassisui_change
+yaw_location_pid
+yaw_auto_location_pid
