@@ -39,7 +39,8 @@ build/CAN_receive_send.o: User/BSP/CAN_receive_send.c \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_ll_usb.h \
  Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_pcd_ex.h \
  User/Hardware/motor.h Algorithm/User_math.h User/BSP/CAN_receive_send.h \
- User/Hardware/supercup.h
+ User/Hardware/supercup.h User/Hardware/dm4310_drv.h Core/Inc/main.h \
+ User/BSP/can_receive_send.h
 User/BSP/can_receive_send.h:
 Core/Inc/fdcan.h:
 Core/Inc/main.h:
@@ -87,3 +88,6 @@ User/Hardware/motor.h:
 Algorithm/User_math.h:
 User/BSP/CAN_receive_send.h:
 User/Hardware/supercup.h:
+User/Hardware/dm4310_drv.h:
+Core/Inc/main.h:
+User/BSP/can_receive_send.h:

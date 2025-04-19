@@ -38,16 +38,19 @@ typedef FDCAN_HandleTypeDef hcan_t;//
     //当前时刻的电机接收flag
     extern   uint32_t Flag_damiao[6];
     extern uint32_t Pre_Flag_damiao[6];
-    
+
 extern motor_measure_t motor_data[33];
 
 extern void can_init(void);
 
-extern uint8_t fdcanx_send_data(FDCAN_HandleTypeDef *hfdcan, uint16_t id, uint8_t *data, uint32_t len);
-extern uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan,	FDCAN_RxHeaderTypeDef *fdcan_RxHeader, uint8_t *buf);
+extern uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, uint32_t len);
+extern uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan,uint32_t RXFIFO,FDCAN_RxHeaderTypeDef *fdcan_RxHeader,uint8_t *buf);
 
 extern void get_motor_measure(motor_measure_t *ptr, uint8_t data[]);
 extern void process_motor_data(motor_measure_t *motor_data);
+
+
+
 extern void CAN1_send_current(void); // 发送电机控制电流
 extern void CAN2_send_current(void); // 发送电机控制电流
 extern void CAN3_send_current(void); // 发送电机控制电流

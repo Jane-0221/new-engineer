@@ -284,7 +284,6 @@ void Motor_control_Task(void *argument)
       DJIMotor_send_current();
     if (Global.Chssis.input.reset != 1)
       HAL_IWDG_Refresh(&hiwdg1);
-    // fdcanx_send_data(&hfdcan1,0x200,can_data,8);
     osDelay(1);
   }
   /* USER CODE END Motor_control_Task */

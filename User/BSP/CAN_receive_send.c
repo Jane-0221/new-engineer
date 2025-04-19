@@ -12,9 +12,17 @@
 #include "can_receive_send.h"
 #include "motor.h"
 #include "supercup.h"
-
+#include "dm4310_drv.h"
+#include "string.h"
+/**/
+FDCAN_RxHeaderTypeDef RxHeader1;
+uint8_t g_Can1RxData[64];
 float daibaoshan[3];
-
+motor_measure_t motor_data[33];
+uint32_t Flag_damiao[6] ={ 0};
+//前一时刻的电机接收flag
+uint32_t Pre_Flag_damiao [6] ={ 0};
+/**/
 // CAN寄存器及控制器
 extern FDCAN_HandleTypeDef hfdcan1;
 extern FDCAN_HandleTypeDef hfdcan2;
@@ -50,6 +58,16 @@ void can_init(void)
   HAL_FDCAN_ActivateNotification(&hfdcan3, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
   HAL_FDCAN_Start(&hfdcan3);
 }
+//damiao
+void get_motor_measure(motor_measure_t *ptr, uint8_t data[])
+{
+  (ptr)->last_ecd = (ptr)->ecd;
+  (ptr)->ecd = (uint16_t)((data)[0] << 8 | (data)[1]);
+  (ptr)->speed_rpm = (uint16_t)((data)[2] << 8 | (data)[3]);
+  (ptr)->given_current = (uint16_t)((data)[4] << 8 | (data)[5]);
+  (ptr)->temperate = (data)[6];
+}
+
 
 /**
 ************************************************************************
@@ -62,23 +80,55 @@ void can_init(void)
 * @details:    	发送数据
 ************************************************************************
 **/
-uint8_t fdcanx_send_data(FDCAN_HandleTypeDef *hfdcan, uint16_t id, uint8_t *data, uint32_t len)
+//原来的没有用，所有改了
+uint8_t canx_send_data(FDCAN_HandleTypeDef *hcan, uint16_t id, uint8_t *data, uint32_t len)
 {
-  FDCAN_TxHeaderTypeDef TxHeader;
+	FDCAN_TxHeaderTypeDef TxHeader;
 
-  TxHeader.Identifier = id;
-  TxHeader.IdType = FDCAN_STANDARD_ID;              // 标准ID
-  TxHeader.TxFrameType = FDCAN_DATA_FRAME;          // 数据帧
-  TxHeader.DataLength = FDCAN_DLC_BYTES_8;          // 发送数据长度
-  TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;  // 设置错误状态指示
-  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;           // 不开启可变波特率
-  TxHeader.FDFormat = FDCAN_CLASSIC_CAN;            // 普通CAN格式
-  TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS; // 用于发送事件FIFO控制, 不存储
-  TxHeader.MessageMarker = 0x00;                    // 用于复制到TX EVENT FIFO的消息Maker来识别消息状态，范围0到0xFF
+	TxHeader.Identifier = id;                 // CAN ID
+  TxHeader.IdType =  FDCAN_STANDARD_ID ;        
+  TxHeader.TxFrameType = FDCAN_DATA_FRAME;  
+  if(len<=8)	
+	{
+	  TxHeader.DataLength =FDCAN_DLC_BYTES_8;     // 发送长度：8byte
+	}
+	else  if(len==12)	
+	{
+	   TxHeader.DataLength =FDCAN_DLC_BYTES_12;
+	}
+	else  if(len==16)	
+	{
+	  TxHeader.DataLength =FDCAN_DLC_BYTES_16;
+	
+	}
+  else  if(len==20)
+	{
+		TxHeader.DataLength =FDCAN_DLC_BYTES_20;
+	}		
+	else  if(len==24)	
+	{
+	 TxHeader.DataLength =FDCAN_DLC_BYTES_24;	
+	}else  if(len==48)
+	{
+	 TxHeader.DataLength =FDCAN_DLC_BYTES_48;
+	}else  if(len==64)
+   {
+		 TxHeader.DataLength =FDCAN_DLC_BYTES_64;
+	 }
+											
+	TxHeader.ErrorStateIndicator =  FDCAN_ESI_ACTIVE;
+  TxHeader.BitRateSwitch = FDCAN_BRS_OFF;//比特率切换关闭，不适用于经典CAN
+  TxHeader.FDFormat =  FDCAN_CLASSIC_CAN;            // CANFD
+  TxHeader.TxEventFifoControl =  FDCAN_NO_TX_EVENTS;  
+  TxHeader.MessageMarker = 0x00;//消息标记
 
-  if (HAL_FDCAN_AddMessageToTxFifoQ(hfdcan, &TxHeader, data) != HAL_OK)
-    return 1; // 发送
-  return 0;
+   // 发送CAN指令
+  if(HAL_FDCAN_AddMessageToTxFifoQ(hcan, &TxHeader, data) != HAL_OK)
+  {
+        // 发送失败处理
+       Error_Handler();      
+  }
+	 return 0;
 }
 
 /**
@@ -90,11 +140,14 @@ uint8_t fdcanx_send_data(FDCAN_HandleTypeDef *hfdcan, uint16_t id, uint8_t *data
 * @details:    	接收数据
 ************************************************************************
 **/
-uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan, FDCAN_RxHeaderTypeDef *fdcan_RxHeader, uint8_t *buf)
-{
-  if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, fdcan_RxHeader, buf) != HAL_OK)
-    return 0; // 接收数据
-  return fdcan_RxHeader->DataLength >> 16;
+//因为源代码没用这个函数，所以直接全改了
+int a;
+uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan,uint32_t RXFIFO,FDCAN_RxHeaderTypeDef *fdcan_RxHeader,uint8_t *buf)
+{	
+  if(HAL_FDCAN_GetRxMessage(hfdcan,RXFIFO,fdcan_RxHeader,buf)!=HAL_OK)
+		a = 1;
+		//return 0;//接收数据
+  return fdcan_RxHeader->DataLength>>16;	
 }
 
 /**
@@ -103,6 +156,19 @@ uint8_t fdcanx_receive(FDCAN_HandleTypeDef *hfdcan, FDCAN_RxHeaderTypeDef *fdcan
  * @param hfdcan 
  * @param RxFifo0ITs 
  */
+/*编码器累加计算*/
+void process_motor_data(motor_measure_t *motor_data)
+{
+  // 计算总圈数
+  if (motor_data->last_ecd > 7000 && motor_data->ecd < 1000)
+    motor_data->ecd_cnt += ((ECD_MAX - motor_data->last_ecd) + motor_data->ecd);
+  else if (motor_data->last_ecd < 1000 && motor_data->ecd > 7000)
+    motor_data->ecd_cnt -= ((ECD_MAX - motor_data->ecd) + motor_data->last_ecd);
+  else
+    motor_data->ecd_cnt += (motor_data->ecd - motor_data->last_ecd);
+}
+
+
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
 
@@ -118,6 +184,57 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     //电机帧
     DJIMotor_decode_candata(hfdcan, rx_header.Identifier, rx_data);
   }
+//达妙
+if(hfdcan->Instance == FDCAN1)
+		{			
+			memset(g_Can1RxData, 0, sizeof(g_Can1RxData));
+			fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);
+       	switch(RxHeader1.Identifier)
+				{
+					case 1 :dm8009_fbdata(&arm_motor[Motor1], g_Can1RxData,RxHeader1.DataLength);break;
+					case CAN_ID1 :get_motor_measure(&motor_data[RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+										process_motor_data(&motor_data[RxHeader1.Identifier - CAN_ID1]);Flag_damiao[1] += 1;break;
+          case 0x202 :get_motor_measure(&motor_data[RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+						        process_motor_data(&motor_data[RxHeader1.Identifier - CAN_ID1]);break;
+          case 0x203 :get_motor_measure(&motor_data[RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+						        process_motor_data(&motor_data[RxHeader1.Identifier - CAN_ID1]);break;
+          case 0x204 :get_motor_measure(&motor_data[RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+						        process_motor_data(&motor_data[RxHeader1.Identifier - CAN_ID1]);break;
+	        case 0x205 :get_motor_measure(&motor_data[RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+										process_motor_data(&motor_data[RxHeader1.Identifier - CAN_ID1]);break;
+					 case 0x206 :get_motor_measure(&motor_data[RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+										process_motor_data(&motor_data[RxHeader1.Identifier - CAN_ID1]);break;
+					 case 0x207 :get_motor_measure(&motor_data[RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+										process_motor_data(&motor_data[RxHeader1.Identifier - CAN_ID1]);break;
+					default:break;
+				}				
+   	}
+		else if(hfdcan->Instance == FDCAN2)
+		{
+			memset(g_Can1RxData, 0, sizeof(g_Can1RxData));
+			fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);							
+			
+    	switch(RxHeader1.Identifier)
+				{
+					case 2 :dm10010l_fbdata(&arm_motor[Motor2], g_Can1RxData,RxHeader1.DataLength); Flag_damiao[2] += 1;break;     
+					case 3 :dm4310_fbdata(&arm_motor[Motor3], g_Can1RxData,RxHeader1.DataLength);   Flag_damiao[3] += 1;break;
+					case 4 :dm4310_fbdata(&arm_motor[Motor4], g_Can1RxData,RxHeader1.DataLength);   Flag_damiao[4] += 1;break;
+					case 5 :dm4310_fbdata(&arm_motor[Motor5], g_Can1RxData,RxHeader1.DataLength);   Flag_damiao[5] += 1;break;
+					case 0x206 :get_motor_measure(&motor_data[11+RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+										process_motor_data(&motor_data[11+RxHeader1.Identifier - CAN_ID1]);break;
+					default:break;
+				}				
+		}
+		else if(hfdcan->Instance == FDCAN3)
+		{
+			memset(g_Can1RxData, 0, sizeof(g_Can1RxData));
+			fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);							
+			get_motor_measure(&motor_data[22+RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
+			process_motor_data(&motor_data[22+RxHeader1.Identifier - CAN_ID1]);
+		}
+
+
+
 }
 
 /**
