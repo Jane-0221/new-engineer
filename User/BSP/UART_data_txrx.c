@@ -105,7 +105,8 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
   if (huart == &huart5)
   {
-    DT7_decode_data(UART5_data.rev_data);
+    //DT7_decode_data(UART5_data.rev_data);
+    update_sbus(UART5_data.rev_data,&SBUS_CH);
     HAL_UARTEx_ReceiveToIdle_DMA(huart, UART5_data.rev_data, UART_BUFFER_SIZE);
     __HAL_DMA_DISABLE_IT(huart->hdmarx, DMA_IT_HT);
   }

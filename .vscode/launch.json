@@ -29,6 +29,7 @@
       "request": "launch",
       "type": "cortex-debug",
       "device": "${workspaceRoot}\\debug\\STM32H723VGTx",
+      
       "svdFile": "${workspaceRoot}\\debug\\STM32H723.svd",
       "servertype": "openocd",
       "configFiles": [
