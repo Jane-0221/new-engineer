@@ -135,7 +135,7 @@ User/Software/Power_switch.c \
 User/Software/Shoot.c \
 User/Software/ui.c \
 User/Software/music.c \
-
+User/Software/WFLY_ET16_remote_control.c \
 
 
 

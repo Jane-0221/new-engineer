@@ -241,7 +241,7 @@ void Gimbal_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    Gimbal_control();
+    //Gimbal_control();
     osDelay(1);
   }
   /* USER CODE END Gimbal_Task */

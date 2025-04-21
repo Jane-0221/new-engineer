@@ -28,8 +28,8 @@ typedef PACKED_STRUCT()
 {
     struct
     {
-        int16_t ch[5]; // 摇杆数据
-        char s[2];     // 拨杆数据
+        uint16_t ch[5]; // 摇杆数据
+        int16_t s[9];     // 拨杆数据
     } rc;
     struct
     {
@@ -48,7 +48,7 @@ typedef PACKED_STRUCT()
         uint8_t custom_data[30]; // 自定义控制器数据
     } custom_robot;
 } RC_ctrl_t;
-
+ extern  RC_ctrl_t RC_data;
 
 /*外部函数调用*/
 void DT7toRCdata();

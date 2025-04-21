@@ -44,9 +44,11 @@ build/Chassis.o: User/Software/Chassis.c User/Software/Chassis.h \
  User/BSP/UART_data_txrx.h Core/Inc/main.h Core/Inc/usart.h \
  Core/Inc/struct_typedef.h Drivers/UI/ui_Omni_Shoot_Low_0.h \
  Drivers/UI/ui_interface.h Drivers/UI/ui_Omni_Chassis_high_0.h \
- Drivers/UI/ui_Omni_Shoot_static_0.h User/Hardware/referee_system.h \
+ Drivers/UI/ui_Omni_Shoot_static_0.h User/Hardware/IMU_updata.h \
+ Algorithm/Kalman_Filter_c.h User/Hardware/referee_system.h \
  User/Hardware/referee_system_protocol.h Algorithm/fifo.h \
- User/Hardware/supercup.h User/BSP/stm32_time.h Algorithm/pid.h \
+ User/Hardware/supercup.h User/BSP/stm32_time.h \
+ User/Software/remote_control.h Algorithm/pid.h \
  Algorithm/ramp_generator.h
 User/Software/Chassis.h:
 User/BSP/CAN_receive_send.h:
@@ -107,10 +109,13 @@ Drivers/UI/ui_Omni_Shoot_Low_0.h:
 Drivers/UI/ui_interface.h:
 Drivers/UI/ui_Omni_Chassis_high_0.h:
 Drivers/UI/ui_Omni_Shoot_static_0.h:
+User/Hardware/IMU_updata.h:
+Algorithm/Kalman_Filter_c.h:
 User/Hardware/referee_system.h:
 User/Hardware/referee_system_protocol.h:
 Algorithm/fifo.h:
 User/Hardware/supercup.h:
 User/BSP/stm32_time.h:
+User/Software/remote_control.h:
 Algorithm/pid.h:
 Algorithm/ramp_generator.h:

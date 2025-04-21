@@ -40,16 +40,24 @@ uint8_t Wait(uint8_t key)
  * @brief 遥控数据来源于DT7遥控器
  *
  */
-void DT7toRCdata()
+void DT7toRCdata()//
 {
     /*遥控器数据*/
+    //有问题，直接改成原来的
     RC_data.rc.ch[0] = DT7_data.rc.ch[0];
-    RC_data.rc.ch[1] = DT7_data.rc.ch[1];
-    RC_data.rc.ch[2] = DT7_data.rc.ch[2];
-    RC_data.rc.ch[3] = DT7_data.rc.ch[3];
-    RC_data.rc.ch[4] = DT7_data.rc.ch[4];
+    RC_data.rc.ch[1] = SBUS_CH.CH1;
+    RC_data.rc.ch[2] = SBUS_CH.CH2;
+    RC_data.rc.ch[3] = SBUS_CH.CH3;
+    RC_data.rc.ch[4] = SBUS_CH.CH4;
     RC_data.rc.s[0] = DT7_data.rc.s[0];
-    RC_data.rc.s[1] = DT7_data.rc.s[1];
+    RC_data.rc.s[1] = SBUS_CH.CH5;
+    RC_data.rc.s[2] = SBUS_CH.CH6;
+    RC_data.rc.s[3] = SBUS_CH.CH7;
+    RC_data.rc.s[4] = SBUS_CH.CH8;
+    RC_data.rc.s[5] = SBUS_CH.CH9;
+    RC_data.rc.s[6] = SBUS_CH.CH10;
+    RC_data.rc.s[7] = SBUS_CH.CH11;
+    RC_data.rc.s[8] = SBUS_CH.CH12;
     /*键鼠数据 */
     RC_data.key.v = DT7_data.key.v;
     RC_data.mouse.x = DT7_data.mouse.x;
@@ -60,12 +68,6 @@ void DT7toRCdata()
 }
 
 
-
-
-
-
-
-
 /**
  * @brief 遥控器控制
  *
@@ -73,7 +75,7 @@ void DT7toRCdata()
 void RC_control()
 {
     /*控制模式选择*/
-    if (switch_is_down(RC_R_SW) && switch_is_down(RC_L_SW)) // 左下右下，锁死
+    if (RC_data.rc.s[1]==RC_data.rc.s[2]==RC_data.rc.s[3]==RC_data.rc.s[4]==1695) // 左下右下，锁死
         Global.Control.mode = LOCK;
     else if (switch_is_up(RC_R_SW) && switch_is_up(RC_L_SW)) // 左上右上，键盘控制
         Global.Control.mode = KEY;
@@ -82,52 +84,16 @@ void RC_control()
     if (Global.Control.mode != RC)
         return;
     /*底盘控制*/
-    if (switch_is_up(RC_R_SW) && (switch_is_mid(RC_L_SW) || switch_is_up(RC_L_SW))) // 右上,左中||左上，正小陀螺
-        Global.Chssis.mode = SPIN_P;
-    else if (switch_is_down(RC_L_SW) && (switch_is_mid(RC_R_SW) || switch_is_up(RC_R_SW))) // 左下,右中||右上，正小陀螺
-        Global.Chssis.mode = SPIN_N;
-    else
-        Global.Chssis.mode = FLOW;
-    Chassis_set_x(RC_data.rc.ch[0] / 40.0f);
-    Chassis_set_y(RC_data.rc.ch[1] / 40.0f);
-    /*云台控制*/
-    if (Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE)
-    {
-        Gimbal_set_pitch_angle(Global.Gimbal.input.pitch + RC_data.rc.ch[3] / 2000.0f);
-        Gimbal_set_yaw_angle(Global.Gimbal.input.yaw - RC_data.rc.ch[2] / 1000.0f);
-    }
-    /*自瞄控制*/
-    if (switch_is_down(RC_R_SW) && (switch_is_mid(RC_L_SW) || switch_is_up(RC_L_SW))) // 右下,左中||左上，自瞄
-        Global.Auto.mode = CAR;
-    else
-        Global.Auto.mode = NONE;
-    /*发弹机构控制*/
-    if (switch_is_up(RC_L_SW) && (switch_is_mid(RC_R_SW) || switch_is_down(RC_R_SW))) // 左上，右中||右下，开启摩擦轮
-        Global.Shoot.shoot_mode = READY;
-    else
-        Global.Shoot.shoot_mode = CLOSE;
-    if (RC_data.rc.ch[4] >= 300 &&
-        RC_data.rc.ch[4] <= 660 &&
-        Global.Shoot.shoot_mode != CLOSE &&
-        (Global.Auto.mode == NONE ||
-         Global.Auto.input.fire == 1)) // 滚轮最下头，高速发弹，若自瞄打开，发弹标志位置1允许发弹
-        Global.Shoot.tigger_mode = HIGH;
-    else if (RC_data.rc.ch[4] >= 50 &&
-             RC_data.rc.ch[4] <= 300 &&
-             Global.Shoot.shoot_mode != CLOSE &&
-             (Global.Auto.mode == NONE ||
-              Global.Auto.input.fire == 1)) // 滚轮中部，低速发弹,若自瞄打开，发弹标志位置1允许发弹
-        Global.Shoot.tigger_mode = LOW;
-    else if (RC_data.rc.ch[4] > 660 &&
-             Global.Shoot.shoot_mode != CLOSE)
-    {
-        Global.Shoot.shoot_mode = DEBUG_SHOOT;
-        Global.Shoot.tigger_mode = DEBUG_SHOOT;
-    }
-    else
-        Global.Shoot.tigger_mode = TRIGGER_CLOSE;
-}
+    Global.Chssis.mode = FLOW;
+    
+    Chassis_set_x(RC_data.rc.ch[1] / 40.0f);
+    Chassis_set_y(RC_data.rc.ch[2] / 40.0f);
 
+ 
+
+
+}
+//
 void Keyboard_mouse_control(void)
 {
     if (Global.Control.mode != KEY)
