@@ -168,7 +168,7 @@ void process_motor_data(motor_measure_t *motor_data)
     motor_data->ecd_cnt += (motor_data->ecd - motor_data->last_ecd);
 }
 
-
+//can接收回调  
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
 
@@ -183,9 +183,9 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       Supercup_decode_candata(hfdcan,rx_data);
     //电机帧
     DJIMotor_decode_candata(hfdcan, rx_header.Identifier, rx_data);
-  }
+  
 //达妙
-if(hfdcan->Instance == FDCAN1)
+        if(hfdcan->Instance == FDCAN1)
 		{			
 			memset(g_Can1RxData, 0, sizeof(g_Can1RxData));
 			fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);
@@ -225,14 +225,14 @@ if(hfdcan->Instance == FDCAN1)
 					default:break;
 				}				
 		}
-		else if(hfdcan->Instance == FDCAN3)
+		      else if(hfdcan->Instance == FDCAN3)
 		{
 			memset(g_Can1RxData, 0, sizeof(g_Can1RxData));
 			fdcanx_receive(hfdcan,FDCAN_RX_FIFO0,&RxHeader1,g_Can1RxData);							
 			get_motor_measure(&motor_data[22+RxHeader1.Identifier - CAN_ID1], g_Can1RxData);
 			process_motor_data(&motor_data[22+RxHeader1.Identifier - CAN_ID1]);
 		}
-
+  }
 
 
 }

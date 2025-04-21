@@ -104,7 +104,9 @@
     "usbd_cdc_if.h": "c",
     "dm4310_drv.h": "c",
     "arm_math.h": "c",
-    "math.h": "c"
+    "math.h": "c",
+    "dm_arm.h": "c",
+    "wfly_et16_remote_control.h": "c"
   },
   "files.encoding": "gbk",
   "makefile.makefilePath": "D:\\RM\\code\\25-EE-code\\Makefile",

@@ -1,0 +1,355 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"dm_arm.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/dm_arm.c"
+  19              		.global	DM_Status
+  20              		.section	.bss.DM_Status,"aw",%nobits
+  21              		.align	2
+  24              	DM_Status:
+  25 0000 00000000 		.space	6
+  25      0000
+  26              		.section	.text.Arm_Init,"ax",%progbits
+  27              		.align	1
+  28              		.global	Arm_Init
+  29              		.syntax unified
+  30              		.thumb
+  31              		.thumb_func
+  33              	Arm_Init:
+  34              	.LFB144:
+   1:User/Hardware/dm_arm.c **** #include "dm_arm.h"
+   2:User/Hardware/dm_arm.c **** 
+   3:User/Hardware/dm_arm.c **** Motor_DM_Status DM_Status[6] = {Motor_DM_Status_DISABLE};
+   4:User/Hardware/dm_arm.c **** void Arm_Init()
+   5:User/Hardware/dm_arm.c **** {
+  35              		.loc 1 5 1
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 0
+  38              		@ frame_needed = 1, uses_anonymous_args = 0
+  39 0000 80B5     		push	{r7, lr}
+  40              	.LCFI0:
+  41              		.cfi_def_cfa_offset 8
+  42              		.cfi_offset 7, -8
+  43              		.cfi_offset 14, -4
+  44 0002 00AF     		add	r7, sp, #0
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_register 7
+   6:User/Hardware/dm_arm.c ****   arm_motor_init(&arm_motor[Motor1], 0x01, POS_MODE); // 设置ID和控制模式
+  47              		.loc 1 6 3
+  48 0004 4FF48072 		mov	r2, #256
+  49 0008 0121     		movs	r1, #1
+  50 000a 3148     		ldr	r0, .L2
+  51 000c FFF7FEFF 		bl	arm_motor_init
+   7:User/Hardware/dm_arm.c ****   arm_motor_init(&arm_motor[Motor2], 0x02, POS_MODE); // 设置ID和控制模式
+  52              		.loc 1 7 3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 2
+
+
+  53 0010 4FF48072 		mov	r2, #256
+  54 0014 0221     		movs	r1, #2
+  55 0016 2F48     		ldr	r0, .L2+4
+  56 0018 FFF7FEFF 		bl	arm_motor_init
+   8:User/Hardware/dm_arm.c ****   arm_motor_init(&arm_motor[Motor3], 0x03, POS_MODE); // 设置ID和控制模式
+  57              		.loc 1 8 3
+  58 001c 4FF48072 		mov	r2, #256
+  59 0020 0321     		movs	r1, #3
+  60 0022 2D48     		ldr	r0, .L2+8
+  61 0024 FFF7FEFF 		bl	arm_motor_init
+   9:User/Hardware/dm_arm.c ****   arm_motor_init(&arm_motor[Motor4], 0x04, POS_MODE); // 设置ID和控制模式
+  62              		.loc 1 9 3
+  63 0028 4FF48072 		mov	r2, #256
+  64 002c 0421     		movs	r1, #4
+  65 002e 2B48     		ldr	r0, .L2+12
+  66 0030 FFF7FEFF 		bl	arm_motor_init
+  10:User/Hardware/dm_arm.c ****   arm_motor_init(&arm_motor[Motor5], 0x05, POS_MODE); // 设置ID和控制模式
+  67              		.loc 1 10 3
+  68 0034 4FF48072 		mov	r2, #256
+  69 0038 0521     		movs	r1, #5
+  70 003a 2948     		ldr	r0, .L2+16
+  71 003c FFF7FEFF 		bl	arm_motor_init
+  11:User/Hardware/dm_arm.c **** 
+  12:User/Hardware/dm_arm.c ****   enable_motor_mode(&hfdcan1, 0x01, POS_MODE);
+  72              		.loc 1 12 3
+  73 0040 4FF48072 		mov	r2, #256
+  74 0044 0121     		movs	r1, #1
+  75 0046 2748     		ldr	r0, .L2+20
+  76 0048 FFF7FEFF 		bl	enable_motor_mode
+  13:User/Hardware/dm_arm.c ****   enable_motor_mode(&hfdcan2, 0x02, POS_MODE);
+  77              		.loc 1 13 3
+  78 004c 4FF48072 		mov	r2, #256
+  79 0050 0221     		movs	r1, #2
+  80 0052 2548     		ldr	r0, .L2+24
+  81 0054 FFF7FEFF 		bl	enable_motor_mode
+  14:User/Hardware/dm_arm.c ****   enable_motor_mode(&hfdcan2, 0x03, POS_MODE);
+  82              		.loc 1 14 3
+  83 0058 4FF48072 		mov	r2, #256
+  84 005c 0321     		movs	r1, #3
+  85 005e 2248     		ldr	r0, .L2+24
+  86 0060 FFF7FEFF 		bl	enable_motor_mode
+  15:User/Hardware/dm_arm.c ****   enable_motor_mode(&hfdcan2, 0x04, POS_MODE);
+  87              		.loc 1 15 3
+  88 0064 4FF48072 		mov	r2, #256
+  89 0068 0421     		movs	r1, #4
+  90 006a 1F48     		ldr	r0, .L2+24
+  91 006c FFF7FEFF 		bl	enable_motor_mode
+  16:User/Hardware/dm_arm.c ****   enable_motor_mode(&hfdcan2, 0x05, POS_MODE);
+  92              		.loc 1 16 3
+  93 0070 4FF48072 		mov	r2, #256
+  94 0074 0521     		movs	r1, #5
+  95 0076 1C48     		ldr	r0, .L2+24
+  96 0078 FFF7FEFF 		bl	enable_motor_mode
+  17:User/Hardware/dm_arm.c **** 
+  18:User/Hardware/dm_arm.c ****   // 速度
+  19:User/Hardware/dm_arm.c ****   vel_motor.vel_rootpitch = 1.0;
+  97              		.loc 1 19 27
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 3
+
+
+  98 007c 1B4B     		ldr	r3, .L2+28
+  99 007e 4FF07E52 		mov	r2, #1065353216
+ 100 0082 1A60     		str	r2, [r3]	@ float
+  20:User/Hardware/dm_arm.c ****   vel_motor.vel_rootyaw = 1.0;
+ 101              		.loc 1 20 25
+ 102 0084 194B     		ldr	r3, .L2+28
+ 103 0086 4FF07E52 		mov	r2, #1065353216
+ 104 008a 5A60     		str	r2, [r3, #4]	@ float
+  21:User/Hardware/dm_arm.c ****   vel_motor.vel_middleyaw = 1.0;
+ 105              		.loc 1 21 27
+ 106 008c 174B     		ldr	r3, .L2+28
+ 107 008e 4FF07E52 		mov	r2, #1065353216
+ 108 0092 9A60     		str	r2, [r3, #8]	@ float
+  22:User/Hardware/dm_arm.c ****   vel_motor.vel_middlerow = 1.0;
+ 109              		.loc 1 22 27
+ 110 0094 154B     		ldr	r3, .L2+28
+ 111 0096 4FF07E52 		mov	r2, #1065353216
+ 112 009a DA60     		str	r2, [r3, #12]	@ float
+  23:User/Hardware/dm_arm.c ****   vel_motor.vel_endyaw = 3.0;
+ 113              		.loc 1 23 24
+ 114 009c 134B     		ldr	r3, .L2+28
+ 115 009e 144A     		ldr	r2, .L2+32
+ 116 00a0 1A61     		str	r2, [r3, #16]	@ float
+  24:User/Hardware/dm_arm.c ****   //   vel_motor.vel_endrow = 1.0;
+  25:User/Hardware/dm_arm.c ****   // 位置
+  26:User/Hardware/dm_arm.c ****   // pos_motor.pos_endrow =0;
+  27:User/Hardware/dm_arm.c ****   pos_motor.pos_endyaw = 0;
+ 117              		.loc 1 27 24
+ 118 00a2 144B     		ldr	r3, .L2+36
+ 119 00a4 4FF00002 		mov	r2, #0
+ 120 00a8 1A61     		str	r2, [r3, #16]	@ float
+  28:User/Hardware/dm_arm.c ****   pos_motor.pos_middlerow = 0;
+ 121              		.loc 1 28 27
+ 122 00aa 124B     		ldr	r3, .L2+36
+ 123 00ac 4FF00002 		mov	r2, #0
+ 124 00b0 DA60     		str	r2, [r3, #12]	@ float
+  29:User/Hardware/dm_arm.c ****   pos_motor.pos_middleyaw = 0;
+ 125              		.loc 1 29 27
+ 126 00b2 104B     		ldr	r3, .L2+36
+ 127 00b4 4FF00002 		mov	r2, #0
+ 128 00b8 9A60     		str	r2, [r3, #8]	@ float
+  30:User/Hardware/dm_arm.c ****   pos_motor.pos_rootpitch = 0;
+ 129              		.loc 1 30 27
+ 130 00ba 0E4B     		ldr	r3, .L2+36
+ 131 00bc 4FF00002 		mov	r2, #0
+ 132 00c0 1A60     		str	r2, [r3]	@ float
+  31:User/Hardware/dm_arm.c ****   pos_motor.pos_rootyaw = 0;
+ 133              		.loc 1 31 25
+ 134 00c2 0C4B     		ldr	r3, .L2+36
+ 135 00c4 4FF00002 		mov	r2, #0
+ 136 00c8 5A60     		str	r2, [r3, #4]	@ float
+  32:User/Hardware/dm_arm.c **** }
+ 137              		.loc 1 32 1
+ 138 00ca 00BF     		nop
+ 139 00cc 80BD     		pop	{r7, pc}
+ 140              	.L3:
+ 141 00ce 00BF     		.align	2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 4
+
+
+ 142              	.L2:
+ 143 00d0 00000000 		.word	arm_motor
+ 144 00d4 10010000 		.word	arm_motor+272
+ 145 00d8 20020000 		.word	arm_motor+544
+ 146 00dc 30030000 		.word	arm_motor+816
+ 147 00e0 40040000 		.word	arm_motor+1088
+ 148 00e4 00000000 		.word	hfdcan1
+ 149 00e8 00000000 		.word	hfdcan2
+ 150 00ec 00000000 		.word	vel_motor
+ 151 00f0 00004040 		.word	1077936128
+ 152 00f4 00000000 		.word	pos_motor
+ 153              		.cfi_endproc
+ 154              	.LFE144:
+ 156              		.section	.text.Arm_motor4,"ax",%progbits
+ 157              		.align	1
+ 158              		.global	Arm_motor4
+ 159              		.syntax unified
+ 160              		.thumb
+ 161              		.thumb_func
+ 163              	Arm_motor4:
+ 164              	.LFB145:
+  33:User/Hardware/dm_arm.c **** void Arm_motor4()
+  34:User/Hardware/dm_arm.c **** {
+ 165              		.loc 1 34 1
+ 166              		.cfi_startproc
+ 167              		@ args = 0, pretend = 0, frame = 0
+ 168              		@ frame_needed = 1, uses_anonymous_args = 0
+ 169 0000 80B5     		push	{r7, lr}
+ 170              	.LCFI2:
+ 171              		.cfi_def_cfa_offset 8
+ 172              		.cfi_offset 7, -8
+ 173              		.cfi_offset 14, -4
+ 174 0002 00AF     		add	r7, sp, #0
+ 175              	.LCFI3:
+ 176              		.cfi_def_cfa_register 7
+  35:User/Hardware/dm_arm.c **** 
+  36:User/Hardware/dm_arm.c ****   // 判断该时间段内是否接收过电机数据
+  37:User/Hardware/dm_arm.c ****   if (Flag_damiao[4] == Pre_Flag_damiao[4])
+ 177              		.loc 1 37 18
+ 178 0004 1B4B     		ldr	r3, .L7
+ 179 0006 1A69     		ldr	r2, [r3, #16]
+ 180              		.loc 1 37 40
+ 181 0008 1B4B     		ldr	r3, .L7+4
+ 182 000a 1B69     		ldr	r3, [r3, #16]
+ 183              		.loc 1 37 6
+ 184 000c 9A42     		cmp	r2, r3
+ 185 000e 07D1     		bne	.L5
+  38:User/Hardware/dm_arm.c ****   {
+  39:User/Hardware/dm_arm.c ****     // 电机断开连接
+  40:User/Hardware/dm_arm.c ****     DM_Status[4] = Motor_DM_Status_DISABLE;
+ 186              		.loc 1 40 18
+ 187 0010 1A4B     		ldr	r3, .L7+8
+ 188 0012 0022     		movs	r2, #0
+ 189 0014 1A71     		strb	r2, [r3, #4]
+  41:User/Hardware/dm_arm.c ****     // 错误清除，重新使能
+  42:User/Hardware/dm_arm.c ****     // CAN_Send_Clear_Error(&hfdcan2,0x04);
+  43:User/Hardware/dm_arm.c ****     CAN_Send_Enter(&hfdcan2, 0x04);
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 5
+
+
+ 190              		.loc 1 43 5
+ 191 0016 0421     		movs	r1, #4
+ 192 0018 1948     		ldr	r0, .L7+12
+ 193 001a FFF7FEFF 		bl	CAN_Send_Enter
+ 194 001e 02E0     		b	.L6
+ 195              	.L5:
+  44:User/Hardware/dm_arm.c ****   }
+  45:User/Hardware/dm_arm.c ****   else
+  46:User/Hardware/dm_arm.c ****   {
+  47:User/Hardware/dm_arm.c ****     // 电机保持连接
+  48:User/Hardware/dm_arm.c ****     DM_Status[4] = Motor_DM_Status_ENABLE;
+ 196              		.loc 1 48 18
+ 197 0020 164B     		ldr	r3, .L7+8
+ 198 0022 0122     		movs	r2, #1
+ 199 0024 1A71     		strb	r2, [r3, #4]
+ 200              	.L6:
+  49:User/Hardware/dm_arm.c ****   }
+  50:User/Hardware/dm_arm.c **** 
+  51:User/Hardware/dm_arm.c ****   // 正常数据发送
+  52:User/Hardware/dm_arm.c ****   set_DM_mode(Motor4, POS_MODE);
+ 201              		.loc 1 52 3
+ 202 0026 4FF48071 		mov	r1, #256
+ 203 002a 0320     		movs	r0, #3
+ 204 002c FFF7FEFF 		bl	set_DM_mode
+  53:User/Hardware/dm_arm.c ****   set_DM_pos_vel(pos_motor.pos_middlerow, vel_motor.vel_middlerow, Motor4);
+ 205              		.loc 1 53 3
+ 206 0030 144B     		ldr	r3, .L7+16
+ 207 0032 D3ED037A 		vldr.32	s15, [r3, #12]
+ 208 0036 144B     		ldr	r3, .L7+20
+ 209 0038 93ED037A 		vldr.32	s14, [r3, #12]
+ 210 003c 0320     		movs	r0, #3
+ 211 003e F0EE470A 		vmov.f32	s1, s14
+ 212 0042 B0EE670A 		vmov.f32	s0, s15
+ 213 0046 FFF7FEFF 		bl	set_DM_pos_vel
+  54:User/Hardware/dm_arm.c ****   pos_speed_ctrl(&hfdcan2, 0x04, arm_motor[Motor4].ctrl.pos_set, arm_motor[Motor4].ctrl.vel_set);
+ 214              		.loc 1 54 3
+ 215 004a 104B     		ldr	r3, .L7+24
+ 216 004c D3EDDB7A 		vldr.32	s15, [r3, #876]
+ 217 0050 0E4B     		ldr	r3, .L7+24
+ 218 0052 93EDDC7A 		vldr.32	s14, [r3, #880]
+ 219 0056 F0EE470A 		vmov.f32	s1, s14
+ 220 005a B0EE670A 		vmov.f32	s0, s15
+ 221 005e 0421     		movs	r1, #4
+ 222 0060 0748     		ldr	r0, .L7+12
+ 223 0062 FFF7FEFF 		bl	pos_speed_ctrl
+  55:User/Hardware/dm_arm.c **** 
+  56:User/Hardware/dm_arm.c ****   Pre_Flag_damiao[4] = Flag_damiao[4];
+ 224              		.loc 1 56 35
+ 225 0066 034B     		ldr	r3, .L7
+ 226 0068 1B69     		ldr	r3, [r3, #16]
+ 227              		.loc 1 56 22
+ 228 006a 034A     		ldr	r2, .L7+4
+ 229 006c 1361     		str	r3, [r2, #16]
+  57:User/Hardware/dm_arm.c **** }...
+ 230              		.loc 1 57 1
+ 231 006e 00BF     		nop
+ 232 0070 80BD     		pop	{r7, pc}
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 6
+
+
+ 233              	.L8:
+ 234 0072 00BF     		.align	2
+ 235              	.L7:
+ 236 0074 00000000 		.word	Flag_damiao
+ 237 0078 00000000 		.word	Pre_Flag_damiao
+ 238 007c 00000000 		.word	DM_Status
+ 239 0080 00000000 		.word	hfdcan2
+ 240 0084 00000000 		.word	pos_motor
+ 241 0088 00000000 		.word	vel_motor
+ 242 008c 00000000 		.word	arm_motor
+ 243              		.cfi_endproc
+ 244              	.LFE145:
+ 246              		.text
+ 247              	.Letext0:
+ 248              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 249              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 250              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 251              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 252              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 253              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
+ 254              		.file 8 "Core/Inc/fdcan.h"
+ 255              		.file 9 "User/BSP/can_receive_send.h"
+ 256              		.file 10 "User/Hardware/dm4310_drv.h"
+ 257              		.file 11 "User/Hardware/dm_arm.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 dm_arm.c
+C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:24     .bss.DM_Status:00000000 DM_Status
+C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:21     .bss.DM_Status:00000000 $d
+C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:27     .text.Arm_Init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:33     .text.Arm_Init:00000000 Arm_Init
+C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:143    .text.Arm_Init:000000d0 $d
+C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:157    .text.Arm_motor4:00000000 $t
+C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:163    .text.Arm_motor4:00000000 Arm_motor4
+C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:236    .text.Arm_motor4:00000074 $d
+
+UNDEFINED SYMBOLS
+arm_motor_init
+enable_motor_mode
+arm_motor
+hfdcan1
+hfdcan2
+vel_motor
+pos_motor
+CAN_Send_Enter
+set_DM_mode
+set_DM_pos_vel
+pos_speed_ctrl
+Flag_damiao
+Pre_Flag_damiao

@@ -188,6 +188,9 @@ typedef struct
 	float tor_endrow;
 }TOR_Motor;
 extern Arm_Motor_t arm_motor[num];
+extern POS_Motor pos_motor;
+extern VEL_Motor vel_motor;
+extern TOR_Motor tor_motor;
 
 extern float Hex_To_Float(uint32_t *Byte,int num);//十六进制到浮点数
 extern uint32_t FloatTohex(float HEX);//浮点数到十六进制转换

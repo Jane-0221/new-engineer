@@ -58,10 +58,12 @@ build/main.o: Core/Src/main.c Core/Inc/main.h \
  User/Hardware/IMU_updata.h Algorithm/Kalman_Filter_c.h \
  User/Hardware/LED.h User/BSP/Power_switch.h \
  User/Hardware/referee_system.h User/Hardware/referee_system_protocol.h \
- Algorithm/fifo.h User/Software/music.h User/Hardware/buzzer.h \
+ Algorithm/fifo.h User/Hardware/dm_arm.h User/BSP/can_receive_send.h \
+ User/Hardware/dm4310_drv.h User/Software/music.h User/Hardware/buzzer.h \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  User/Software/Chassis.h User/Software/Gimbal.h User/Software/shoot.h \
- User/Software/Auto_control.h User/Software/Global_status.h
+ User/Software/WFLY_ET16_remote_control.h User/Software/Auto_control.h \
+ User/Software/Global_status.h
 Core/Inc/main.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
 Core/Inc/stm32h7xx_hal_conf.h:
@@ -140,11 +142,15 @@ User/BSP/Power_switch.h:
 User/Hardware/referee_system.h:
 User/Hardware/referee_system_protocol.h:
 Algorithm/fifo.h:
+User/Hardware/dm_arm.h:
+User/BSP/can_receive_send.h:
+User/Hardware/dm4310_drv.h:
 User/Software/music.h:
 User/Hardware/buzzer.h:
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 User/Software/Chassis.h:
 User/Software/Gimbal.h:
 User/Software/shoot.h:
+User/Software/WFLY_ET16_remote_control.h:
 User/Software/Auto_control.h:
 User/Software/Global_status.h:

@@ -39,9 +39,11 @@
 #include "supercup.h"
 #include "LED.h"
 #include <cmsis_os2.h>
-
+#include"dm_arm.h"
 #include "iwdg.h"
 #include "buzzer.h"
+#include "WFLY_ET16_remote_control.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -222,6 +224,9 @@ void Remote_control_Task(void *argument)
   {
     DT7toRCdata();
     RC_control();
+    //¹¤³Ì
+    arm_remoto_control();
+    Arm_motor4();
     Keyboard_mouse_control();
     osDelay(1);
   }
@@ -260,6 +265,7 @@ void Chassis_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
+   
     Chassis_move();
     Supercup_send_data();
     osDelay(1);
@@ -345,17 +351,12 @@ void Referee_Task(void *argument)
 void Log_and_debug_Task(void *argument)
 {
   /* USER CODE BEGIN Log_and_debug_Task */
-  LEDshowcolor(RED);
-  osDelay(500);
-  LEDshowcolor(BLUE);
-  osDelay(500);
-  LEDshowcolor(GREEN);
 
   /* Infinite loop */
   for (;;)
   {
     // Music_play(melody);
-    printf("hello\n");
+   // printf("hello\n");
     osDelay(500);
     LEDshowcolor(RED);
     osDelay(500);

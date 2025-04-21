@@ -41,11 +41,12 @@
 #include "LED.h"
 #include "Power_switch.h"
 #include "referee_system.h"
-
+#include"dm_arm.h"
 #include "music.h"
 #include "Chassis.h"
 #include "Gimbal.h"
 #include "shoot.h"
+#include "WFLY_ET16_remote_control.h"
 #include "Auto_control.h"
 #include "Global_status.h"
 /* USER CODE END Includes */
@@ -146,6 +147,7 @@ int main(void)
   Music_init();
   Chassis_init();
   Gimbal_init();
+  Arm_Init();
   Shoot_init();
   HAL_IWDG_Refresh(&hiwdg1);
   // OSPI_W25Qxx_Init(); // 锟斤拷始锟斤拷OSPI锟斤拷W25Q64

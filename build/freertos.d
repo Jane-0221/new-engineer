@@ -61,7 +61,9 @@ build/freertos.o: Core/Src/freertos.c \
  Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
  User/Hardware/referee_system.h User/Hardware/referee_system_protocol.h \
  Algorithm/fifo.h User/Hardware/supercup.h User/Hardware/LED.h \
- Core/Inc/iwdg.h
+ User/Hardware/dm_arm.h User/BSP/can_receive_send.h \
+ User/Hardware/dm4310_drv.h Core/Inc/iwdg.h \
+ User/Software/WFLY_ET16_remote_control.h
 Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 Core/Inc/FreeRTOSConfig.h:
 Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -145,4 +147,8 @@ User/Hardware/referee_system_protocol.h:
 Algorithm/fifo.h:
 User/Hardware/supercup.h:
 User/Hardware/LED.h:
+User/Hardware/dm_arm.h:
+User/BSP/can_receive_send.h:
+User/Hardware/dm4310_drv.h:
 Core/Inc/iwdg.h:
+User/Software/WFLY_ET16_remote_control.h:
