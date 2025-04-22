@@ -55,3 +55,30 @@ void Arm_motor4()
 
   Pre_Flag_damiao[4] = Flag_damiao[4];
 }
+void Arm_motor5()
+{	 
+
+      //判断该时间段内是否接收过电机数据
+   if (Flag_damiao[5]== Pre_Flag_damiao[5])
+   {
+     // 电机断开连接
+      DM_Status[5] = Motor_DM_Status_DISABLE;
+//错误清除，重新使能
+   //	CAN_Send_Clear_Error(&hfdcan2,0x05);
+     CAN_Send_Enter(&hfdcan2,0x05);
+   }
+   else
+   {
+   }
+             //电机保持连接
+            DM_Status[5] = Motor_DM_Status_ENABLE;
+            //正常数据发送
+   set_DM_mode(Motor5,POS_MODE);
+  set_DM_pos_vel(pos_motor.pos_endyaw,vel_motor.vel_endyaw,Motor5);	
+  pos_speed_ctrl(&hfdcan2,0x05,arm_motor[Motor5].ctrl.pos_set,arm_motor[Motor5].ctrl.vel_set);
+   
+   
+   
+Pre_Flag_damiao[5]=Flag_damiao[5];
+
+ }

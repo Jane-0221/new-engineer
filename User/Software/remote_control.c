@@ -4,7 +4,7 @@
 #include "Gimbal.h"
 #include "ui.h"
 #include "ramp_generator.h"
-
+#include "dm_arm.h"
 #include "DT7.h"
 
 #include "Stm32_time.h"
@@ -90,42 +90,28 @@ void RC_control()
         Global.Chssis.mode = FLOW;
     Chassis_set_x(RC_data.rc.ch[0] / 40.0f);
     Chassis_set_y(RC_data.rc.ch[1] / 40.0f);
-    /*云台控制*/
-    if (Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE)
+
+
+    if(SBUS_CH.CH5==353&&SBUS_CH.CH6==1024)
+{
+
+		
+    if(SBUS_CH.CH4>1050&&SBUS_CH.CH4<=1695)
     {
-        Gimbal_set_pitch_angle(Global.Gimbal.input.pitch + RC_data.rc.ch[3] / 2000.0f);
-        Gimbal_set_yaw_angle(Global.Gimbal.input.yaw - RC_data.rc.ch[2] / 1000.0f);
+        pos_motor.pos_endyaw += 0.005;
     }
-    /*自瞄控制*/
-    if (switch_is_down(RC_R_SW) && (switch_is_mid(RC_L_SW) || switch_is_up(RC_L_SW))) // 右下,左中||左上，自瞄
-        Global.Auto.mode = CAR;
-    else
-        Global.Auto.mode = NONE;
-    /*发弹机构控制*/
-    if (switch_is_up(RC_L_SW) && (switch_is_mid(RC_R_SW) || switch_is_down(RC_R_SW))) // 左上，右中||右下，开启摩擦轮
-        Global.Shoot.shoot_mode = READY;
-    else
-        Global.Shoot.shoot_mode = CLOSE;
-    if (RC_data.rc.ch[4] >= 300 &&
-        RC_data.rc.ch[4] <= 660 &&
-        Global.Shoot.shoot_mode != CLOSE &&
-        (Global.Auto.mode == NONE ||
-         Global.Auto.input.fire == 1)) // 滚轮最下头，高速发弹，若自瞄打开，发弹标志位置1允许发弹
-        Global.Shoot.tigger_mode = HIGH;
-    else if (RC_data.rc.ch[4] >= 50 &&
-             RC_data.rc.ch[4] <= 300 &&
-             Global.Shoot.shoot_mode != CLOSE &&
-             (Global.Auto.mode == NONE ||
-              Global.Auto.input.fire == 1)) // 滚轮中部，低速发弹,若自瞄打开，发弹标志位置1允许发弹
-        Global.Shoot.tigger_mode = LOW;
-    else if (RC_data.rc.ch[4] > 660 &&
-             Global.Shoot.shoot_mode != CLOSE)
+    else if( SBUS_CH.CH4>=353&&SBUS_CH.CH4<1000)
     {
-        Global.Shoot.shoot_mode = DEBUG_SHOOT;
-        Global.Shoot.tigger_mode = DEBUG_SHOOT;
+        pos_motor.pos_endyaw -= 0.005;
     }
-    else
-        Global.Shoot.tigger_mode = TRIGGER_CLOSE;
+    else if(SBUS_CH.CH4>1000&&SBUS_CH.CH4<1050)
+    {	
+        pos_motor.pos_middlerow += 0;
+    }	
+
+
+}
+ 
 }
 
 void Keyboard_mouse_control(void)

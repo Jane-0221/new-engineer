@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccLO7ove.s 			page 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -46,155 +46,273 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\ccLO7ove.s 			page 1
   39              		.cfi_def_cfa_register 7
    6:User/Software/WFLY_ET16_remote_control.c **** if(SBUS_CH.CH5==353&&SBUS_CH.CH6==353)
   40              		.loc 1 6 11
-  41 0004 2E4B     		ldr	r3, .L6+8
+  41 0004 584B     		ldr	r3, .L9+8
   42 0006 1B89     		ldrh	r3, [r3, #8]
   43              		.loc 1 6 3
   44 0008 40F26112 		movw	r2, #353
   45 000c 9342     		cmp	r3, r2
-  46 000e 4ED1     		bne	.L5
+  46 000e 4DD1     		bne	.L2
   47              		.loc 1 6 29 discriminator 1
-  48 0010 2B4B     		ldr	r3, .L6+8
+  48 0010 554B     		ldr	r3, .L9+8
   49 0012 5B89     		ldrh	r3, [r3, #10]
   50              		.loc 1 6 20 discriminator 1
   51 0014 40F26112 		movw	r2, #353
   52 0018 9342     		cmp	r3, r2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccLO7ove.s 			page 2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s 			page 2
 
 
-  53 001a 48D1     		bne	.L5
+  53 001a 47D1     		bne	.L2
    7:User/Software/WFLY_ET16_remote_control.c **** {
    8:User/Software/WFLY_ET16_remote_control.c **** 
    9:User/Software/WFLY_ET16_remote_control.c **** 		
   10:User/Software/WFLY_ET16_remote_control.c ****     if(SBUS_CH.CH4>1050&&SBUS_CH.CH4<=1695)
   54              		.loc 1 10 15
-  55 001c 284B     		ldr	r3, .L6+8
+  55 001c 524B     		ldr	r3, .L9+8
   56 001e DB88     		ldrh	r3, [r3, #6]
   57              		.loc 1 10 7
   58 0020 40F21A42 		movw	r2, #1050
   59 0024 9342     		cmp	r3, r2
   60 0026 13D9     		bls	.L3
   61              		.loc 1 10 33 discriminator 1
-  62 0028 254B     		ldr	r3, .L6+8
+  62 0028 4F4B     		ldr	r3, .L9+8
   63 002a DB88     		ldrh	r3, [r3, #6]
   64              		.loc 1 10 24 discriminator 1
   65 002c B3F5D46F 		cmp	r3, #1696
   66 0030 0ED2     		bcs	.L3
   11:User/Software/WFLY_ET16_remote_control.c ****     {
-  12:User/Software/WFLY_ET16_remote_control.c ****         pos_motor.pos_middlerow += 0.0005;
+  12:User/Software/WFLY_ET16_remote_control.c ****         pos_motor.pos_middlerow += 0.005;
   67              		.loc 1 12 18
-  68 0032 244B     		ldr	r3, .L6+12
+  68 0032 4E4B     		ldr	r3, .L9+12
   69 0034 D3ED037A 		vldr.32	s15, [r3, #12]
   70 0038 B7EEE77A 		vcvt.f64.f32	d7, s15
   71              		.loc 1 12 33
-  72 003c 9FED1E6B 		vldr.64	d6, .L6
+  72 003c 9FED486B 		vldr.64	d6, .L9
   73 0040 37EE067B 		vadd.f64	d7, d7, d6
   74 0044 F7EEC77B 		vcvt.f32.f64	s15, d7
-  75 0048 1E4B     		ldr	r3, .L6+12
+  75 0048 484B     		ldr	r3, .L9+12
   76 004a C3ED037A 		vstr.32	s15, [r3, #12]
-  77 004e 2EE0     		b	.L2
+  77 004e 2DE0     		b	.L2
   78              	.L3:
   13:User/Software/WFLY_ET16_remote_control.c ****     }
   14:User/Software/WFLY_ET16_remote_control.c ****     else if( SBUS_CH.CH4>=353&&SBUS_CH.CH4<1000)
   79              		.loc 1 14 21
-  80 0050 1B4B     		ldr	r3, .L6+8
+  80 0050 454B     		ldr	r3, .L9+8
   81 0052 DB88     		ldrh	r3, [r3, #6]
   82              		.loc 1 14 12
   83 0054 B3F5B07F 		cmp	r3, #352
   84 0058 13D9     		bls	.L4
   85              		.loc 1 14 39 discriminator 1
-  86 005a 194B     		ldr	r3, .L6+8
+  86 005a 434B     		ldr	r3, .L9+8
   87 005c DB88     		ldrh	r3, [r3, #6]
   88              		.loc 1 14 30 discriminator 1
   89 005e B3F57A7F 		cmp	r3, #1000
   90 0062 0ED2     		bcs	.L4
   15:User/Software/WFLY_ET16_remote_control.c ****     {
-  16:User/Software/WFLY_ET16_remote_control.c ****         pos_motor.pos_middlerow -= 0.0005;
+  16:User/Software/WFLY_ET16_remote_control.c ****         pos_motor.pos_middlerow -= 0.005;
   91              		.loc 1 16 18
-  92 0064 174B     		ldr	r3, .L6+12
+  92 0064 414B     		ldr	r3, .L9+12
   93 0066 D3ED037A 		vldr.32	s15, [r3, #12]
   94 006a B7EEE77A 		vcvt.f64.f32	d7, s15
   95              		.loc 1 16 33
-  96 006e 9FED126B 		vldr.64	d6, .L6
+  96 006e 9FED3C6B 		vldr.64	d6, .L9
   97 0072 37EE467B 		vsub.f64	d7, d7, d6
   98 0076 F7EEC77B 		vcvt.f32.f64	s15, d7
-  99 007a 124B     		ldr	r3, .L6+12
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccLO7ove.s 			page 3
+  99 007a 3C4B     		ldr	r3, .L9+12
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s 			page 3
 
 
  100 007c C3ED037A 		vstr.32	s15, [r3, #12]
- 101 0080 15E0     		b	.L2
+ 101 0080 14E0     		b	.L2
  102              	.L4:
   17:User/Software/WFLY_ET16_remote_control.c ****     }
   18:User/Software/WFLY_ET16_remote_control.c ****     else if(SBUS_CH.CH4>1000&&SBUS_CH.CH4<1050)
  103              		.loc 1 18 20
- 104 0082 0F4B     		ldr	r3, .L6+8
+ 104 0082 394B     		ldr	r3, .L9+8
  105 0084 DB88     		ldrh	r3, [r3, #6]
  106              		.loc 1 18 12
  107 0086 B3F57A7F 		cmp	r3, #1000
- 108 008a 10D9     		bls	.L5
+ 108 008a 0FD9     		bls	.L2
  109              		.loc 1 18 38 discriminator 1
- 110 008c 0C4B     		ldr	r3, .L6+8
+ 110 008c 364B     		ldr	r3, .L9+8
  111 008e DB88     		ldrh	r3, [r3, #6]
  112              		.loc 1 18 29 discriminator 1
  113 0090 40F21942 		movw	r2, #1049
  114 0094 9342     		cmp	r3, r2
- 115 0096 0AD8     		bhi	.L5
+ 115 0096 09D8     		bhi	.L2
   19:User/Software/WFLY_ET16_remote_control.c ****     {	
   20:User/Software/WFLY_ET16_remote_control.c ****         pos_motor.pos_middlerow += 0;
  116              		.loc 1 20 18
- 117 0098 0A4B     		ldr	r3, .L6+12
+ 117 0098 344B     		ldr	r3, .L9+12
  118 009a D3ED037A 		vldr.32	s15, [r3, #12]
  119              		.loc 1 20 33
- 120 009e 9FED0A7A 		vldr.32	s14, .L6+16
+ 120 009e 9FED347A 		vldr.32	s14, .L9+16
  121 00a2 77EE877A 		vadd.f32	s15, s15, s14
- 122 00a6 074B     		ldr	r3, .L6+12
+ 122 00a6 314B     		ldr	r3, .L9+12
  123 00a8 C3ED037A 		vstr.32	s15, [r3, #12]
+ 124              	.L2:
   21:User/Software/WFLY_ET16_remote_control.c ****     }	
   22:User/Software/WFLY_ET16_remote_control.c **** 
   23:User/Software/WFLY_ET16_remote_control.c **** 
   24:User/Software/WFLY_ET16_remote_control.c **** }
-  25:User/Software/WFLY_ET16_remote_control.c **** }
- 124              		.loc 1 25 1
- 125 00ac FFE7     		b	.L5
- 126              	.L2:
- 127              	.L5:
- 128 00ae 00BF     		nop
- 129 00b0 BD46     		mov	sp, r7
- 130              	.LCFI2:
- 131              		.cfi_def_cfa_register 13
- 132              		@ sp needed
- 133 00b2 5DF8047B 		ldr	r7, [sp], #4
- 134              	.LCFI3:
- 135              		.cfi_restore 7
- 136              		.cfi_def_cfa_offset 0
- 137 00b6 7047     		bx	lr
- 138              	.L7:
- 139              		.align	3
- 140              	.L6:
- 141 00b8 FCA9F1D2 		.word	-755914244
- 142 00bc 4D62403F 		.word	1061184077
- 143 00c0 00000000 		.word	SBUS_CH
- 144 00c4 00000000 		.word	pos_motor
- 145 00c8 00000000 		.word	0
- 146              		.cfi_endproc
- 147              	.LFE144:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccLO7ove.s 			page 4
+  25:User/Software/WFLY_ET16_remote_control.c **** 
+  26:User/Software/WFLY_ET16_remote_control.c **** if(SBUS_CH.CH5==353&&SBUS_CH.CH6==1024)
+ 125              		.loc 1 26 11
+ 126 00ac 2E4B     		ldr	r3, .L9+8
+ 127 00ae 1B89     		ldrh	r3, [r3, #8]
+ 128              		.loc 1 26 3
+ 129 00b0 40F26112 		movw	r2, #353
+ 130 00b4 9342     		cmp	r3, r2
+ 131 00b6 4DD1     		bne	.L8
+ 132              		.loc 1 26 29 discriminator 1
+ 133 00b8 2B4B     		ldr	r3, .L9+8
+ 134 00ba 5B89     		ldrh	r3, [r3, #10]
+ 135              		.loc 1 26 20 discriminator 1
+ 136 00bc B3F5806F 		cmp	r3, #1024
+ 137 00c0 48D1     		bne	.L8
+  27:User/Software/WFLY_ET16_remote_control.c **** {
+  28:User/Software/WFLY_ET16_remote_control.c **** 
+  29:User/Software/WFLY_ET16_remote_control.c **** 		
+  30:User/Software/WFLY_ET16_remote_control.c ****     if(SBUS_CH.CH4>1050&&SBUS_CH.CH4<=1695)
+ 138              		.loc 1 30 15
+ 139 00c2 294B     		ldr	r3, .L9+8
+ 140 00c4 DB88     		ldrh	r3, [r3, #6]
+ 141              		.loc 1 30 7
+ 142 00c6 40F21A42 		movw	r2, #1050
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s 			page 4
 
 
- 149              		.text
- 150              	.Letext0:
- 151              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
- 152              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
- 153              		.file 4 "User/Hardware/dm4310_drv.h"
- 154              		.file 5 "User/Hardware/DT7.h"
-ARM GAS  C:\Users\23671\AppData\Local\Temp\ccLO7ove.s 			page 5
+ 143 00ca 9342     		cmp	r3, r2
+ 144 00cc 13D9     		bls	.L6
+ 145              		.loc 1 30 33 discriminator 1
+ 146 00ce 264B     		ldr	r3, .L9+8
+ 147 00d0 DB88     		ldrh	r3, [r3, #6]
+ 148              		.loc 1 30 24 discriminator 1
+ 149 00d2 B3F5D46F 		cmp	r3, #1696
+ 150 00d6 0ED2     		bcs	.L6
+  31:User/Software/WFLY_ET16_remote_control.c ****     {
+  32:User/Software/WFLY_ET16_remote_control.c ****         pos_motor.pos_endyaw += 0.005;
+ 151              		.loc 1 32 18
+ 152 00d8 244B     		ldr	r3, .L9+12
+ 153 00da D3ED047A 		vldr.32	s15, [r3, #16]
+ 154 00de B7EEE77A 		vcvt.f64.f32	d7, s15
+ 155              		.loc 1 32 30
+ 156 00e2 9FED1F6B 		vldr.64	d6, .L9
+ 157 00e6 37EE067B 		vadd.f64	d7, d7, d6
+ 158 00ea F7EEC77B 		vcvt.f32.f64	s15, d7
+ 159 00ee 1F4B     		ldr	r3, .L9+12
+ 160 00f0 C3ED047A 		vstr.32	s15, [r3, #16]
+ 161 00f4 2EE0     		b	.L5
+ 162              	.L6:
+  33:User/Software/WFLY_ET16_remote_control.c ****     }
+  34:User/Software/WFLY_ET16_remote_control.c ****     else if( SBUS_CH.CH4>=353&&SBUS_CH.CH4<1000)
+ 163              		.loc 1 34 21
+ 164 00f6 1C4B     		ldr	r3, .L9+8
+ 165 00f8 DB88     		ldrh	r3, [r3, #6]
+ 166              		.loc 1 34 12
+ 167 00fa B3F5B07F 		cmp	r3, #352
+ 168 00fe 13D9     		bls	.L7
+ 169              		.loc 1 34 39 discriminator 1
+ 170 0100 194B     		ldr	r3, .L9+8
+ 171 0102 DB88     		ldrh	r3, [r3, #6]
+ 172              		.loc 1 34 30 discriminator 1
+ 173 0104 B3F57A7F 		cmp	r3, #1000
+ 174 0108 0ED2     		bcs	.L7
+  35:User/Software/WFLY_ET16_remote_control.c ****     {
+  36:User/Software/WFLY_ET16_remote_control.c ****         pos_motor.pos_endyaw -= 0.005;
+ 175              		.loc 1 36 18
+ 176 010a 184B     		ldr	r3, .L9+12
+ 177 010c D3ED047A 		vldr.32	s15, [r3, #16]
+ 178 0110 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 179              		.loc 1 36 30
+ 180 0114 9FED126B 		vldr.64	d6, .L9
+ 181 0118 37EE467B 		vsub.f64	d7, d7, d6
+ 182 011c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 183 0120 124B     		ldr	r3, .L9+12
+ 184 0122 C3ED047A 		vstr.32	s15, [r3, #16]
+ 185 0126 15E0     		b	.L5
+ 186              	.L7:
+  37:User/Software/WFLY_ET16_remote_control.c ****     }
+  38:User/Software/WFLY_ET16_remote_control.c ****     else if(SBUS_CH.CH4>1000&&SBUS_CH.CH4<1050)
+ 187              		.loc 1 38 20
+ 188 0128 0F4B     		ldr	r3, .L9+8
+ 189 012a DB88     		ldrh	r3, [r3, #6]
+ 190              		.loc 1 38 12
+ 191 012c B3F57A7F 		cmp	r3, #1000
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s 			page 5
+
+
+ 192 0130 10D9     		bls	.L8
+ 193              		.loc 1 38 38 discriminator 1
+ 194 0132 0D4B     		ldr	r3, .L9+8
+ 195 0134 DB88     		ldrh	r3, [r3, #6]
+ 196              		.loc 1 38 29 discriminator 1
+ 197 0136 40F21942 		movw	r2, #1049
+ 198 013a 9342     		cmp	r3, r2
+ 199 013c 0AD8     		bhi	.L8
+  39:User/Software/WFLY_ET16_remote_control.c ****     {	
+  40:User/Software/WFLY_ET16_remote_control.c ****         pos_motor.pos_endyaw += 0;
+ 200              		.loc 1 40 18
+ 201 013e 0B4B     		ldr	r3, .L9+12
+ 202 0140 D3ED047A 		vldr.32	s15, [r3, #16]
+ 203              		.loc 1 40 30
+ 204 0144 9FED0A7A 		vldr.32	s14, .L9+16
+ 205 0148 77EE877A 		vadd.f32	s15, s15, s14
+ 206 014c 074B     		ldr	r3, .L9+12
+ 207 014e C3ED047A 		vstr.32	s15, [r3, #16]
+  41:User/Software/WFLY_ET16_remote_control.c ****     }	
+  42:User/Software/WFLY_ET16_remote_control.c **** 
+  43:User/Software/WFLY_ET16_remote_control.c **** 
+  44:User/Software/WFLY_ET16_remote_control.c **** }
+  45:User/Software/WFLY_ET16_remote_control.c **** 
+  46:User/Software/WFLY_ET16_remote_control.c **** 
+  47:User/Software/WFLY_ET16_remote_control.c **** 
+  48:User/Software/WFLY_ET16_remote_control.c **** 
+  49:User/Software/WFLY_ET16_remote_control.c **** 
+  50:User/Software/WFLY_ET16_remote_control.c **** 
+  51:User/Software/WFLY_ET16_remote_control.c **** 
+  52:User/Software/WFLY_ET16_remote_control.c **** 
+  53:User/Software/WFLY_ET16_remote_control.c **** }
+ 208              		.loc 1 53 1
+ 209 0152 FFE7     		b	.L8
+ 210              	.L5:
+ 211              	.L8:
+ 212 0154 00BF     		nop
+ 213 0156 BD46     		mov	sp, r7
+ 214              	.LCFI2:
+ 215              		.cfi_def_cfa_register 13
+ 216              		@ sp needed
+ 217 0158 5DF8047B 		ldr	r7, [sp], #4
+ 218              	.LCFI3:
+ 219              		.cfi_restore 7
+ 220              		.cfi_def_cfa_offset 0
+ 221 015c 7047     		bx	lr
+ 222              	.L10:
+ 223 015e 00BF     		.align	3
+ 224              	.L9:
+ 225 0160 7B14AE47 		.word	1202590843
+ 226 0164 E17A743F 		.word	1064598241
+ 227 0168 00000000 		.word	SBUS_CH
+ 228 016c 00000000 		.word	pos_motor
+ 229 0170 00000000 		.word	0
+ 230              		.cfi_endproc
+ 231              	.LFE144:
+ 233              		.text
+ 234              	.Letext0:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s 			page 6
+
+
+ 235              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 236              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 237              		.file 4 "User/Hardware/dm4310_drv.h"
+ 238              		.file 5 "User/Hardware/DT7.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s 			page 7
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 WFLY_ET16_remote_control.c
-C:\Users\23671\AppData\Local\Temp\ccLO7ove.s:20     .text.arm_remoto_control:00000000 $t
-C:\Users\23671\AppData\Local\Temp\ccLO7ove.s:26     .text.arm_remoto_control:00000000 arm_remoto_control
-C:\Users\23671\AppData\Local\Temp\ccLO7ove.s:141    .text.arm_remoto_control:000000b8 $d
+C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s:20     .text.arm_remoto_control:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s:26     .text.arm_remoto_control:00000000 arm_remoto_control
+C:\Users\23671\AppData\Local\Temp\ccKZ0x12.s:225    .text.arm_remoto_control:00000160 $d
 
 UNDEFINED SYMBOLS
 SBUS_CH

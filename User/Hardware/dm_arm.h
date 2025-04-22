@@ -12,4 +12,5 @@ extern Motor_DM_Status DM_Status[6];
 
 void Arm_Init(void);
 void Arm_motor4(void);
+void Arm_motor5(void);
 #endif

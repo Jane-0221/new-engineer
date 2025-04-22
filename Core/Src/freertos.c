@@ -225,8 +225,7 @@ void Remote_control_Task(void *argument)
     DT7toRCdata();
     RC_control();
     //¹¤³Ì
-    arm_remoto_control();
-    Arm_motor4();
+
     Keyboard_mouse_control();
     osDelay(1);
   }
@@ -246,7 +245,9 @@ void Gimbal_Task(void *argument)
   /* Infinite loop */
   for (;;)
   {
-    Gimbal_control();
+    arm_remoto_control();
+    Arm_motor5();
+   // Gimbal_control();
     osDelay(1);
   }
   /* USER CODE END Gimbal_Task */

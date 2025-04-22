@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -51,14 +51,14 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
    4:User/Software/remote_control.c **** #include "Gimbal.h"
    5:User/Software/remote_control.c **** #include "ui.h"
    6:User/Software/remote_control.c **** #include "ramp_generator.h"
-   7:User/Software/remote_control.c **** 
+   7:User/Software/remote_control.c **** #include "dm_arm.h"
    8:User/Software/remote_control.c **** #include "DT7.h"
    9:User/Software/remote_control.c **** 
   10:User/Software/remote_control.c **** #include "Stm32_time.h"
   11:User/Software/remote_control.c **** 
   12:User/Software/remote_control.c **** RC_ctrl_t RC_data;
   13:User/Software/remote_control.c **** 
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 2
 
 
   14:User/Software/remote_control.c **** int16_t wait_time[SIZE_OF_WAIT] = {0}; // ¼üÅÌÏû¶¶ÓÃÊ±¼ä
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
   78 002c 0023     		movs	r3, #0
   79 002e 05E0     		b	.L3
   80              	.L2:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 3
 
 
   32:User/Software/remote_control.c ****     }
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
  124              		@ link register save eliminated.
  125 0000 80B4     		push	{r7}
  126              	.LCFI6:
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 4
 
 
  127              		.cfi_def_cfa_offset 4
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
  173              		.loc 1 52 36
  174 0048 134B     		ldr	r3, .L7
  175 004a DA7A     		ldrb	r2, [r3, #11]	@ zero_extendqisi2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 5
 
 
  176              		.loc 1 52 21
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
  222              	.LCFI8:
  223              		.cfi_def_cfa_register 13
  224              		@ sp needed
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 6
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 6
 
 
  225 0092 5DF8047B 		ldr	r7, [sp], #4
@@ -350,15 +350,15 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
   75:User/Software/remote_control.c ****     /*¿ØÖÆÄ£Ê½Ñ¡Ôñ*/
   76:User/Software/remote_control.c ****     if (switch_is_down(RC_R_SW) && switch_is_down(RC_L_SW)) // ×óÏÂÓÒÏÂ£¬ËøËÀ
  259              		.loc 1 76 9
- 260 0004 8C4B     		ldr	r3, .L34
+ 260 0004 604B     		ldr	r3, .L23+8
  261 0006 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
  262              		.loc 1 76 8
  263 0008 022B     		cmp	r3, #2
  264 000a 08D1     		bne	.L10
  265              		.loc 1 76 36 discriminator 1
- 266 000c 8A4B     		ldr	r3, .L34
+ 266 000c 5E4B     		ldr	r3, .L23+8
  267 000e DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 7
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 7
 
 
  268              		.loc 1 76 33 discriminator 1
@@ -366,27 +366,27 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
  270 0012 04D1     		bne	.L10
   77:User/Software/remote_control.c ****         Global.Control.mode = LOCK;
  271              		.loc 1 77 29
- 272 0014 894B     		ldr	r3, .L34+4
+ 272 0014 5D4B     		ldr	r3, .L23+12
  273 0016 0222     		movs	r2, #2
  274 0018 83F83920 		strb	r2, [r3, #57]
  275 001c 10E0     		b	.L11
  276              	.L10:
   78:User/Software/remote_control.c ****     else if (switch_is_up(RC_R_SW) && switch_is_up(RC_L_SW)) // ×óÉÏÓÒÉÏ£¬¼üÅÌ¿ØÖÆ
  277              		.loc 1 78 14
- 278 001e 864B     		ldr	r3, .L34
+ 278 001e 5A4B     		ldr	r3, .L23+8
  279 0020 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
  280              		.loc 1 78 13
  281 0022 012B     		cmp	r3, #1
  282 0024 08D1     		bne	.L12
  283              		.loc 1 78 39 discriminator 1
- 284 0026 844B     		ldr	r3, .L34
+ 284 0026 584B     		ldr	r3, .L23+8
  285 0028 DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
  286              		.loc 1 78 36 discriminator 1
  287 002a 012B     		cmp	r3, #1
  288 002c 04D1     		bne	.L12
   79:User/Software/remote_control.c ****         Global.Control.mode = KEY;
  289              		.loc 1 79 29
- 290 002e 834B     		ldr	r3, .L34+4
+ 290 002e 574B     		ldr	r3, .L23+12
  291 0030 0122     		movs	r2, #1
  292 0032 83F83920 		strb	r2, [r3, #57]
  293 0036 03E0     		b	.L11
@@ -394,37 +394,37 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
   80:User/Software/remote_control.c ****     else
   81:User/Software/remote_control.c ****         Global.Control.mode = RC;
  295              		.loc 1 81 29
- 296 0038 804B     		ldr	r3, .L34+4
+ 296 0038 544B     		ldr	r3, .L23+12
  297 003a 0022     		movs	r2, #0
  298 003c 83F83920 		strb	r2, [r3, #57]
  299              	.L11:
   82:User/Software/remote_control.c ****     if (Global.Control.mode != RC)
  300              		.loc 1 82 23
- 301 0040 7E4B     		ldr	r3, .L34+4
+ 301 0040 524B     		ldr	r3, .L23+12
  302 0042 93F83930 		ldrb	r3, [r3, #57]	@ zero_extendqisi2
  303              		.loc 1 82 8
  304 0046 002B     		cmp	r3, #0
- 305 0048 40F0F480 		bne	.L33
+ 305 0048 40F09580 		bne	.L22
   83:User/Software/remote_control.c ****         return;
   84:User/Software/remote_control.c ****     /*µ×ÅÌ¿ØÖÆ*/
   85:User/Software/remote_control.c ****     if (switch_is_up(RC_R_SW) && (switch_is_mid(RC_L_SW) || switch_is_up(RC_L_SW))) // ÓÒÉÏ,×óÖÐ||×
  306              		.loc 1 85 9
- 307 004c 7A4B     		ldr	r3, .L34
+ 307 004c 4E4B     		ldr	r3, .L23+8
  308 004e 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
  309              		.loc 1 85 8
  310 0050 012B     		cmp	r3, #1
  311 0052 0BD1     		bne	.L15
  312              		.loc 1 85 35 discriminator 1
- 313 0054 784B     		ldr	r3, .L34
+ 313 0054 4C4B     		ldr	r3, .L23+8
  314 0056 DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
  315              		.loc 1 85 31 discriminator 1
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 8
 
 
  316 0058 032B     		cmp	r3, #3
  317 005a 03D0     		beq	.L16
  318              		.loc 1 85 61 discriminator 2
- 319 005c 764B     		ldr	r3, .L34
+ 319 005c 4A4B     		ldr	r3, .L23+8
  320 005e DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
  321              		.loc 1 85 58 discriminator 2
  322 0060 012B     		cmp	r3, #1
@@ -432,26 +432,26 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
  324              	.L16:
   86:User/Software/remote_control.c ****         Global.Chssis.mode = SPIN_P;
  325              		.loc 1 86 28
- 326 0064 754B     		ldr	r3, .L34+4
+ 326 0064 494B     		ldr	r3, .L23+12
  327 0066 0122     		movs	r2, #1
  328 0068 1A70     		strb	r2, [r3]
  329 006a 12E0     		b	.L17
  330              	.L15:
   87:User/Software/remote_control.c ****     else if (switch_is_down(RC_L_SW) && (switch_is_mid(RC_R_SW) || switch_is_up(RC_R_SW))) // ×óÏÂ,
  331              		.loc 1 87 14
- 332 006c 724B     		ldr	r3, .L34
+ 332 006c 464B     		ldr	r3, .L23+8
  333 006e DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
  334              		.loc 1 87 13
  335 0070 022B     		cmp	r3, #2
  336 0072 0BD1     		bne	.L18
  337              		.loc 1 87 42 discriminator 1
- 338 0074 704B     		ldr	r3, .L34
+ 338 0074 444B     		ldr	r3, .L23+8
  339 0076 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
  340              		.loc 1 87 38 discriminator 1
  341 0078 032B     		cmp	r3, #3
  342 007a 03D0     		beq	.L19
  343              		.loc 1 87 68 discriminator 2
- 344 007c 6E4B     		ldr	r3, .L34
+ 344 007c 424B     		ldr	r3, .L23+8
  345 007e 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
  346              		.loc 1 87 65 discriminator 2
  347 0080 012B     		cmp	r3, #1
@@ -459,7 +459,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
  349              	.L19:
   88:User/Software/remote_control.c ****         Global.Chssis.mode = SPIN_N;
  350              		.loc 1 88 28
- 351 0084 6D4B     		ldr	r3, .L34+4
+ 351 0084 414B     		ldr	r3, .L23+12
  352 0086 0222     		movs	r2, #2
  353 0088 1A70     		strb	r2, [r3]
  354 008a 02E0     		b	.L17
@@ -467,779 +467,633 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 1
   89:User/Software/remote_control.c ****     else
   90:User/Software/remote_control.c ****         Global.Chssis.mode = FLOW;
  356              		.loc 1 90 28
- 357 008c 6B4B     		ldr	r3, .L34+4
+ 357 008c 3F4B     		ldr	r3, .L23+12
  358 008e 0022     		movs	r2, #0
  359 0090 1A70     		strb	r2, [r3]
  360              	.L17:
   91:User/Software/remote_control.c ****     Chassis_set_x(RC_data.rc.ch[0] / 40.0f);
  361              		.loc 1 91 32
- 362 0092 694B     		ldr	r3, .L34
+ 362 0092 3D4B     		ldr	r3, .L23+8
  363 0094 B3F90030 		ldrsh	r3, [r3]
  364              		.loc 1 91 5
  365 0098 07EE903A 		vmov	s15, r3	@ int
  366 009c F8EEE77A 		vcvt.f32.s32	s15, s15
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 9
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 9
 
 
- 367 00a0 DFED676A 		vldr.32	s13, .L34+8
+ 367 00a0 DFED3B6A 		vldr.32	s13, .L23+16
  368 00a4 87EEA67A 		vdiv.f32	s14, s15, s13
  369 00a8 B0EE470A 		vmov.f32	s0, s14
  370 00ac FFF7FEFF 		bl	Chassis_set_x
   92:User/Software/remote_control.c ****     Chassis_set_y(RC_data.rc.ch[1] / 40.0f);
  371              		.loc 1 92 32
- 372 00b0 614B     		ldr	r3, .L34
+ 372 00b0 354B     		ldr	r3, .L23+8
  373 00b2 B3F90230 		ldrsh	r3, [r3, #2]
  374              		.loc 1 92 5
  375 00b6 07EE903A 		vmov	s15, r3	@ int
  376 00ba F8EEE77A 		vcvt.f32.s32	s15, s15
- 377 00be DFED606A 		vldr.32	s13, .L34+8
+ 377 00be DFED346A 		vldr.32	s13, .L23+16
  378 00c2 87EEA67A 		vdiv.f32	s14, s15, s13
  379 00c6 B0EE470A 		vmov.f32	s0, s14
  380 00ca FFF7FEFF 		bl	Chassis_set_y
-  93:User/Software/remote_control.c ****     /*ÔÆÌ¨¿ØÖÆ*/
-  94:User/Software/remote_control.c ****     if (Global.Auto.input.Auto_control_online <= 0 || Global.Auto.mode == NONE)
- 381              		.loc 1 94 26
- 382 00ce 5B4B     		ldr	r3, .L34+4
- 383 00d0 1B6B     		ldr	r3, [r3, #48]
- 384              		.loc 1 94 8
- 385 00d2 002B     		cmp	r3, #0
- 386 00d4 04DD     		ble	.L20
- 387              		.loc 1 94 66 discriminator 1
- 388 00d6 594B     		ldr	r3, .L34+4
- 389 00d8 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
- 390              		.loc 1 94 52 discriminator 1
- 391 00dc 002B     		cmp	r3, #0
- 392 00de 27D1     		bne	.L21
- 393              	.L20:
-  95:User/Software/remote_control.c ****     {
-  96:User/Software/remote_control.c ****         Gimbal_set_pitch_angle(Global.Gimbal.input.pitch + RC_data.rc.ch[3] / 2000.0f);
- 394              		.loc 1 96 51
- 395 00e0 564B     		ldr	r3, .L34+4
- 396 00e2 93ED067A 		vldr.32	s14, [r3, #24]
- 397              		.loc 1 96 73
- 398 00e6 544B     		ldr	r3, .L34
- 399 00e8 B3F90630 		ldrsh	r3, [r3, #6]
- 400              		.loc 1 96 77
- 401 00ec 07EE903A 		vmov	s15, r3	@ int
- 402 00f0 F8EEE76A 		vcvt.f32.s32	s13, s15
- 403 00f4 9FED536A 		vldr.32	s12, .L34+12
- 404 00f8 C6EE867A 		vdiv.f32	s15, s13, s12
- 405              		.loc 1 96 9
- 406 00fc 77EE277A 		vadd.f32	s15, s14, s15
- 407 0100 B0EE670A 		vmov.f32	s0, s15
- 408 0104 FFF7FEFF 		bl	Gimbal_set_pitch_angle
-  97:User/Software/remote_control.c ****         Gimbal_set_yaw_angle(Global.Gimbal.input.yaw - RC_data.rc.ch[2] / 1000.0f);
- 409              		.loc 1 97 49
- 410 0108 4C4B     		ldr	r3, .L34+4
- 411 010a 93ED077A 		vldr.32	s14, [r3, #28]
- 412              		.loc 1 97 69
- 413 010e 4A4B     		ldr	r3, .L34
- 414 0110 B3F90430 		ldrsh	r3, [r3, #4]
- 415              		.loc 1 97 73
- 416 0114 07EE903A 		vmov	s15, r3	@ int
- 417 0118 F8EEE76A 		vcvt.f32.s32	s13, s15
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 10
+  93:User/Software/remote_control.c **** 
+  94:User/Software/remote_control.c **** 
+  95:User/Software/remote_control.c ****     if(SBUS_CH.CH5==353&&SBUS_CH.CH6==1024)
+ 381              		.loc 1 95 15
+ 382 00ce 314B     		ldr	r3, .L23+20
+ 383 00d0 1B89     		ldrh	r3, [r3, #8]
+ 384              		.loc 1 95 7
+ 385 00d2 40F26112 		movw	r2, #353
+ 386 00d6 9342     		cmp	r3, r2
+ 387 00d8 4ED1     		bne	.L9
+ 388              		.loc 1 95 33 discriminator 1
+ 389 00da 2E4B     		ldr	r3, .L23+20
+ 390 00dc 5B89     		ldrh	r3, [r3, #10]
+ 391              		.loc 1 95 24 discriminator 1
+ 392 00de B3F5806F 		cmp	r3, #1024
+ 393 00e2 49D1     		bne	.L9
+  96:User/Software/remote_control.c **** {
+  97:User/Software/remote_control.c **** 
+  98:User/Software/remote_control.c **** 		
+  99:User/Software/remote_control.c ****     if(SBUS_CH.CH4>1050&&SBUS_CH.CH4<=1695)
+ 394              		.loc 1 99 15
+ 395 00e4 2B4B     		ldr	r3, .L23+20
+ 396 00e6 DB88     		ldrh	r3, [r3, #6]
+ 397              		.loc 1 99 7
+ 398 00e8 40F21A42 		movw	r2, #1050
+ 399 00ec 9342     		cmp	r3, r2
+ 400 00ee 13D9     		bls	.L20
+ 401              		.loc 1 99 33 discriminator 1
+ 402 00f0 284B     		ldr	r3, .L23+20
+ 403 00f2 DB88     		ldrh	r3, [r3, #6]
+ 404              		.loc 1 99 24 discriminator 1
+ 405 00f4 B3F5D46F 		cmp	r3, #1696
+ 406 00f8 0ED2     		bcs	.L20
+ 100:User/Software/remote_control.c ****     {
+ 101:User/Software/remote_control.c ****         pos_motor.pos_endyaw += 0.005;
+ 407              		.loc 1 101 18
+ 408 00fa 274B     		ldr	r3, .L23+24
+ 409 00fc D3ED047A 		vldr.32	s15, [r3, #16]
+ 410 0100 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 411              		.loc 1 101 30
+ 412 0104 9FED1E6B 		vldr.64	d6, .L23
+ 413 0108 37EE067B 		vadd.f64	d7, d7, d6
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 10
 
 
- 418 011c 9FED4A6A 		vldr.32	s12, .L34+16
- 419 0120 C6EE867A 		vdiv.f32	s15, s13, s12
- 420              		.loc 1 97 9
- 421 0124 77EE677A 		vsub.f32	s15, s14, s15
- 422 0128 B0EE670A 		vmov.f32	s0, s15
- 423 012c FFF7FEFF 		bl	Gimbal_set_yaw_angle
- 424              	.L21:
-  98:User/Software/remote_control.c ****     }
-  99:User/Software/remote_control.c ****     /*×ÔÃé¿ØÖÆ*/
- 100:User/Software/remote_control.c ****     if (switch_is_down(RC_R_SW) && (switch_is_mid(RC_L_SW) || switch_is_up(RC_L_SW))) // ÓÒÏÂ,×óÖÐ|
- 425              		.loc 1 100 9
- 426 0130 414B     		ldr	r3, .L34
- 427 0132 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
- 428              		.loc 1 100 8
- 429 0134 022B     		cmp	r3, #2
- 430 0136 0CD1     		bne	.L22
- 431              		.loc 1 100 37 discriminator 1
- 432 0138 3F4B     		ldr	r3, .L34
- 433 013a DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
- 434              		.loc 1 100 33 discriminator 1
- 435 013c 032B     		cmp	r3, #3
- 436 013e 03D0     		beq	.L23
- 437              		.loc 1 100 63 discriminator 2
- 438 0140 3D4B     		ldr	r3, .L34
- 439 0142 DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
- 440              		.loc 1 100 60 discriminator 2
- 441 0144 012B     		cmp	r3, #1
- 442 0146 04D1     		bne	.L22
- 443              	.L23:
- 101:User/Software/remote_control.c ****         Global.Auto.mode = CAR;
- 444              		.loc 1 101 26
- 445 0148 3C4B     		ldr	r3, .L34+4
- 446 014a 0122     		movs	r2, #1
- 447 014c 83F82420 		strb	r2, [r3, #36]
- 448 0150 03E0     		b	.L24
- 449              	.L22:
- 102:User/Software/remote_control.c ****     else
- 103:User/Software/remote_control.c ****         Global.Auto.mode = NONE;
- 450              		.loc 1 103 26
- 451 0152 3A4B     		ldr	r3, .L34+4
- 452 0154 0022     		movs	r2, #0
- 453 0156 83F82420 		strb	r2, [r3, #36]
- 454              	.L24:
- 104:User/Software/remote_control.c ****     /*·¢µ¯»ú¹¹¿ØÖÆ*/
- 105:User/Software/remote_control.c ****     if (switch_is_up(RC_L_SW) && (switch_is_mid(RC_R_SW) || switch_is_down(RC_R_SW))) // ×óÉÏ£¬ÓÒÖÐ
- 455              		.loc 1 105 9
- 456 015a 374B     		ldr	r3, .L34
- 457 015c DB7A     		ldrb	r3, [r3, #11]	@ zero_extendqisi2
- 458              		.loc 1 105 8
- 459 015e 012B     		cmp	r3, #1
- 460 0160 0CD1     		bne	.L25
- 461              		.loc 1 105 35 discriminator 1
- 462 0162 354B     		ldr	r3, .L34
- 463 0164 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
- 464              		.loc 1 105 31 discriminator 1
- 465 0166 032B     		cmp	r3, #3
- 466 0168 03D0     		beq	.L26
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 11
+ 414 010c F7EEC77B 		vcvt.f32.f64	s15, d7
+ 415 0110 214B     		ldr	r3, .L23+24
+ 416 0112 C3ED047A 		vstr.32	s15, [r3, #16]
+ 417 0116 2FE0     		b	.L9
+ 418              	.L20:
+ 102:User/Software/remote_control.c ****     }
+ 103:User/Software/remote_control.c ****     else if( SBUS_CH.CH4>=353&&SBUS_CH.CH4<1000)
+ 419              		.loc 1 103 21
+ 420 0118 1E4B     		ldr	r3, .L23+20
+ 421 011a DB88     		ldrh	r3, [r3, #6]
+ 422              		.loc 1 103 12
+ 423 011c B3F5B07F 		cmp	r3, #352
+ 424 0120 13D9     		bls	.L21
+ 425              		.loc 1 103 39 discriminator 1
+ 426 0122 1C4B     		ldr	r3, .L23+20
+ 427 0124 DB88     		ldrh	r3, [r3, #6]
+ 428              		.loc 1 103 30 discriminator 1
+ 429 0126 B3F57A7F 		cmp	r3, #1000
+ 430 012a 0ED2     		bcs	.L21
+ 104:User/Software/remote_control.c ****     {
+ 105:User/Software/remote_control.c ****         pos_motor.pos_endyaw -= 0.005;
+ 431              		.loc 1 105 18
+ 432 012c 1A4B     		ldr	r3, .L23+24
+ 433 012e D3ED047A 		vldr.32	s15, [r3, #16]
+ 434 0132 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 435              		.loc 1 105 30
+ 436 0136 9FED126B 		vldr.64	d6, .L23
+ 437 013a 37EE467B 		vsub.f64	d7, d7, d6
+ 438 013e F7EEC77B 		vcvt.f32.f64	s15, d7
+ 439 0142 154B     		ldr	r3, .L23+24
+ 440 0144 C3ED047A 		vstr.32	s15, [r3, #16]
+ 441 0148 16E0     		b	.L9
+ 442              	.L21:
+ 106:User/Software/remote_control.c ****     }
+ 107:User/Software/remote_control.c ****     else if(SBUS_CH.CH4>1000&&SBUS_CH.CH4<1050)
+ 443              		.loc 1 107 20
+ 444 014a 124B     		ldr	r3, .L23+20
+ 445 014c DB88     		ldrh	r3, [r3, #6]
+ 446              		.loc 1 107 12
+ 447 014e B3F57A7F 		cmp	r3, #1000
+ 448 0152 11D9     		bls	.L9
+ 449              		.loc 1 107 38 discriminator 1
+ 450 0154 0F4B     		ldr	r3, .L23+20
+ 451 0156 DB88     		ldrh	r3, [r3, #6]
+ 452              		.loc 1 107 29 discriminator 1
+ 453 0158 40F21942 		movw	r2, #1049
+ 454 015c 9342     		cmp	r3, r2
+ 455 015e 0BD8     		bhi	.L9
+ 108:User/Software/remote_control.c ****     {	
+ 109:User/Software/remote_control.c ****         pos_motor.pos_middlerow += 0;
+ 456              		.loc 1 109 18
+ 457 0160 0D4B     		ldr	r3, .L23+24
+ 458 0162 D3ED037A 		vldr.32	s15, [r3, #12]
+ 459              		.loc 1 109 33
+ 460 0166 9FED0D7A 		vldr.32	s14, .L23+28
+ 461 016a 77EE877A 		vadd.f32	s15, s15, s14
+ 462 016e 0A4B     		ldr	r3, .L23+24
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 11
 
 
- 467              		.loc 1 105 61 discriminator 2
- 468 016a 334B     		ldr	r3, .L34
- 469 016c 9B7A     		ldrb	r3, [r3, #10]	@ zero_extendqisi2
- 470              		.loc 1 105 58 discriminator 2
- 471 016e 022B     		cmp	r3, #2
- 472 0170 04D1     		bne	.L25
- 473              	.L26:
- 106:User/Software/remote_control.c ****         Global.Shoot.shoot_mode = READY;
- 474              		.loc 1 106 33
- 475 0172 324B     		ldr	r3, .L34+4
- 476 0174 0122     		movs	r2, #1
- 477 0176 83F82120 		strb	r2, [r3, #33]
- 478 017a 03E0     		b	.L27
- 479              	.L25:
- 107:User/Software/remote_control.c ****     else
- 108:User/Software/remote_control.c ****         Global.Shoot.shoot_mode = CLOSE;
- 480              		.loc 1 108 33
- 481 017c 2F4B     		ldr	r3, .L34+4
- 482 017e 0022     		movs	r2, #0
- 483 0180 83F82120 		strb	r2, [r3, #33]
- 484              	.L27:
- 109:User/Software/remote_control.c ****     if (RC_data.rc.ch[4] >= 300 &&
- 485              		.loc 1 109 22
- 486 0184 2C4B     		ldr	r3, .L34
- 487 0186 B3F90830 		ldrsh	r3, [r3, #8]
- 488              		.loc 1 109 8
- 489 018a B3F5967F 		cmp	r3, #300
- 490 018e 19DB     		blt	.L28
- 110:User/Software/remote_control.c ****         RC_data.rc.ch[4] <= 660 &&
- 491              		.loc 1 110 22
- 492 0190 294B     		ldr	r3, .L34
- 493 0192 B3F90830 		ldrsh	r3, [r3, #8]
- 109:User/Software/remote_control.c ****     if (RC_data.rc.ch[4] >= 300 &&
- 494              		.loc 1 109 33 discriminator 1
- 495 0196 B3F5257F 		cmp	r3, #660
- 496 019a 13DC     		bgt	.L28
- 111:User/Software/remote_control.c ****         Global.Shoot.shoot_mode != CLOSE &&
- 497              		.loc 1 111 21
- 498 019c 274B     		ldr	r3, .L34+4
- 499 019e 93F82130 		ldrb	r3, [r3, #33]	@ zero_extendqisi2
- 110:User/Software/remote_control.c ****         RC_data.rc.ch[4] <= 660 &&
- 500              		.loc 1 110 33
- 501 01a2 002B     		cmp	r3, #0
- 502 01a4 0ED0     		beq	.L28
- 112:User/Software/remote_control.c ****         (Global.Auto.mode == NONE ||
- 503              		.loc 1 112 21
- 504 01a6 254B     		ldr	r3, .L34+4
- 505 01a8 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
- 111:User/Software/remote_control.c ****         Global.Shoot.shoot_mode != CLOSE &&
- 506              		.loc 1 111 42
- 507 01ac 002B     		cmp	r3, #0
- 508 01ae 04D0     		beq	.L29
- 113:User/Software/remote_control.c ****          Global.Auto.input.fire == 1)) // ¹öÂÖ×îÏÂÍ·£¬¸ßËÙ·¢µ¯£¬Èô×ÔÃé´ò¿ª£¬·¢µ¯±êÖ¾Î»ÖÃ1ÔÊÐí·¢µ¯
- 509              		.loc 1 113 27
- 510 01b0 224B     		ldr	r3, .L34+4
- 511 01b2 93F83430 		ldrb	r3, [r3, #52]	@ zero_extendqisi2
- 112:User/Software/remote_control.c ****         (Global.Auto.mode == NONE ||
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 12
-
-
- 512              		.loc 1 112 35
- 513 01b6 012B     		cmp	r3, #1
- 514 01b8 04D1     		bne	.L28
- 515              	.L29:
- 114:User/Software/remote_control.c ****         Global.Shoot.tigger_mode = HIGH;
- 516              		.loc 1 114 34
- 517 01ba 204B     		ldr	r3, .L34+4
- 518 01bc 0122     		movs	r2, #1
- 519 01be 83F82020 		strb	r2, [r3, #32]
- 520 01c2 38E0     		b	.L9
- 521              	.L28:
- 115:User/Software/remote_control.c ****     else if (RC_data.rc.ch[4] >= 50 &&
- 522              		.loc 1 115 27
- 523 01c4 1C4B     		ldr	r3, .L34
- 524 01c6 B3F90830 		ldrsh	r3, [r3, #8]
- 525              		.loc 1 115 13
- 526 01ca 312B     		cmp	r3, #49
- 527 01cc 19DD     		ble	.L30
- 116:User/Software/remote_control.c ****              RC_data.rc.ch[4] <= 300 &&
- 528              		.loc 1 116 27
- 529 01ce 1A4B     		ldr	r3, .L34
- 530 01d0 B3F90830 		ldrsh	r3, [r3, #8]
- 115:User/Software/remote_control.c ****     else if (RC_data.rc.ch[4] >= 50 &&
- 531              		.loc 1 115 37 discriminator 1
- 532 01d4 B3F5967F 		cmp	r3, #300
- 533 01d8 13DC     		bgt	.L30
- 117:User/Software/remote_control.c ****              Global.Shoot.shoot_mode != CLOSE &&
- 534              		.loc 1 117 26
- 535 01da 184B     		ldr	r3, .L34+4
- 536 01dc 93F82130 		ldrb	r3, [r3, #33]	@ zero_extendqisi2
- 116:User/Software/remote_control.c ****              RC_data.rc.ch[4] <= 300 &&
- 537              		.loc 1 116 38
- 538 01e0 002B     		cmp	r3, #0
- 539 01e2 0ED0     		beq	.L30
- 118:User/Software/remote_control.c ****              (Global.Auto.mode == NONE ||
- 540              		.loc 1 118 26
- 541 01e4 154B     		ldr	r3, .L34+4
- 542 01e6 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
- 117:User/Software/remote_control.c ****              Global.Shoot.shoot_mode != CLOSE &&
- 543              		.loc 1 117 47
- 544 01ea 002B     		cmp	r3, #0
- 545 01ec 04D0     		beq	.L31
- 119:User/Software/remote_control.c ****               Global.Auto.input.fire == 1)) // ¹öÂÖÖÐ²¿£¬µÍËÙ·¢µ¯,Èô×ÔÃé´ò¿ª£¬·¢µ¯±êÖ¾Î»ÖÃ1ÔÊÐí·¢µ¯
- 546              		.loc 1 119 32
- 547 01ee 134B     		ldr	r3, .L34+4
- 548 01f0 93F83430 		ldrb	r3, [r3, #52]	@ zero_extendqisi2
- 118:User/Software/remote_control.c ****              (Global.Auto.mode == NONE ||
- 549              		.loc 1 118 40
- 550 01f4 012B     		cmp	r3, #1
- 551 01f6 04D1     		bne	.L30
- 552              	.L31:
- 120:User/Software/remote_control.c ****         Global.Shoot.tigger_mode = LOW;
- 553              		.loc 1 120 34
- 554 01f8 104B     		ldr	r3, .L34+4
- 555 01fa 0322     		movs	r2, #3
- 556 01fc 83F82020 		strb	r2, [r3, #32]
- 557 0200 19E0     		b	.L9
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 13
-
-
- 558              	.L30:
- 121:User/Software/remote_control.c ****     else if (RC_data.rc.ch[4] > 660 &&
- 559              		.loc 1 121 27
- 560 0202 0D4B     		ldr	r3, .L34
- 561 0204 B3F90830 		ldrsh	r3, [r3, #8]
- 562              		.loc 1 121 13
- 563 0208 B3F5257F 		cmp	r3, #660
- 564 020c 0DDD     		ble	.L32
- 122:User/Software/remote_control.c ****              Global.Shoot.shoot_mode != CLOSE)
- 565              		.loc 1 122 26
- 566 020e 0B4B     		ldr	r3, .L34+4
- 567 0210 93F82130 		ldrb	r3, [r3, #33]	@ zero_extendqisi2
- 121:User/Software/remote_control.c ****     else if (RC_data.rc.ch[4] > 660 &&
- 568              		.loc 1 121 37 discriminator 1
- 569 0214 002B     		cmp	r3, #0
- 570 0216 08D0     		beq	.L32
- 123:User/Software/remote_control.c ****     {
- 124:User/Software/remote_control.c ****         Global.Shoot.shoot_mode = DEBUG_SHOOT;
- 571              		.loc 1 124 33
- 572 0218 084B     		ldr	r3, .L34+4
- 573 021a 0222     		movs	r2, #2
- 574 021c 83F82120 		strb	r2, [r3, #33]
- 125:User/Software/remote_control.c ****         Global.Shoot.tigger_mode = DEBUG_SHOOT;
- 575              		.loc 1 125 34
- 576 0220 064B     		ldr	r3, .L34+4
- 577 0222 0222     		movs	r2, #2
- 578 0224 83F82020 		strb	r2, [r3, #32]
- 579 0228 05E0     		b	.L9
- 580              	.L32:
- 126:User/Software/remote_control.c ****     }
- 127:User/Software/remote_control.c ****     else
- 128:User/Software/remote_control.c ****         Global.Shoot.tigger_mode = TRIGGER_CLOSE;
- 581              		.loc 1 128 34
- 582 022a 044B     		ldr	r3, .L34+4
- 583 022c 0022     		movs	r2, #0
- 584 022e 83F82020 		strb	r2, [r3, #32]
- 585 0232 00E0     		b	.L9
- 586              	.L33:
+ 463 0170 C3ED037A 		vstr.32	s15, [r3, #12]
+ 464 0174 00E0     		b	.L9
+ 465              	.L22:
   83:User/Software/remote_control.c ****     /*µ×ÅÌ¿ØÖÆ*/
- 587              		.loc 1 83 9
- 588 0234 00BF     		nop
- 589              	.L9:
- 129:User/Software/remote_control.c **** }
- 590              		.loc 1 129 1
- 591 0236 80BD     		pop	{r7, pc}
- 592              	.L35:
- 593              		.align	2
- 594              	.L34:
- 595 0238 00000000 		.word	RC_data
- 596 023c 00000000 		.word	Global
- 597 0240 00002042 		.word	1109393408
- 598 0244 0000FA44 		.word	1157234688
- 599 0248 00007A44 		.word	1148846080
- 600              		.cfi_endproc
- 601              	.LFE149:
- 603              		.section	.text.Keyboard_mouse_control,"ax",%progbits
- 604              		.align	1
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 14
+ 466              		.loc 1 83 9
+ 467 0176 00BF     		nop
+ 468              	.L9:
+ 110:User/Software/remote_control.c ****     }	
+ 111:User/Software/remote_control.c **** 
+ 112:User/Software/remote_control.c **** 
+ 113:User/Software/remote_control.c **** }
+ 114:User/Software/remote_control.c ****  
+ 115:User/Software/remote_control.c **** }
+ 469              		.loc 1 115 1
+ 470 0178 80BD     		pop	{r7, pc}
+ 471              	.L24:
+ 472 017a 00BFAFF3 		.align	3
+ 472      0080
+ 473              	.L23:
+ 474 0180 7B14AE47 		.word	1202590843
+ 475 0184 E17A743F 		.word	1064598241
+ 476 0188 00000000 		.word	RC_data
+ 477 018c 00000000 		.word	Global
+ 478 0190 00002042 		.word	1109393408
+ 479 0194 00000000 		.word	SBUS_CH
+ 480 0198 00000000 		.word	pos_motor
+ 481 019c 00000000 		.word	0
+ 482              		.cfi_endproc
+ 483              	.LFE149:
+ 485              		.section	.text.Keyboard_mouse_control,"ax",%progbits
+ 486              		.align	1
+ 487              		.global	Keyboard_mouse_control
+ 488              		.syntax unified
+ 489              		.thumb
+ 490              		.thumb_func
+ 492              	Keyboard_mouse_control:
+ 493              	.LFB150:
+ 116:User/Software/remote_control.c **** 
+ 117:User/Software/remote_control.c **** void Keyboard_mouse_control(void)
+ 118:User/Software/remote_control.c **** {
+ 494              		.loc 1 118 1
+ 495              		.cfi_startproc
+ 496              		@ args = 0, pretend = 0, frame = 0
+ 497              		@ frame_needed = 1, uses_anonymous_args = 0
+ 498 0000 80B5     		push	{r7, lr}
+ 499              	.LCFI12:
+ 500              		.cfi_def_cfa_offset 8
+ 501              		.cfi_offset 7, -8
+ 502              		.cfi_offset 14, -4
+ 503 0002 00AF     		add	r7, sp, #0
+ 504              	.LCFI13:
+ 505              		.cfi_def_cfa_register 7
+ 119:User/Software/remote_control.c ****     if (Global.Control.mode != KEY)
+ 506              		.loc 1 119 23
+ 507 0004 844B     		ldr	r3, .L47
+ 508 0006 93F83930 		ldrb	r3, [r3, #57]	@ zero_extendqisi2
+ 509              		.loc 1 119 8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 12
 
 
- 605              		.global	Keyboard_mouse_control
- 606              		.syntax unified
- 607              		.thumb
- 608              		.thumb_func
- 610              	Keyboard_mouse_control:
- 611              	.LFB150:
- 130:User/Software/remote_control.c **** 
- 131:User/Software/remote_control.c **** void Keyboard_mouse_control(void)
- 132:User/Software/remote_control.c **** {
- 612              		.loc 1 132 1
- 613              		.cfi_startproc
- 614              		@ args = 0, pretend = 0, frame = 0
- 615              		@ frame_needed = 1, uses_anonymous_args = 0
- 616 0000 80B5     		push	{r7, lr}
- 617              	.LCFI12:
- 618              		.cfi_def_cfa_offset 8
- 619              		.cfi_offset 7, -8
- 620              		.cfi_offset 14, -4
- 621 0002 00AF     		add	r7, sp, #0
- 622              	.LCFI13:
- 623              		.cfi_def_cfa_register 7
- 133:User/Software/remote_control.c ****     if (Global.Control.mode != KEY)
- 624              		.loc 1 133 23
- 625 0004 844B     		ldr	r3, .L58
- 626 0006 93F83930 		ldrb	r3, [r3, #57]	@ zero_extendqisi2
- 627              		.loc 1 133 8
- 628 000a 012B     		cmp	r3, #1
- 629 000c 40F00181 		bne	.L57
- 134:User/Software/remote_control.c ****         return;
- 135:User/Software/remote_control.c ****     /*µ×ÅÌ¿ØÖÆ*/
- 136:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_W)
- 630              		.loc 1 136 9
- 631 0010 824B     		ldr	r3, .L58+4
- 632 0012 9B8A     		ldrh	r3, [r3, #20]
- 633 0014 03F00103 		and	r3, r3, #1
- 634              		.loc 1 136 8
- 635 0018 002B     		cmp	r3, #0
- 636 001a 03D0     		beq	.L39
- 137:User/Software/remote_control.c ****         Chassis_set_y(5.0);
- 637              		.loc 1 137 9
- 638 001c B1EE040A 		vmov.f32	s0, #5.0e+0
- 639 0020 FFF7FEFF 		bl	Chassis_set_y
- 640              	.L39:
- 138:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_S)
- 641              		.loc 1 138 9
- 642 0024 7D4B     		ldr	r3, .L58+4
- 643 0026 9B8A     		ldrh	r3, [r3, #20]
- 644 0028 03F00203 		and	r3, r3, #2
- 645              		.loc 1 138 8
- 646 002c 002B     		cmp	r3, #0
- 647 002e 03D0     		beq	.L40
- 139:User/Software/remote_control.c ****         Chassis_set_y(-5.0);
- 648              		.loc 1 139 9
- 649 0030 B9EE040A 		vmov.f32	s0, #-5.0e+0
- 650 0034 FFF7FEFF 		bl	Chassis_set_y
- 651              	.L40:
- 140:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_D)
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 15
+ 510 000a 012B     		cmp	r3, #1
+ 511 000c 40F00181 		bne	.L46
+ 120:User/Software/remote_control.c ****         return;
+ 121:User/Software/remote_control.c ****     /*µ×ÅÌ¿ØÖÆ*/
+ 122:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_W)
+ 512              		.loc 1 122 9
+ 513 0010 824B     		ldr	r3, .L47+4
+ 514 0012 9B8A     		ldrh	r3, [r3, #20]
+ 515 0014 03F00103 		and	r3, r3, #1
+ 516              		.loc 1 122 8
+ 517 0018 002B     		cmp	r3, #0
+ 518 001a 03D0     		beq	.L28
+ 123:User/Software/remote_control.c ****         Chassis_set_y(5.0);
+ 519              		.loc 1 123 9
+ 520 001c B1EE040A 		vmov.f32	s0, #5.0e+0
+ 521 0020 FFF7FEFF 		bl	Chassis_set_y
+ 522              	.L28:
+ 124:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_S)
+ 523              		.loc 1 124 9
+ 524 0024 7D4B     		ldr	r3, .L47+4
+ 525 0026 9B8A     		ldrh	r3, [r3, #20]
+ 526 0028 03F00203 		and	r3, r3, #2
+ 527              		.loc 1 124 8
+ 528 002c 002B     		cmp	r3, #0
+ 529 002e 03D0     		beq	.L29
+ 125:User/Software/remote_control.c ****         Chassis_set_y(-5.0);
+ 530              		.loc 1 125 9
+ 531 0030 B9EE040A 		vmov.f32	s0, #-5.0e+0
+ 532 0034 FFF7FEFF 		bl	Chassis_set_y
+ 533              	.L29:
+ 126:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_D)
+ 534              		.loc 1 126 9
+ 535 0038 784B     		ldr	r3, .L47+4
+ 536 003a 9B8A     		ldrh	r3, [r3, #20]
+ 537 003c 03F00803 		and	r3, r3, #8
+ 538              		.loc 1 126 8
+ 539 0040 002B     		cmp	r3, #0
+ 540 0042 03D0     		beq	.L30
+ 127:User/Software/remote_control.c ****         Chassis_set_x(5.0);
+ 541              		.loc 1 127 9
+ 542 0044 B1EE040A 		vmov.f32	s0, #5.0e+0
+ 543 0048 FFF7FEFF 		bl	Chassis_set_x
+ 544              	.L30:
+ 128:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_A)
+ 545              		.loc 1 128 9
+ 546 004c 734B     		ldr	r3, .L47+4
+ 547 004e 9B8A     		ldrh	r3, [r3, #20]
+ 548 0050 03F00403 		and	r3, r3, #4
+ 549              		.loc 1 128 8
+ 550 0054 002B     		cmp	r3, #0
+ 551 0056 03D0     		beq	.L31
+ 129:User/Software/remote_control.c ****         Chassis_set_x(-5.0);
+ 552              		.loc 1 129 9
+ 553 0058 B9EE040A 		vmov.f32	s0, #-5.0e+0
+ 554 005c FFF7FEFF 		bl	Chassis_set_x
+ 555              	.L31:
+ 130:User/Software/remote_control.c ****     if (!IF_KEY_PRESSED_W && !IF_KEY_PRESSED_S)
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 13
 
 
- 652              		.loc 1 140 9
- 653 0038 784B     		ldr	r3, .L58+4
- 654 003a 9B8A     		ldrh	r3, [r3, #20]
- 655 003c 03F00803 		and	r3, r3, #8
- 656              		.loc 1 140 8
- 657 0040 002B     		cmp	r3, #0
- 658 0042 03D0     		beq	.L41
- 141:User/Software/remote_control.c ****         Chassis_set_x(5.0);
- 659              		.loc 1 141 9
- 660 0044 B1EE040A 		vmov.f32	s0, #5.0e+0
- 661 0048 FFF7FEFF 		bl	Chassis_set_x
- 662              	.L41:
- 142:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_A)
- 663              		.loc 1 142 9
- 664 004c 734B     		ldr	r3, .L58+4
- 665 004e 9B8A     		ldrh	r3, [r3, #20]
- 666 0050 03F00403 		and	r3, r3, #4
- 667              		.loc 1 142 8
- 668 0054 002B     		cmp	r3, #0
- 669 0056 03D0     		beq	.L42
- 143:User/Software/remote_control.c ****         Chassis_set_x(-5.0);
- 670              		.loc 1 143 9
- 671 0058 B9EE040A 		vmov.f32	s0, #-5.0e+0
- 672 005c FFF7FEFF 		bl	Chassis_set_x
- 673              	.L42:
- 144:User/Software/remote_control.c ****     if (!IF_KEY_PRESSED_W && !IF_KEY_PRESSED_S)
- 674              		.loc 1 144 10
- 675 0060 6E4B     		ldr	r3, .L58+4
- 676 0062 9B8A     		ldrh	r3, [r3, #20]
- 677 0064 03F00103 		and	r3, r3, #1
- 678              		.loc 1 144 8
- 679 0068 002B     		cmp	r3, #0
- 680 006a 09D1     		bne	.L43
- 681              		.loc 1 144 31 discriminator 1
- 682 006c 6B4B     		ldr	r3, .L58+4
- 683 006e 9B8A     		ldrh	r3, [r3, #20]
- 684 0070 03F00203 		and	r3, r3, #2
- 685              		.loc 1 144 27 discriminator 1
- 686 0074 002B     		cmp	r3, #0
- 687 0076 03D1     		bne	.L43
- 145:User/Software/remote_control.c ****         Chassis_set_y(0);
- 688              		.loc 1 145 9
- 689 0078 9FED690A 		vldr.32	s0, .L58+8
- 690 007c FFF7FEFF 		bl	Chassis_set_y
- 691              	.L43:
- 146:User/Software/remote_control.c ****     if (!IF_KEY_PRESSED_A && !IF_KEY_PRESSED_D)
- 692              		.loc 1 146 10
- 693 0080 664B     		ldr	r3, .L58+4
- 694 0082 9B8A     		ldrh	r3, [r3, #20]
- 695 0084 03F00403 		and	r3, r3, #4
- 696              		.loc 1 146 8
- 697 0088 002B     		cmp	r3, #0
- 698 008a 09D1     		bne	.L44
- 699              		.loc 1 146 31 discriminator 1
- 700 008c 634B     		ldr	r3, .L58+4
- 701 008e 9B8A     		ldrh	r3, [r3, #20]
- 702 0090 03F00803 		and	r3, r3, #8
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 16
+ 556              		.loc 1 130 10
+ 557 0060 6E4B     		ldr	r3, .L47+4
+ 558 0062 9B8A     		ldrh	r3, [r3, #20]
+ 559 0064 03F00103 		and	r3, r3, #1
+ 560              		.loc 1 130 8
+ 561 0068 002B     		cmp	r3, #0
+ 562 006a 09D1     		bne	.L32
+ 563              		.loc 1 130 31 discriminator 1
+ 564 006c 6B4B     		ldr	r3, .L47+4
+ 565 006e 9B8A     		ldrh	r3, [r3, #20]
+ 566 0070 03F00203 		and	r3, r3, #2
+ 567              		.loc 1 130 27 discriminator 1
+ 568 0074 002B     		cmp	r3, #0
+ 569 0076 03D1     		bne	.L32
+ 131:User/Software/remote_control.c ****         Chassis_set_y(0);
+ 570              		.loc 1 131 9
+ 571 0078 9FED690A 		vldr.32	s0, .L47+8
+ 572 007c FFF7FEFF 		bl	Chassis_set_y
+ 573              	.L32:
+ 132:User/Software/remote_control.c ****     if (!IF_KEY_PRESSED_A && !IF_KEY_PRESSED_D)
+ 574              		.loc 1 132 10
+ 575 0080 664B     		ldr	r3, .L47+4
+ 576 0082 9B8A     		ldrh	r3, [r3, #20]
+ 577 0084 03F00403 		and	r3, r3, #4
+ 578              		.loc 1 132 8
+ 579 0088 002B     		cmp	r3, #0
+ 580 008a 09D1     		bne	.L33
+ 581              		.loc 1 132 31 discriminator 1
+ 582 008c 634B     		ldr	r3, .L47+4
+ 583 008e 9B8A     		ldrh	r3, [r3, #20]
+ 584 0090 03F00803 		and	r3, r3, #8
+ 585              		.loc 1 132 27 discriminator 1
+ 586 0094 002B     		cmp	r3, #0
+ 587 0096 03D1     		bne	.L33
+ 133:User/Software/remote_control.c ****         Chassis_set_x(0);
+ 588              		.loc 1 133 9
+ 589 0098 9FED610A 		vldr.32	s0, .L47+8
+ 590 009c FFF7FEFF 		bl	Chassis_set_x
+ 591              	.L33:
+ 134:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_SHIFT)
+ 592              		.loc 1 134 9
+ 593 00a0 5E4B     		ldr	r3, .L47+4
+ 594 00a2 9B8A     		ldrh	r3, [r3, #20]
+ 595 00a4 03F01003 		and	r3, r3, #16
+ 596              		.loc 1 134 8
+ 597 00a8 002B     		cmp	r3, #0
+ 598 00aa 08D0     		beq	.L34
+ 135:User/Software/remote_control.c ****     {
+ 136:User/Software/remote_control.c ****         Global.Cap.mode = FULL;
+ 599              		.loc 1 136 25
+ 600 00ac 5A4B     		ldr	r3, .L47
+ 601 00ae 0122     		movs	r2, #1
+ 602 00b0 83F83820 		strb	r2, [r3, #56]
+ 137:User/Software/remote_control.c ****         Chassis_set_accel(8.0);
+ 603              		.loc 1 137 9
+ 604 00b4 B2EE000A 		vmov.f32	s0, #8.0e+0
+ 605 00b8 FFF7FEFF 		bl	Chassis_set_accel
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 14
 
 
- 703              		.loc 1 146 27 discriminator 1
- 704 0094 002B     		cmp	r3, #0
- 705 0096 03D1     		bne	.L44
- 147:User/Software/remote_control.c ****         Chassis_set_x(0);
- 706              		.loc 1 147 9
- 707 0098 9FED610A 		vldr.32	s0, .L58+8
- 708 009c FFF7FEFF 		bl	Chassis_set_x
- 709              	.L44:
- 148:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_SHIFT)
- 710              		.loc 1 148 9
- 711 00a0 5E4B     		ldr	r3, .L58+4
- 712 00a2 9B8A     		ldrh	r3, [r3, #20]
- 713 00a4 03F01003 		and	r3, r3, #16
- 714              		.loc 1 148 8
- 715 00a8 002B     		cmp	r3, #0
- 716 00aa 08D0     		beq	.L45
- 149:User/Software/remote_control.c ****     {
- 150:User/Software/remote_control.c ****         Global.Cap.mode = FULL;
- 717              		.loc 1 150 25
- 718 00ac 5A4B     		ldr	r3, .L58
- 719 00ae 0122     		movs	r2, #1
- 720 00b0 83F83820 		strb	r2, [r3, #56]
- 151:User/Software/remote_control.c ****         Chassis_set_accel(8.0);
- 721              		.loc 1 151 9
- 722 00b4 B2EE000A 		vmov.f32	s0, #8.0e+0
- 723 00b8 FFF7FEFF 		bl	Chassis_set_accel
- 724 00bc 07E0     		b	.L46
- 725              	.L45:
- 152:User/Software/remote_control.c ****     }
- 153:User/Software/remote_control.c ****     else
- 154:User/Software/remote_control.c ****     {
- 155:User/Software/remote_control.c ****         Global.Cap.mode = Not_FULL;
- 726              		.loc 1 155 25
- 727 00be 564B     		ldr	r3, .L58
- 728 00c0 0022     		movs	r2, #0
- 729 00c2 83F83820 		strb	r2, [r3, #56]
- 156:User/Software/remote_control.c ****         Chassis_set_accel(4.0);
- 730              		.loc 1 156 9
- 731 00c6 B1EE000A 		vmov.f32	s0, #4.0e+0
- 732 00ca FFF7FEFF 		bl	Chassis_set_accel
- 733              	.L46:
+ 606 00bc 07E0     		b	.L35
+ 607              	.L34:
+ 138:User/Software/remote_control.c ****     }
+ 139:User/Software/remote_control.c ****     else
+ 140:User/Software/remote_control.c ****     {
+ 141:User/Software/remote_control.c ****         Global.Cap.mode = Not_FULL;
+ 608              		.loc 1 141 25
+ 609 00be 564B     		ldr	r3, .L47
+ 610 00c0 0022     		movs	r2, #0
+ 611 00c2 83F83820 		strb	r2, [r3, #56]
+ 142:User/Software/remote_control.c ****         Chassis_set_accel(4.0);
+ 612              		.loc 1 142 9
+ 613 00c6 B1EE000A 		vmov.f32	s0, #4.0e+0
+ 614 00ca FFF7FEFF 		bl	Chassis_set_accel
+ 615              	.L35:
+ 143:User/Software/remote_control.c ****     }
+ 144:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_Q) // Ð¡ÍÓÂÝ¿ª¹Ø
+ 616              		.loc 1 144 9
+ 617 00ce 534B     		ldr	r3, .L47+4
+ 618 00d0 9B8A     		ldrh	r3, [r3, #20]
+ 619 00d2 03F04003 		and	r3, r3, #64
+ 620              		.loc 1 144 8
+ 621 00d6 002B     		cmp	r3, #0
+ 622 00d8 10D0     		beq	.L36
+ 145:User/Software/remote_control.c ****     {
+ 146:User/Software/remote_control.c ****         if (Wait(WAIT_Q)) // Ïû¶¶
+ 623              		.loc 1 146 13
+ 624 00da 0420     		movs	r0, #4
+ 625 00dc FFF7FEFF 		bl	Wait
+ 626 00e0 0346     		mov	r3, r0
+ 627              		.loc 1 146 12 discriminator 1
+ 628 00e2 002B     		cmp	r3, #0
+ 629 00e4 0AD0     		beq	.L36
+ 147:User/Software/remote_control.c ****         {
+ 148:User/Software/remote_control.c ****             if (Global.Chssis.mode != SPIN_P)
+ 630              		.loc 1 148 30
+ 631 00e6 4C4B     		ldr	r3, .L47
+ 632 00e8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 633              		.loc 1 148 16
+ 634 00ea 012B     		cmp	r3, #1
+ 635 00ec 03D0     		beq	.L37
+ 149:User/Software/remote_control.c ****                 Global.Chssis.mode = SPIN_P;
+ 636              		.loc 1 149 36
+ 637 00ee 4A4B     		ldr	r3, .L47
+ 638 00f0 0122     		movs	r2, #1
+ 639 00f2 1A70     		strb	r2, [r3]
+ 640 00f4 02E0     		b	.L36
+ 641              	.L37:
+ 150:User/Software/remote_control.c ****             else
+ 151:User/Software/remote_control.c ****                 Global.Chssis.mode = FLOW;
+ 642              		.loc 1 151 36
+ 643 00f6 484B     		ldr	r3, .L47
+ 644 00f8 0022     		movs	r2, #0
+ 645 00fa 1A70     		strb	r2, [r3]
+ 646              	.L36:
+ 152:User/Software/remote_control.c ****         }
+ 153:User/Software/remote_control.c ****     }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 15
+
+
+ 154:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_Z) // UI¿ª¹Ø
+ 647              		.loc 1 154 9
+ 648 00fc 474B     		ldr	r3, .L47+4
+ 649 00fe 9B8A     		ldrh	r3, [r3, #20]
+ 650 0100 03F40063 		and	r3, r3, #2048
+ 651              		.loc 1 154 8
+ 652 0104 002B     		cmp	r3, #0
+ 653 0106 01D0     		beq	.L38
+ 155:User/Software/remote_control.c ****     {
+ 156:User/Software/remote_control.c ****         ui_init();
+ 654              		.loc 1 156 9
+ 655 0108 FFF7FEFF 		bl	ui_init
+ 656              	.L38:
  157:User/Software/remote_control.c ****     }
- 158:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_Q) // Ð¡ÍÓÂÝ¿ª¹Ø
- 734              		.loc 1 158 9
- 735 00ce 534B     		ldr	r3, .L58+4
- 736 00d0 9B8A     		ldrh	r3, [r3, #20]
- 737 00d2 03F04003 		and	r3, r3, #64
- 738              		.loc 1 158 8
- 739 00d6 002B     		cmp	r3, #0
- 740 00d8 10D0     		beq	.L47
- 159:User/Software/remote_control.c ****     {
- 160:User/Software/remote_control.c ****         if (Wait(WAIT_Q)) // Ïû¶¶
- 741              		.loc 1 160 13
- 742 00da 0420     		movs	r0, #4
- 743 00dc FFF7FEFF 		bl	Wait
- 744 00e0 0346     		mov	r3, r0
- 745              		.loc 1 160 12 discriminator 1
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 17
+ 158:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_CTRL)
+ 657              		.loc 1 158 9
+ 658 010c 434B     		ldr	r3, .L47+4
+ 659 010e 9B8A     		ldrh	r3, [r3, #20]
+ 660 0110 03F02003 		and	r3, r3, #32
+ 661              		.loc 1 158 8
+ 662 0114 002B     		cmp	r3, #0
+ 663 0116 03D0     		beq	.L39
+ 159:User/Software/remote_control.c ****         Global.Chssis.input.reset = 1;
+ 664              		.loc 1 159 35
+ 665 0118 3F4B     		ldr	r3, .L47
+ 666 011a 0122     		movs	r2, #1
+ 667 011c 1A74     		strb	r2, [r3, #16]
+ 668 011e 02E0     		b	.L40
+ 669              	.L39:
+ 160:User/Software/remote_control.c ****     else
+ 161:User/Software/remote_control.c ****         Global.Chssis.input.reset = 0;
+ 670              		.loc 1 161 35
+ 671 0120 3D4B     		ldr	r3, .L47
+ 672 0122 0022     		movs	r2, #0
+ 673 0124 1A74     		strb	r2, [r3, #16]
+ 674              	.L40:
+ 162:User/Software/remote_control.c ****     /*ÔÆÌ¨¿ØÖÆ*/
+ 163:User/Software/remote_control.c ****     Gimbal_set_pitch_angle(Global.Gimbal.input.pitch -= MOUSE_Y_MOVE_SPEED * PITCH_SENSITIVITY);
+ 675              		.loc 1 163 47
+ 676 0126 3C4B     		ldr	r3, .L47
+ 677 0128 93ED067A 		vldr.32	s14, [r3, #24]
+ 678              		.loc 1 163 57
+ 679 012c 3B4B     		ldr	r3, .L47+4
+ 680 012e B3F90E30 		ldrsh	r3, [r3, #14]
+ 681              		.loc 1 163 76
+ 682 0132 07EE903A 		vmov	s15, r3	@ int
+ 683 0136 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 684 013a DFED3A6A 		vldr.32	s13, .L47+12
+ 685 013e 67EEA67A 		vmul.f32	s15, s15, s13
+ 686              		.loc 1 163 54
+ 687 0142 77EE677A 		vsub.f32	s15, s14, s15
+ 688              		.loc 1 163 5
+ 689 0146 344B     		ldr	r3, .L47
+ 690 0148 C3ED067A 		vstr.32	s15, [r3, #24]
+ 691              		.loc 1 163 47
+ 692 014c 324B     		ldr	r3, .L47
+ 693 014e D3ED067A 		vldr.32	s15, [r3, #24]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 16
 
 
- 746 00e2 002B     		cmp	r3, #0
- 747 00e4 0AD0     		beq	.L47
- 161:User/Software/remote_control.c ****         {
- 162:User/Software/remote_control.c ****             if (Global.Chssis.mode != SPIN_P)
- 748              		.loc 1 162 30
- 749 00e6 4C4B     		ldr	r3, .L58
- 750 00e8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 751              		.loc 1 162 16
- 752 00ea 012B     		cmp	r3, #1
- 753 00ec 03D0     		beq	.L48
- 163:User/Software/remote_control.c ****                 Global.Chssis.mode = SPIN_P;
- 754              		.loc 1 163 36
- 755 00ee 4A4B     		ldr	r3, .L58
- 756 00f0 0122     		movs	r2, #1
- 757 00f2 1A70     		strb	r2, [r3]
- 758 00f4 02E0     		b	.L47
- 759              	.L48:
- 164:User/Software/remote_control.c ****             else
- 165:User/Software/remote_control.c ****                 Global.Chssis.mode = FLOW;
- 760              		.loc 1 165 36
- 761 00f6 484B     		ldr	r3, .L58
- 762 00f8 0022     		movs	r2, #0
- 763 00fa 1A70     		strb	r2, [r3]
- 764              	.L47:
- 166:User/Software/remote_control.c ****         }
- 167:User/Software/remote_control.c ****     }
- 168:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_Z) // UI¿ª¹Ø
- 765              		.loc 1 168 9
- 766 00fc 474B     		ldr	r3, .L58+4
- 767 00fe 9B8A     		ldrh	r3, [r3, #20]
- 768 0100 03F40063 		and	r3, r3, #2048
- 769              		.loc 1 168 8
- 770 0104 002B     		cmp	r3, #0
- 771 0106 01D0     		beq	.L49
- 169:User/Software/remote_control.c ****     {
- 170:User/Software/remote_control.c ****         ui_init();
- 772              		.loc 1 170 9
- 773 0108 FFF7FEFF 		bl	ui_init
- 774              	.L49:
- 171:User/Software/remote_control.c ****     }
- 172:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_CTRL)
- 775              		.loc 1 172 9
- 776 010c 434B     		ldr	r3, .L58+4
- 777 010e 9B8A     		ldrh	r3, [r3, #20]
- 778 0110 03F02003 		and	r3, r3, #32
- 779              		.loc 1 172 8
- 780 0114 002B     		cmp	r3, #0
- 781 0116 03D0     		beq	.L50
- 173:User/Software/remote_control.c ****         Global.Chssis.input.reset = 1;
- 782              		.loc 1 173 35
- 783 0118 3F4B     		ldr	r3, .L58
- 784 011a 0122     		movs	r2, #1
- 785 011c 1A74     		strb	r2, [r3, #16]
- 786 011e 02E0     		b	.L51
- 787              	.L50:
- 174:User/Software/remote_control.c ****     else
- 175:User/Software/remote_control.c ****         Global.Chssis.input.reset = 0;
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 18
+ 694              		.loc 1 163 5
+ 695 0152 B0EE670A 		vmov.f32	s0, s15
+ 696 0156 FFF7FEFF 		bl	Gimbal_set_pitch_angle
+ 164:User/Software/remote_control.c ****     Gimbal_set_yaw_angle(Global.Gimbal.input.yaw -= MOUSE_X_MOVE_SPEED * YAW_SENSITIVITY);
+ 697              		.loc 1 164 45
+ 698 015a 2F4B     		ldr	r3, .L47
+ 699 015c 93ED077A 		vldr.32	s14, [r3, #28]
+ 700              		.loc 1 164 53
+ 701 0160 2E4B     		ldr	r3, .L47+4
+ 702 0162 B3F90C30 		ldrsh	r3, [r3, #12]
+ 703              		.loc 1 164 72
+ 704 0166 07EE903A 		vmov	s15, r3	@ int
+ 705 016a F8EEE77A 		vcvt.f32.s32	s15, s15
+ 706 016e DFED2E6A 		vldr.32	s13, .L47+16
+ 707 0172 67EEA67A 		vmul.f32	s15, s15, s13
+ 708              		.loc 1 164 50
+ 709 0176 77EE677A 		vsub.f32	s15, s14, s15
+ 710              		.loc 1 164 5
+ 711 017a 274B     		ldr	r3, .L47
+ 712 017c C3ED077A 		vstr.32	s15, [r3, #28]
+ 713              		.loc 1 164 45
+ 714 0180 254B     		ldr	r3, .L47
+ 715 0182 D3ED077A 		vldr.32	s15, [r3, #28]
+ 716              		.loc 1 164 5
+ 717 0186 B0EE670A 		vmov.f32	s0, s15
+ 718 018a FFF7FEFF 		bl	Gimbal_set_yaw_angle
+ 165:User/Software/remote_control.c ****     /*×ÔÃéÑ¡Ôñ*/
+ 166:User/Software/remote_control.c ****     if (IF_MOUSE_PRESSED_RIGH)
+ 719              		.loc 1 166 9
+ 720 018e 234B     		ldr	r3, .L47+4
+ 721 0190 DB7C     		ldrb	r3, [r3, #19]	@ zero_extendqisi2
+ 722              		.loc 1 166 8
+ 723 0192 012B     		cmp	r3, #1
+ 724 0194 04D1     		bne	.L41
+ 167:User/Software/remote_control.c ****         Global.Auto.mode = CAR;
+ 725              		.loc 1 167 26
+ 726 0196 204B     		ldr	r3, .L47
+ 727 0198 0122     		movs	r2, #1
+ 728 019a 83F82420 		strb	r2, [r3, #36]
+ 729 019e 03E0     		b	.L42
+ 730              	.L41:
+ 168:User/Software/remote_control.c ****     else
+ 169:User/Software/remote_control.c ****         Global.Auto.mode = NONE;
+ 731              		.loc 1 169 26
+ 732 01a0 1D4B     		ldr	r3, .L47
+ 733 01a2 0022     		movs	r2, #0
+ 734 01a4 83F82420 		strb	r2, [r3, #36]
+ 735              	.L42:
+ 170:User/Software/remote_control.c ****     /*·¢Éä»ú¹¹¿ØÖÆ*/
+ 171:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_R) // Ä¦²ÁÂÖ¿ª¹Ø
+ 736              		.loc 1 171 9
+ 737 01a8 1C4B     		ldr	r3, .L47+4
+ 738 01aa 9B8A     		ldrh	r3, [r3, #20]
+ 739 01ac 03F48073 		and	r3, r3, #256
+ 740              		.loc 1 171 8
+ 741 01b0 002B     		cmp	r3, #0
+ 742 01b2 11D0     		beq	.L43
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 17
 
 
- 788              		.loc 1 175 35
- 789 0120 3D4B     		ldr	r3, .L58
- 790 0122 0022     		movs	r2, #0
- 791 0124 1A74     		strb	r2, [r3, #16]
- 792              	.L51:
- 176:User/Software/remote_control.c ****     /*ÔÆÌ¨¿ØÖÆ*/
- 177:User/Software/remote_control.c ****     Gimbal_set_pitch_angle(Global.Gimbal.input.pitch -= MOUSE_Y_MOVE_SPEED * PITCH_SENSITIVITY);
- 793              		.loc 1 177 47
- 794 0126 3C4B     		ldr	r3, .L58
- 795 0128 93ED067A 		vldr.32	s14, [r3, #24]
- 796              		.loc 1 177 57
- 797 012c 3B4B     		ldr	r3, .L58+4
- 798 012e B3F90E30 		ldrsh	r3, [r3, #14]
- 799              		.loc 1 177 76
- 800 0132 07EE903A 		vmov	s15, r3	@ int
- 801 0136 F8EEE77A 		vcvt.f32.s32	s15, s15
- 802 013a DFED3A6A 		vldr.32	s13, .L58+12
- 803 013e 67EEA67A 		vmul.f32	s15, s15, s13
- 804              		.loc 1 177 54
- 805 0142 77EE677A 		vsub.f32	s15, s14, s15
- 806              		.loc 1 177 5
- 807 0146 344B     		ldr	r3, .L58
- 808 0148 C3ED067A 		vstr.32	s15, [r3, #24]
- 809              		.loc 1 177 47
- 810 014c 324B     		ldr	r3, .L58
- 811 014e D3ED067A 		vldr.32	s15, [r3, #24]
- 812              		.loc 1 177 5
- 813 0152 B0EE670A 		vmov.f32	s0, s15
- 814 0156 FFF7FEFF 		bl	Gimbal_set_pitch_angle
- 178:User/Software/remote_control.c ****     Gimbal_set_yaw_angle(Global.Gimbal.input.yaw -= MOUSE_X_MOVE_SPEED * YAW_SENSITIVITY);
- 815              		.loc 1 178 45
- 816 015a 2F4B     		ldr	r3, .L58
- 817 015c 93ED077A 		vldr.32	s14, [r3, #28]
- 818              		.loc 1 178 53
- 819 0160 2E4B     		ldr	r3, .L58+4
- 820 0162 B3F90C30 		ldrsh	r3, [r3, #12]
- 821              		.loc 1 178 72
- 822 0166 07EE903A 		vmov	s15, r3	@ int
- 823 016a F8EEE77A 		vcvt.f32.s32	s15, s15
- 824 016e DFED2E6A 		vldr.32	s13, .L58+16
- 825 0172 67EEA67A 		vmul.f32	s15, s15, s13
- 826              		.loc 1 178 50
- 827 0176 77EE677A 		vsub.f32	s15, s14, s15
- 828              		.loc 1 178 5
- 829 017a 274B     		ldr	r3, .L58
- 830 017c C3ED077A 		vstr.32	s15, [r3, #28]
- 831              		.loc 1 178 45
- 832 0180 254B     		ldr	r3, .L58
- 833 0182 D3ED077A 		vldr.32	s15, [r3, #28]
- 834              		.loc 1 178 5
- 835 0186 B0EE670A 		vmov.f32	s0, s15
- 836 018a FFF7FEFF 		bl	Gimbal_set_yaw_angle
- 179:User/Software/remote_control.c ****     /*×ÔÃéÑ¡Ôñ*/
- 180:User/Software/remote_control.c ****     if (IF_MOUSE_PRESSED_RIGH)
- 837              		.loc 1 180 9
- 838 018e 234B     		ldr	r3, .L58+4
- 839 0190 DB7C     		ldrb	r3, [r3, #19]	@ zero_extendqisi2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 19
+ 172:User/Software/remote_control.c ****     {
+ 173:User/Software/remote_control.c ****         if (Wait(WAIT_R)) // Ïû¶¶
+ 743              		.loc 1 173 13
+ 744 01b4 0D20     		movs	r0, #13
+ 745 01b6 FFF7FEFF 		bl	Wait
+ 746 01ba 0346     		mov	r3, r0
+ 747              		.loc 1 173 12 discriminator 1
+ 748 01bc 002B     		cmp	r3, #0
+ 749 01be 0BD0     		beq	.L43
+ 174:User/Software/remote_control.c ****             Global.Shoot.shoot_mode = !Global.Shoot.shoot_mode;
+ 750              		.loc 1 174 52
+ 751 01c0 154B     		ldr	r3, .L47
+ 752 01c2 93F82130 		ldrb	r3, [r3, #33]	@ zero_extendqisi2
+ 753              		.loc 1 174 39
+ 754 01c6 002B     		cmp	r3, #0
+ 755 01c8 0CBF     		ite	eq
+ 756 01ca 0123     		moveq	r3, #1
+ 757 01cc 0023     		movne	r3, #0
+ 758 01ce DBB2     		uxtb	r3, r3
+ 759 01d0 1A46     		mov	r2, r3
+ 760              		.loc 1 174 37
+ 761 01d2 114B     		ldr	r3, .L47
+ 762 01d4 83F82120 		strb	r2, [r3, #33]
+ 763              	.L43:
+ 175:User/Software/remote_control.c ****     }
+ 176:User/Software/remote_control.c ****     if (IF_MOUSE_PRESSED_LEFT &&
+ 764              		.loc 1 176 9
+ 765 01d8 104B     		ldr	r3, .L47+4
+ 766 01da 9B7C     		ldrb	r3, [r3, #18]	@ zero_extendqisi2
+ 767              		.loc 1 176 8
+ 768 01dc 012B     		cmp	r3, #1
+ 769 01de 13D1     		bne	.L44
+ 177:User/Software/remote_control.c ****         Global.Shoot.shoot_mode != CLOSE &&
+ 770              		.loc 1 177 21
+ 771 01e0 0D4B     		ldr	r3, .L47
+ 772 01e2 93F82130 		ldrb	r3, [r3, #33]	@ zero_extendqisi2
+ 176:User/Software/remote_control.c ****         Global.Shoot.shoot_mode != CLOSE &&
+ 773              		.loc 1 176 31 discriminator 1
+ 774 01e6 002B     		cmp	r3, #0
+ 775 01e8 0ED0     		beq	.L44
+ 178:User/Software/remote_control.c ****         (Global.Auto.mode == NONE ||
+ 776              		.loc 1 178 21
+ 777 01ea 0B4B     		ldr	r3, .L47
+ 778 01ec 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
+ 177:User/Software/remote_control.c ****         Global.Shoot.shoot_mode != CLOSE &&
+ 779              		.loc 1 177 42
+ 780 01f0 002B     		cmp	r3, #0
+ 781 01f2 04D0     		beq	.L45
+ 179:User/Software/remote_control.c ****          Global.Auto.input.fire == 1)) // ²¦µ¯µç»ú¿ØÖÆ
+ 782              		.loc 1 179 27
+ 783 01f4 084B     		ldr	r3, .L47
+ 784 01f6 93F83430 		ldrb	r3, [r3, #52]	@ zero_extendqisi2
+ 178:User/Software/remote_control.c ****         (Global.Auto.mode == NONE ||
+ 785              		.loc 1 178 35
+ 786 01fa 012B     		cmp	r3, #1
+ 787 01fc 04D1     		bne	.L44
+ 788              	.L45:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 18
 
 
- 840              		.loc 1 180 8
- 841 0192 012B     		cmp	r3, #1
- 842 0194 04D1     		bne	.L52
- 181:User/Software/remote_control.c ****         Global.Auto.mode = CAR;
- 843              		.loc 1 181 26
- 844 0196 204B     		ldr	r3, .L58
- 845 0198 0122     		movs	r2, #1
- 846 019a 83F82420 		strb	r2, [r3, #36]
- 847 019e 03E0     		b	.L53
- 848              	.L52:
- 182:User/Software/remote_control.c ****     else
- 183:User/Software/remote_control.c ****         Global.Auto.mode = NONE;
- 849              		.loc 1 183 26
- 850 01a0 1D4B     		ldr	r3, .L58
- 851 01a2 0022     		movs	r2, #0
- 852 01a4 83F82420 		strb	r2, [r3, #36]
- 853              	.L53:
- 184:User/Software/remote_control.c ****     /*·¢Éä»ú¹¹¿ØÖÆ*/
- 185:User/Software/remote_control.c ****     if (IF_KEY_PRESSED_R) // Ä¦²ÁÂÖ¿ª¹Ø
- 854              		.loc 1 185 9
- 855 01a8 1C4B     		ldr	r3, .L58+4
- 856 01aa 9B8A     		ldrh	r3, [r3, #20]
- 857 01ac 03F48073 		and	r3, r3, #256
- 858              		.loc 1 185 8
- 859 01b0 002B     		cmp	r3, #0
- 860 01b2 11D0     		beq	.L54
- 186:User/Software/remote_control.c ****     {
- 187:User/Software/remote_control.c ****         if (Wait(WAIT_R)) // Ïû¶¶
- 861              		.loc 1 187 13
- 862 01b4 0D20     		movs	r0, #13
- 863 01b6 FFF7FEFF 		bl	Wait
- 864 01ba 0346     		mov	r3, r0
- 865              		.loc 1 187 12 discriminator 1
- 866 01bc 002B     		cmp	r3, #0
- 867 01be 0BD0     		beq	.L54
- 188:User/Software/remote_control.c ****             Global.Shoot.shoot_mode = !Global.Shoot.shoot_mode;
- 868              		.loc 1 188 52
- 869 01c0 154B     		ldr	r3, .L58
- 870 01c2 93F82130 		ldrb	r3, [r3, #33]	@ zero_extendqisi2
- 871              		.loc 1 188 39
- 872 01c6 002B     		cmp	r3, #0
- 873 01c8 0CBF     		ite	eq
- 874 01ca 0123     		moveq	r3, #1
- 875 01cc 0023     		movne	r3, #0
- 876 01ce DBB2     		uxtb	r3, r3
- 877 01d0 1A46     		mov	r2, r3
- 878              		.loc 1 188 37
- 879 01d2 114B     		ldr	r3, .L58
- 880 01d4 83F82120 		strb	r2, [r3, #33]
- 881              	.L54:
- 189:User/Software/remote_control.c ****     }
- 190:User/Software/remote_control.c ****     if (IF_MOUSE_PRESSED_LEFT &&
- 882              		.loc 1 190 9
- 883 01d8 104B     		ldr	r3, .L58+4
- 884 01da 9B7C     		ldrb	r3, [r3, #18]	@ zero_extendqisi2
- 885              		.loc 1 190 8
- 886 01dc 012B     		cmp	r3, #1
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 20
-
-
- 887 01de 13D1     		bne	.L55
- 191:User/Software/remote_control.c ****         Global.Shoot.shoot_mode != CLOSE &&
- 888              		.loc 1 191 21
- 889 01e0 0D4B     		ldr	r3, .L58
- 890 01e2 93F82130 		ldrb	r3, [r3, #33]	@ zero_extendqisi2
- 190:User/Software/remote_control.c ****         Global.Shoot.shoot_mode != CLOSE &&
- 891              		.loc 1 190 31 discriminator 1
- 892 01e6 002B     		cmp	r3, #0
- 893 01e8 0ED0     		beq	.L55
- 192:User/Software/remote_control.c ****         (Global.Auto.mode == NONE ||
- 894              		.loc 1 192 21
- 895 01ea 0B4B     		ldr	r3, .L58
- 896 01ec 93F82430 		ldrb	r3, [r3, #36]	@ zero_extendqisi2
- 191:User/Software/remote_control.c ****         Global.Shoot.shoot_mode != CLOSE &&
- 897              		.loc 1 191 42
- 898 01f0 002B     		cmp	r3, #0
- 899 01f2 04D0     		beq	.L56
- 193:User/Software/remote_control.c ****          Global.Auto.input.fire == 1)) // ²¦µ¯µç»ú¿ØÖÆ
- 900              		.loc 1 193 27
- 901 01f4 084B     		ldr	r3, .L58
- 902 01f6 93F83430 		ldrb	r3, [r3, #52]	@ zero_extendqisi2
- 192:User/Software/remote_control.c ****         (Global.Auto.mode == NONE ||
- 903              		.loc 1 192 35
- 904 01fa 012B     		cmp	r3, #1
- 905 01fc 04D1     		bne	.L55
- 906              	.L56:
- 194:User/Software/remote_control.c ****         Global.Shoot.tigger_mode = HIGH;
- 907              		.loc 1 194 34
- 908 01fe 064B     		ldr	r3, .L58
- 909 0200 0122     		movs	r2, #1
- 910 0202 83F82020 		strb	r2, [r3, #32]
- 911 0206 05E0     		b	.L36
- 912              	.L55:
- 195:User/Software/remote_control.c ****     else
- 196:User/Software/remote_control.c ****         Global.Shoot.tigger_mode = TRIGGER_CLOSE;
- 913              		.loc 1 196 34
- 914 0208 034B     		ldr	r3, .L58
- 915 020a 0022     		movs	r2, #0
- 916 020c 83F82020 		strb	r2, [r3, #32]
- 917 0210 00E0     		b	.L36
- 918              	.L57:
- 134:User/Software/remote_control.c ****     /*µ×ÅÌ¿ØÖÆ*/
- 919              		.loc 1 134 9
- 920 0212 00BF     		nop
- 921              	.L36:
- 197:User/Software/remote_control.c **** }
- 922              		.loc 1 197 1
- 923 0214 80BD     		pop	{r7, pc}
- 924              	.L59:
- 925 0216 00BF     		.align	2
- 926              	.L58:
- 927 0218 00000000 		.word	Global
- 928 021c 00000000 		.word	RC_data
- 929 0220 00000000 		.word	0
- 930 0224 6F12033C 		.word	1006834287
- 931 0228 0AD7A33B 		.word	1000593162
- 932              		.cfi_endproc
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 21
-
-
- 933              	.LFE150:
- 935              		.text
- 936              	.Letext0:
- 937              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
- 938              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
- 939              		.file 4 "User/Software/remote_control.h"
- 940              		.file 5 "User/Software/Global_status.h"
- 941              		.file 6 "User/Hardware/DT7.h"
- 942              		.file 7 "User/Software/Chassis.h"
- 943              		.file 8 "User/Software/Gimbal.h"
- 944              		.file 9 "User/Software/ui.h"
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s 			page 22
+ 180:User/Software/remote_control.c ****         Global.Shoot.tigger_mode = HIGH;
+ 789              		.loc 1 180 34
+ 790 01fe 064B     		ldr	r3, .L47
+ 791 0200 0122     		movs	r2, #1
+ 792 0202 83F82020 		strb	r2, [r3, #32]
+ 793 0206 05E0     		b	.L25
+ 794              	.L44:
+ 181:User/Software/remote_control.c ****     else
+ 182:User/Software/remote_control.c ****         Global.Shoot.tigger_mode = TRIGGER_CLOSE;
+ 795              		.loc 1 182 34
+ 796 0208 034B     		ldr	r3, .L47
+ 797 020a 0022     		movs	r2, #0
+ 798 020c 83F82020 		strb	r2, [r3, #32]
+ 799 0210 00E0     		b	.L25
+ 800              	.L46:
+ 120:User/Software/remote_control.c ****     /*µ×ÅÌ¿ØÖÆ*/
+ 801              		.loc 1 120 9
+ 802 0212 00BF     		nop
+ 803              	.L25:
+ 183:User/Software/remote_control.c **** }
+ 804              		.loc 1 183 1
+ 805 0214 80BD     		pop	{r7, pc}
+ 806              	.L48:
+ 807 0216 00BF     		.align	2
+ 808              	.L47:
+ 809 0218 00000000 		.word	Global
+ 810 021c 00000000 		.word	RC_data
+ 811 0220 00000000 		.word	0
+ 812 0224 6F12033C 		.word	1006834287
+ 813 0228 0AD7A33B 		.word	1000593162
+ 814              		.cfi_endproc
+ 815              	.LFE150:
+ 817              		.text
+ 818              	.Letext0:
+ 819              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 820              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 821              		.file 4 "User/Software/remote_control.h"
+ 822              		.file 5 "User/Software/Global_status.h"
+ 823              		.file 6 "User/Hardware/dm4310_drv.h"
+ 824              		.file 7 "User/Hardware/DT7.h"
+ 825              		.file 8 "User/Software/Gimbal.h"
+ 826              		.file 9 "User/Software/Chassis.h"
+ 827              		.file 10 "User/Software/ui.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccM85kBd.s 			page 19
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 remote_control.c
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:24     .bss.RC_data:00000000 RC_data
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:21     .bss.RC_data:00000000 $d
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:31     .bss.wait_time:00000000 wait_time
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:28     .bss.wait_time:00000000 $d
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:34     .text.Wait:00000000 $t
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:40     .text.Wait:00000000 Wait
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:107    .text.Wait:00000048 $d
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:112    .text.DT7toRCdata:00000000 $t
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:118    .text.DT7toRCdata:00000000 DT7toRCdata
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:233    .text.DT7toRCdata:00000098 $d
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:239    .text.RC_control:00000000 $t
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:245    .text.RC_control:00000000 RC_control
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:595    .text.RC_control:00000238 $d
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:604    .text.Keyboard_mouse_control:00000000 $t
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:610    .text.Keyboard_mouse_control:00000000 Keyboard_mouse_control
-C:\Users\23671\AppData\Local\Temp\cctV9Vrm.s:927    .text.Keyboard_mouse_control:00000218 $d
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:24     .bss.RC_data:00000000 RC_data
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:21     .bss.RC_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:31     .bss.wait_time:00000000 wait_time
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:28     .bss.wait_time:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:34     .text.Wait:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:40     .text.Wait:00000000 Wait
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:107    .text.Wait:00000048 $d
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:112    .text.DT7toRCdata:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:118    .text.DT7toRCdata:00000000 DT7toRCdata
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:233    .text.DT7toRCdata:00000098 $d
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:239    .text.RC_control:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:245    .text.RC_control:00000000 RC_control
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:474    .text.RC_control:00000180 $d
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:486    .text.Keyboard_mouse_control:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:492    .text.Keyboard_mouse_control:00000000 Keyboard_mouse_control
+C:\Users\23671\AppData\Local\Temp\ccM85kBd.s:809    .text.Keyboard_mouse_control:00000218 $d
 
 UNDEFINED SYMBOLS
 DT7_data
 Chassis_set_x
 Chassis_set_y
-Gimbal_set_pitch_angle
-Gimbal_set_yaw_angle
 Global
+SBUS_CH
+pos_motor
 Chassis_set_accel
 ui_init
+Gimbal_set_pitch_angle
+Gimbal_set_yaw_angle

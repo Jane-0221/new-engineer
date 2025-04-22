@@ -9,11 +9,11 @@ if(SBUS_CH.CH5==353&&SBUS_CH.CH6==353)
 		
     if(SBUS_CH.CH4>1050&&SBUS_CH.CH4<=1695)
     {
-        pos_motor.pos_middlerow += 0.0005;
+        pos_motor.pos_middlerow += 0.005;
     }
     else if( SBUS_CH.CH4>=353&&SBUS_CH.CH4<1000)
     {
-        pos_motor.pos_middlerow -= 0.0005;
+        pos_motor.pos_middlerow -= 0.005;
     }
     else if(SBUS_CH.CH4>1000&&SBUS_CH.CH4<1050)
     {	
@@ -22,6 +22,34 @@ if(SBUS_CH.CH5==353&&SBUS_CH.CH6==353)
 
 
 }
+
+if(SBUS_CH.CH5==353&&SBUS_CH.CH6==1024)
+{
+
+		
+    if(SBUS_CH.CH4>1050&&SBUS_CH.CH4<=1695)
+    {
+        pos_motor.pos_endyaw += 0.005;
+    }
+    else if( SBUS_CH.CH4>=353&&SBUS_CH.CH4<1000)
+    {
+        pos_motor.pos_endyaw -= 0.005;
+    }
+    else if(SBUS_CH.CH4>1000&&SBUS_CH.CH4<1050)
+    {	
+        pos_motor.pos_endyaw += 0;
+    }	
+
+
+}
+
+
+
+
+
+
+
+
 }
 
 

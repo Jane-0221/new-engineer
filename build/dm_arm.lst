@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 1
 
 
    1              		.cpu cortex-m7
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 1
   51 000c FFF7FEFF 		bl	arm_motor_init
    7:User/Hardware/dm_arm.c ****   arm_motor_init(&arm_motor[Motor2], 0x02, POS_MODE); // 设置ID和控制模式
   52              		.loc 1 7 3
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 2
 
 
   53 0010 4FF48072 		mov	r2, #256
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 1
   18:User/Hardware/dm_arm.c ****   // 速度
   19:User/Hardware/dm_arm.c ****   vel_motor.vel_rootpitch = 1.0;
   97              		.loc 1 19 27
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 3
 
 
   98 007c 1B4B     		ldr	r3, .L2+28
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 1
  139 00cc 80BD     		pop	{r7, pc}
  140              	.L3:
  141 00ce 00BF     		.align	2
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 4
 
 
  142              	.L2:
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 1
   41:User/Hardware/dm_arm.c ****     // 错误清除，重新使能
   42:User/Hardware/dm_arm.c ****     // CAN_Send_Clear_Error(&hfdcan2,0x04);
   43:User/Hardware/dm_arm.c ****     CAN_Send_Enter(&hfdcan2, 0x04);
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 5
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 5
 
 
  190              		.loc 1 43 5
@@ -294,11 +294,11 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 1
  227              		.loc 1 56 22
  228 006a 034A     		ldr	r2, .L7+4
  229 006c 1361     		str	r3, [r2, #16]
-  57:User/Hardware/dm_arm.c **** }...
+  57:User/Hardware/dm_arm.c **** }
  230              		.loc 1 57 1
  231 006e 00BF     		nop
  232 0070 80BD     		pop	{r7, pc}
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 6
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 6
 
 
  233              	.L8:
@@ -313,31 +313,155 @@ ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 1
  242 008c 00000000 		.word	arm_motor
  243              		.cfi_endproc
  244              	.LFE145:
- 246              		.text
- 247              	.Letext0:
- 248              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
- 249              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
- 250              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
- 251              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
- 252              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
- 253              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
- 254              		.file 8 "Core/Inc/fdcan.h"
- 255              		.file 9 "User/BSP/can_receive_send.h"
- 256              		.file 10 "User/Hardware/dm4310_drv.h"
- 257              		.file 11 "User/Hardware/dm_arm.h"
-ARM GAS  C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s 			page 7
+ 246              		.section	.text.Arm_motor5,"ax",%progbits
+ 247              		.align	1
+ 248              		.global	Arm_motor5
+ 249              		.syntax unified
+ 250              		.thumb
+ 251              		.thumb_func
+ 253              	Arm_motor5:
+ 254              	.LFB146:
+  58:User/Hardware/dm_arm.c **** void Arm_motor5()
+  59:User/Hardware/dm_arm.c **** {	 
+ 255              		.loc 1 59 1
+ 256              		.cfi_startproc
+ 257              		@ args = 0, pretend = 0, frame = 0
+ 258              		@ frame_needed = 1, uses_anonymous_args = 0
+ 259 0000 80B5     		push	{r7, lr}
+ 260              	.LCFI4:
+ 261              		.cfi_def_cfa_offset 8
+ 262              		.cfi_offset 7, -8
+ 263              		.cfi_offset 14, -4
+ 264 0002 00AF     		add	r7, sp, #0
+ 265              	.LCFI5:
+ 266              		.cfi_def_cfa_register 7
+  60:User/Hardware/dm_arm.c **** 
+  61:User/Hardware/dm_arm.c ****       //判断该时间段内是否接收过电机数据
+  62:User/Hardware/dm_arm.c ****    if (Flag_damiao[5]== Pre_Flag_damiao[5])
+ 267              		.loc 1 62 19
+ 268 0004 1C4B     		ldr	r3, .L11
+ 269 0006 5A69     		ldr	r2, [r3, #20]
+ 270              		.loc 1 62 40
+ 271 0008 1C4B     		ldr	r3, .L11+4
+ 272 000a 5B69     		ldr	r3, [r3, #20]
+ 273              		.loc 1 62 7
+ 274 000c 9A42     		cmp	r2, r3
+ 275 000e 06D1     		bne	.L10
+  63:User/Hardware/dm_arm.c ****    {
+  64:User/Hardware/dm_arm.c ****      // 电机断开连接
+  65:User/Hardware/dm_arm.c ****       DM_Status[5] = Motor_DM_Status_DISABLE;
+ 276              		.loc 1 65 20
+ 277 0010 1B4B     		ldr	r3, .L11+8
+ 278 0012 0022     		movs	r2, #0
+ 279 0014 5A71     		strb	r2, [r3, #5]
+  66:User/Hardware/dm_arm.c **** //错误清除，重新使能
+  67:User/Hardware/dm_arm.c ****    //	CAN_Send_Clear_Error(&hfdcan2,0x05);
+  68:User/Hardware/dm_arm.c ****      CAN_Send_Enter(&hfdcan2,0x05);
+ 280              		.loc 1 68 6
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 7
+
+
+ 281 0016 0521     		movs	r1, #5
+ 282 0018 1A48     		ldr	r0, .L11+12
+ 283 001a FFF7FEFF 		bl	CAN_Send_Enter
+ 284              	.L10:
+  69:User/Hardware/dm_arm.c ****    }
+  70:User/Hardware/dm_arm.c ****    else
+  71:User/Hardware/dm_arm.c ****    {
+  72:User/Hardware/dm_arm.c ****    }
+  73:User/Hardware/dm_arm.c ****              //电机保持连接
+  74:User/Hardware/dm_arm.c ****             DM_Status[5] = Motor_DM_Status_ENABLE;
+ 285              		.loc 1 74 26
+ 286 001e 184B     		ldr	r3, .L11+8
+ 287 0020 0122     		movs	r2, #1
+ 288 0022 5A71     		strb	r2, [r3, #5]
+  75:User/Hardware/dm_arm.c ****             //正常数据发送
+  76:User/Hardware/dm_arm.c ****    set_DM_mode(Motor5,POS_MODE);
+ 289              		.loc 1 76 4
+ 290 0024 4FF48071 		mov	r1, #256
+ 291 0028 0420     		movs	r0, #4
+ 292 002a FFF7FEFF 		bl	set_DM_mode
+  77:User/Hardware/dm_arm.c ****   set_DM_pos_vel(pos_motor.pos_endyaw,vel_motor.vel_endyaw,Motor5);	
+ 293              		.loc 1 77 3
+ 294 002e 164B     		ldr	r3, .L11+16
+ 295 0030 D3ED047A 		vldr.32	s15, [r3, #16]
+ 296 0034 154B     		ldr	r3, .L11+20
+ 297 0036 93ED047A 		vldr.32	s14, [r3, #16]
+ 298 003a 0420     		movs	r0, #4
+ 299 003c F0EE470A 		vmov.f32	s1, s14
+ 300 0040 B0EE670A 		vmov.f32	s0, s15
+ 301 0044 FFF7FEFF 		bl	set_DM_pos_vel
+  78:User/Hardware/dm_arm.c ****   pos_speed_ctrl(&hfdcan2,0x05,arm_motor[Motor5].ctrl.pos_set,arm_motor[Motor5].ctrl.vel_set);
+ 302              		.loc 1 78 3
+ 303 0048 114B     		ldr	r3, .L11+24
+ 304 004a 03F27C43 		addw	r3, r3, #1148
+ 305 004e D3ED007A 		vldr.32	s15, [r3]
+ 306 0052 0F4B     		ldr	r3, .L11+24
+ 307 0054 03F59063 		add	r3, r3, #1152
+ 308 0058 93ED007A 		vldr.32	s14, [r3]
+ 309 005c F0EE470A 		vmov.f32	s1, s14
+ 310 0060 B0EE670A 		vmov.f32	s0, s15
+ 311 0064 0521     		movs	r1, #5
+ 312 0066 0748     		ldr	r0, .L11+12
+ 313 0068 FFF7FEFF 		bl	pos_speed_ctrl
+  79:User/Hardware/dm_arm.c ****    
+  80:User/Hardware/dm_arm.c ****    
+  81:User/Hardware/dm_arm.c ****    
+  82:User/Hardware/dm_arm.c **** Pre_Flag_damiao[5]=Flag_damiao[5];
+ 314              		.loc 1 82 31
+ 315 006c 024B     		ldr	r3, .L11
+ 316 006e 5B69     		ldr	r3, [r3, #20]
+ 317              		.loc 1 82 19
+ 318 0070 024A     		ldr	r2, .L11+4
+ 319 0072 5361     		str	r3, [r2, #20]
+  83:User/Hardware/dm_arm.c **** 
+  84:User/Hardware/dm_arm.c ****  }...
+ 320              		.loc 1 84 2
+ 321 0074 00BF     		nop
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 8
+
+
+ 322 0076 80BD     		pop	{r7, pc}
+ 323              	.L12:
+ 324              		.align	2
+ 325              	.L11:
+ 326 0078 00000000 		.word	Flag_damiao
+ 327 007c 00000000 		.word	Pre_Flag_damiao
+ 328 0080 00000000 		.word	DM_Status
+ 329 0084 00000000 		.word	hfdcan2
+ 330 0088 00000000 		.word	pos_motor
+ 331 008c 00000000 		.word	vel_motor
+ 332 0090 00000000 		.word	arm_motor
+ 333              		.cfi_endproc
+ 334              	.LFE146:
+ 336              		.text
+ 337              	.Letext0:
+ 338              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 339              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 340              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 341              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 342              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 343              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
+ 344              		.file 8 "Core/Inc/fdcan.h"
+ 345              		.file 9 "User/BSP/can_receive_send.h"
+ 346              		.file 10 "User/Hardware/dm4310_drv.h"
+ 347              		.file 11 "User/Hardware/dm_arm.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccG1llcV.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 dm_arm.c
-C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:24     .bss.DM_Status:00000000 DM_Status
-C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:21     .bss.DM_Status:00000000 $d
-C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:27     .text.Arm_Init:00000000 $t
-C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:33     .text.Arm_Init:00000000 Arm_Init
-C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:143    .text.Arm_Init:000000d0 $d
-C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:157    .text.Arm_motor4:00000000 $t
-C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:163    .text.Arm_motor4:00000000 Arm_motor4
-C:\Users\23671\AppData\Local\Temp\cckQ46Tg.s:236    .text.Arm_motor4:00000074 $d
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:24     .bss.DM_Status:00000000 DM_Status
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:21     .bss.DM_Status:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:27     .text.Arm_Init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:33     .text.Arm_Init:00000000 Arm_Init
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:143    .text.Arm_Init:000000d0 $d
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:157    .text.Arm_motor4:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:163    .text.Arm_motor4:00000000 Arm_motor4
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:236    .text.Arm_motor4:00000074 $d
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:247    .text.Arm_motor5:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:253    .text.Arm_motor5:00000000 Arm_motor5
+C:\Users\23671\AppData\Local\Temp\ccG1llcV.s:326    .text.Arm_motor5:00000078 $d
 
 UNDEFINED SYMBOLS
 arm_motor_init

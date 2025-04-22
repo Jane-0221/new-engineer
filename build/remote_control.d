@@ -45,7 +45,9 @@ build/remote_control.o: User/Software/remote_control.c \
  User/BSP/UART_data_txrx.h Core/Inc/usart.h Core/Inc/struct_typedef.h \
  Drivers/UI/ui_Omni_Shoot_Low_0.h Drivers/UI/ui_interface.h \
  Drivers/UI/ui_Omni_Chassis_high_0.h Drivers/UI/ui_Omni_Shoot_static_0.h \
- Algorithm/ramp_generator.h User/Hardware/DT7.h User/BSP/Stm32_time.h
+ Algorithm/ramp_generator.h User/Hardware/dm_arm.h \
+ User/BSP/can_receive_send.h User/Hardware/dm4310_drv.h \
+ User/Hardware/DT7.h User/BSP/Stm32_time.h
 User/Software/remote_control.h:
 Core/Inc/main.h:
 Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal.h:
@@ -107,5 +109,8 @@ Drivers/UI/ui_interface.h:
 Drivers/UI/ui_Omni_Chassis_high_0.h:
 Drivers/UI/ui_Omni_Shoot_static_0.h:
 Algorithm/ramp_generator.h:
+User/Hardware/dm_arm.h:
+User/BSP/can_receive_send.h:
+User/Hardware/dm4310_drv.h:
 User/Hardware/DT7.h:
 User/BSP/Stm32_time.h:
