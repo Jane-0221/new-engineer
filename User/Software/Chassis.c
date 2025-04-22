@@ -10,13 +10,12 @@
 #include "pid.h"
 #include "ramp_generator.h"
 #include "User_math.h"
-
+#include "DT7.h"
 pid_t chassis_speed_pid_FL, chassis_speed_pid_FR, chassis_speed_pid_BL, chassis_speed_pid_BR; // 轮子速度控制Pid
 RampGenerator Vx_ramp, Vy_ramp;
 extern pid_t yaw_auto_location_pid;
 
 float AHRS_yaw_set = 0;
-pid_t yaw_pid;
 pid_t yaw_pid;
 
 /**
@@ -36,6 +35,8 @@ void Chassis_init()
     pid_set(&chassis_speed_pid_FL, 9000, 0, 120, CHASSISMOTOR_MAX_CURRENT, 5000);
     pid_set(&chassis_speed_pid_BL, 9000, 0, 120, CHASSISMOTOR_MAX_CURRENT, 5000);
     pid_set(&chassis_speed_pid_BR, 9000, 0, 120, CHASSISMOTOR_MAX_CURRENT, 5000);
+    //
+    pid_set(&yaw_pid, 3.0, 0.0, 0.5, 100.0, 2.0);
 }
 
 /**
@@ -130,14 +131,15 @@ void Chassis_move()
     switch (Global.Chssis.mode)
     {
     case FLOW:
-	if(RC_data.rc.s[4] !=1024){
-        AHRS_yaw_set=IMU_data.AHRS.yaw-(RC_data.rc.s[4] - 1024)/1000.0f;
-}
-//pid计算
-        R_speed =-pid_cal(&yaw_pid, IMU_data.AHRS.yaw, AHRS_yaw_set);
+        if (SBUS_CH.CH4 != 1024)
+        {
+            AHRS_yaw_set = IMU_data.AHRS.yaw - (SBUS_CH.CH4 - 1024) / 1000.0f;
+        }
+        // pid计算
+        R_speed = -pid_cal(&yaw_pid, IMU_data.AHRS.yaw, AHRS_yaw_set);
         break;
     }
-
+  
     /*底盘电机控制*/
     ChassisMotor_Control(X_speed, Y_speed, R_speed);
 }

@@ -49,7 +49,7 @@ build/Chassis.o: User/Software/Chassis.c User/Software/Chassis.h \
  User/Hardware/referee_system_protocol.h Algorithm/fifo.h \
  User/Hardware/supercup.h User/BSP/stm32_time.h \
  User/Software/remote_control.h Algorithm/pid.h \
- Algorithm/ramp_generator.h
+ Algorithm/ramp_generator.h User/Hardware/DT7.h
 User/Software/Chassis.h:
 User/BSP/CAN_receive_send.h:
 Core/Inc/fdcan.h:
@@ -119,3 +119,4 @@ User/BSP/stm32_time.h:
 User/Software/remote_control.h:
 Algorithm/pid.h:
 Algorithm/ramp_generator.h:
+User/Hardware/DT7.h:

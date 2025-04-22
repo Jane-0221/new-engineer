@@ -86,8 +86,8 @@ void RC_control()
     /*µ×ÅÌ¿ØÖÆ*/
     Global.Chssis.mode = FLOW;
     
-    Chassis_set_x(RC_data.rc.ch[1] / 40.0f);
-    Chassis_set_y(RC_data.rc.ch[2] / 40.0f);
+    Chassis_set_x((SBUS_CH.CH1-1024) / 40.0f);
+    Chassis_set_y(-(SBUS_CH.CH2-1024)/ 40.0f);
 
  
 
