@@ -1,0 +1,1816 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"referee_system.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/referee_system.c"
+  19              		.global	Referee_data
+  20              		.section	.bss.Referee_data,"aw",%nobits
+  21              		.align	2
+  24              	Referee_data:
+  25 0000 00000000 		.space	24
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.global	referee_fifo
+  27              		.section	.bss.referee_fifo,"aw",%nobits
+  28              		.align	2
+  31              	referee_fifo:
+  32 0000 00000000 		.space	24
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  32      00000000 
+  33              		.global	referee_image_fifo
+  34              		.section	.bss.referee_image_fifo,"aw",%nobits
+  35              		.align	2
+  38              	referee_image_fifo:
+  39 0000 00000000 		.space	24
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  39      00000000 
+  40              		.global	referee_fifo_buf
+  41              		.section	.bss.referee_fifo_buf,"aw",%nobits
+  42              		.align	2
+  45              	referee_fifo_buf:
+  46 0000 00000000 		.space	1024
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  46      00000000 
+  47              		.global	referee_image_fifo_buf
+  48              		.section	.bss.referee_image_fifo_buf,"aw",%nobits
+  49              		.align	2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 2
+
+
+  52              	referee_image_fifo_buf:
+  53 0000 00000000 		.space	1024
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  53      00000000 
+  54              		.global	referee_unpack_obj
+  55              		.section	.bss.referee_unpack_obj,"aw",%nobits
+  56              		.align	2
+  59              	referee_unpack_obj:
+  60 0000 00000000 		.space	137
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  60      00000000 
+  61              		.global	referee_image_unpack_obj
+  62              		.section	.bss.referee_image_unpack_obj,"aw",%nobits
+  63              		.align	2
+  66              	referee_image_unpack_obj:
+  67 0000 00000000 		.space	137
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  67      00000000 
+  68              		.global	referee_receive_header
+  69              		.section	.bss.referee_receive_header,"aw",%nobits
+  70              		.align	2
+  73              	referee_receive_header:
+  74 0000 00000000 		.space	5
+  74      00
+  75              		.global	referee_send_header
+  76              		.section	.bss.referee_send_header,"aw",%nobits
+  77              		.align	2
+  80              	referee_send_header:
+  81 0000 00000000 		.space	5
+  81      00
+  82              		.global	game_status
+  83              		.section	.bss.game_status,"aw",%nobits
+  84              		.align	2
+  87              	game_status:
+  88 0000 00000000 		.space	11
+  88      00000000 
+  88      000000
+  89              		.global	game_result
+  90              		.section	.bss.game_result,"aw",%nobits
+  91              		.align	2
+  94              	game_result:
+  95 0000 00       		.space	1
+  96              		.global	game_robot_HP
+  97              		.section	.bss.game_robot_HP,"aw",%nobits
+  98              		.align	2
+ 101              	game_robot_HP:
+ 102 0000 00000000 		.space	32
+ 102      00000000 
+ 102      00000000 
+ 102      00000000 
+ 102      00000000 
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 3
+
+
+ 103              		.global	referee_warning
+ 104              		.section	.bss.referee_warning,"aw",%nobits
+ 105              		.align	2
+ 108              	referee_warning:
+ 109 0000 000000   		.space	3
+ 110              		.global	robot_status
+ 111              		.section	.bss.robot_status,"aw",%nobits
+ 112              		.align	2
+ 115              	robot_status:
+ 116 0000 00000000 		.space	13
+ 116      00000000 
+ 116      00000000 
+ 116      00
+ 117              		.global	power_heat_data
+ 118              		.section	.bss.power_heat_data,"aw",%nobits
+ 119              		.align	2
+ 122              	power_heat_data:
+ 123 0000 00000000 		.space	16
+ 123      00000000 
+ 123      00000000 
+ 123      00000000 
+ 124              		.global	hurt_data
+ 125              		.section	.bss.hurt_data,"aw",%nobits
+ 126              		.align	2
+ 129              	hurt_data:
+ 130 0000 00       		.space	1
+ 131              		.global	shoot_data
+ 132              		.section	.bss.shoot_data,"aw",%nobits
+ 133              		.align	2
+ 136              	shoot_data:
+ 137 0000 00000000 		.space	7
+ 137      000000
+ 138              		.global	projectile_allowance
+ 139              		.section	.bss.projectile_allowance,"aw",%nobits
+ 140              		.align	2
+ 143              	projectile_allowance:
+ 144 0000 00000000 		.space	6
+ 144      0000
+ 145              		.global	rfid_status
+ 146              		.section	.bss.rfid_status,"aw",%nobits
+ 147              		.align	2
+ 150              	rfid_status:
+ 151 0000 00000000 		.space	4
+ 152              		.global	robot_interaction_data
+ 153              		.section	.bss.robot_interaction_data,"aw",%nobits
+ 154              		.align	2
+ 157              	robot_interaction_data:
+ 158 0000 00000000 		.space	106
+ 158      00000000 
+ 158      00000000 
+ 158      00000000 
+ 158      00000000 
+ 159              		.global	exchange_data
+ 160              		.section	.bss.exchange_data,"aw",%nobits
+ 161              		.align	2
+ 164              	exchange_data:
+ 165 0000 00000000 		.space	64
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 4
+
+
+ 165      00000000 
+ 165      00000000 
+ 165      00000000 
+ 165      00000000 
+ 166              		.global	remote_control
+ 167              		.section	.bss.remote_control,"aw",%nobits
+ 168              		.align	2
+ 171              	remote_control:
+ 172 0000 00000000 		.space	12
+ 172      00000000 
+ 172      00000000 
+ 173              		.section	.text.referee_struct_init,"ax",%progbits
+ 174              		.align	1
+ 175              		.syntax unified
+ 176              		.thumb
+ 177              		.thumb_func
+ 179              	referee_struct_init:
+ 180              	.LFB147:
+   1:User/Hardware/referee_system.c **** /**
+   2:User/Hardware/referee_system.c ****  * @file referee_system.c
+   3:User/Hardware/referee_system.c ****  * @author Siri (lixirui2017@outlook.com)
+   4:User/Hardware/referee_system.c ****  * @brief 裁判系统相关代码
+   5:User/Hardware/referee_system.c ****  * @version 0.1
+   6:User/Hardware/referee_system.c ****  * @date 2025-03-01
+   7:User/Hardware/referee_system.c ****  *
+   8:User/Hardware/referee_system.c ****  * @copyright Copyright (c) 2025
+   9:User/Hardware/referee_system.c ****  *
+  10:User/Hardware/referee_system.c ****  */
+  11:User/Hardware/referee_system.c **** 
+  12:User/Hardware/referee_system.c **** 
+  13:User/Hardware/referee_system.c **** #include "referee_system.h"
+  14:User/Hardware/referee_system.c **** #include "CRC8_CRC16.h"
+  15:User/Hardware/referee_system.c **** 
+  16:User/Hardware/referee_system.c **** #define REFEREE_FIFO_BUF_LENGTH 1024
+  17:User/Hardware/referee_system.c **** 
+  18:User/Hardware/referee_system.c **** // 外部调用裁判系统数据
+  19:User/Hardware/referee_system.c **** REFEREE_DATA_t Referee_data;
+  20:User/Hardware/referee_system.c **** 
+  21:User/Hardware/referee_system.c **** // 数据缓冲区
+  22:User/Hardware/referee_system.c **** fifo_s_t referee_fifo;       // 裁判系统处理fifo
+  23:User/Hardware/referee_system.c **** fifo_s_t referee_image_fifo; // 图传链路处理fifo
+  24:User/Hardware/referee_system.c **** uint8_t referee_fifo_buf[REFEREE_FIFO_BUF_LENGTH];
+  25:User/Hardware/referee_system.c **** uint8_t referee_image_fifo_buf[REFEREE_FIFO_BUF_LENGTH];
+  26:User/Hardware/referee_system.c **** unpack_data_t referee_unpack_obj;
+  27:User/Hardware/referee_system.c **** unpack_data_t referee_image_unpack_obj;
+  28:User/Hardware/referee_system.c **** 
+  29:User/Hardware/referee_system.c **** // 内部变量
+  30:User/Hardware/referee_system.c **** /* 裁判系统通信帧头 */
+  31:User/Hardware/referee_system.c **** frame_header_struct_t referee_receive_header; // 接收数据帧头
+  32:User/Hardware/referee_system.c **** frame_header_struct_t referee_send_header;    // 发送数据帧头
+  33:User/Hardware/referee_system.c **** /*----------- 赛制相关数据 -----------*/
+  34:User/Hardware/referee_system.c **** ext_game_status_t game_status;         // 比赛状态数据(1Hz)
+  35:User/Hardware/referee_system.c **** ext_game_result_t game_result;         // 比赛结果数据(比赛结束后发送)
+  36:User/Hardware/referee_system.c **** ext_game_robot_HP_t game_robot_HP;     // 机器人血量数据
+  37:User/Hardware/referee_system.c **** ext_referee_warning_t referee_warning; // 裁判警告信息
+  38:User/Hardware/referee_system.c **** /*----------- 机器人状态数据 -----------*/
+  39:User/Hardware/referee_system.c **** ext_robot_status_t robot_status;                 // 机器人性能数据(10Hz，含底盘、电源等状态)
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 5
+
+
+  40:User/Hardware/referee_system.c **** ext_power_heat_data_t power_heat_data;           // 实时功率热量数据(50Hz，含底盘功率、枪口热量等)
+  41:User/Hardware/referee_system.c **** ext_hurt_data_t hurt_data;                       // 伤害状态数据(受到攻击后发送)
+  42:User/Hardware/referee_system.c **** ext_shoot_data_t shoot_data;                     // 实时射击数据(子弹射速/频率等)
+  43:User/Hardware/referee_system.c **** ext_projectile_allowance_t projectile_allowance; // 弹丸剩余发射许可(弹量限制)
+  44:User/Hardware/referee_system.c **** ext_rfid_status_t rfid_status;                   // 机器人RFID状态(检查点位状态)
+  45:User/Hardware/referee_system.c **** /*----------- 交互数据 -----------*/
+  46:User/Hardware/referee_system.c **** ext_robot_interaction_data_t robot_interaction_data; // 机器人交互数据(自定义通信内容)
+  47:User/Hardware/referee_system.c **** ext_custom_info_t exchange_data;                     // 自定义UI显示数据(选手端特定位置字符显示)
+  48:User/Hardware/referee_system.c **** /*----------- 控制数据 -----------*/
+  49:User/Hardware/referee_system.c **** ext_remote_control_t remote_control; // 图传链路键鼠数据(远程控制信号)
+  50:User/Hardware/referee_system.c **** 
+  51:User/Hardware/referee_system.c **** static void referee_struct_init(void)
+  52:User/Hardware/referee_system.c **** {
+ 181              		.loc 1 52 1
+ 182              		.cfi_startproc
+ 183              		@ args = 0, pretend = 0, frame = 0
+ 184              		@ frame_needed = 1, uses_anonymous_args = 0
+ 185 0000 80B5     		push	{r7, lr}
+ 186              	.LCFI0:
+ 187              		.cfi_def_cfa_offset 8
+ 188              		.cfi_offset 7, -8
+ 189              		.cfi_offset 14, -4
+ 190 0002 00AF     		add	r7, sp, #0
+ 191              	.LCFI1:
+ 192              		.cfi_def_cfa_register 7
+  53:User/Hardware/referee_system.c ****     // 数据帧
+  54:User/Hardware/referee_system.c ****     memset(&referee_receive_header, 0, sizeof(frame_header_struct_t));
+ 193              		.loc 1 54 5
+ 194 0004 0522     		movs	r2, #5
+ 195 0006 0021     		movs	r1, #0
+ 196 0008 2548     		ldr	r0, .L2
+ 197 000a FFF7FEFF 		bl	memset
+  55:User/Hardware/referee_system.c ****     memset(&referee_send_header, 0, sizeof(frame_header_struct_t));
+ 198              		.loc 1 55 5
+ 199 000e 0522     		movs	r2, #5
+ 200 0010 0021     		movs	r1, #0
+ 201 0012 2448     		ldr	r0, .L2+4
+ 202 0014 FFF7FEFF 		bl	memset
+  56:User/Hardware/referee_system.c ****     // 赛制相关
+  57:User/Hardware/referee_system.c ****     memset(&game_status, 0, sizeof(ext_game_status_t));
+ 203              		.loc 1 57 5
+ 204 0018 0B22     		movs	r2, #11
+ 205 001a 0021     		movs	r1, #0
+ 206 001c 2248     		ldr	r0, .L2+8
+ 207 001e FFF7FEFF 		bl	memset
+  58:User/Hardware/referee_system.c ****     memset(&game_result, 0, sizeof(ext_game_result_t));
+ 208              		.loc 1 58 5
+ 209 0022 0122     		movs	r2, #1
+ 210 0024 0021     		movs	r1, #0
+ 211 0026 2148     		ldr	r0, .L2+12
+ 212 0028 FFF7FEFF 		bl	memset
+  59:User/Hardware/referee_system.c ****     memset(&game_robot_HP, 0, sizeof(ext_game_robot_HP_t));
+ 213              		.loc 1 59 5
+ 214 002c 2022     		movs	r2, #32
+ 215 002e 0021     		movs	r1, #0
+ 216 0030 1F48     		ldr	r0, .L2+16
+ 217 0032 FFF7FEFF 		bl	memset
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 6
+
+
+  60:User/Hardware/referee_system.c ****     memset(&referee_warning, 0, sizeof(ext_referee_warning_t));
+ 218              		.loc 1 60 5
+ 219 0036 0322     		movs	r2, #3
+ 220 0038 0021     		movs	r1, #0
+ 221 003a 1E48     		ldr	r0, .L2+20
+ 222 003c FFF7FEFF 		bl	memset
+  61:User/Hardware/referee_system.c ****     // 机器人性能数据 10hz ！attention please！
+  62:User/Hardware/referee_system.c ****     memset(&robot_status, 0, sizeof(ext_robot_status_t));
+ 223              		.loc 1 62 5
+ 224 0040 0D22     		movs	r2, #13
+ 225 0042 0021     		movs	r1, #0
+ 226 0044 1C48     		ldr	r0, .L2+24
+ 227 0046 FFF7FEFF 		bl	memset
+  63:User/Hardware/referee_system.c ****     // 实时功率热量数据 50hz !attention please!
+  64:User/Hardware/referee_system.c ****     memset(&power_heat_data, 0, sizeof(ext_power_heat_data_t));
+ 228              		.loc 1 64 5
+ 229 004a 1022     		movs	r2, #16
+ 230 004c 0021     		movs	r1, #0
+ 231 004e 1B48     		ldr	r0, .L2+28
+ 232 0050 FFF7FEFF 		bl	memset
+  65:User/Hardware/referee_system.c ****     // 伤害状态数据
+  66:User/Hardware/referee_system.c ****     memset(&hurt_data, 0, sizeof(ext_hurt_data_t));
+ 233              		.loc 1 66 5
+ 234 0054 0122     		movs	r2, #1
+ 235 0056 0021     		movs	r1, #0
+ 236 0058 1948     		ldr	r0, .L2+32
+ 237 005a FFF7FEFF 		bl	memset
+  67:User/Hardware/referee_system.c ****     // 实时射击数据
+  68:User/Hardware/referee_system.c ****     memset(&shoot_data, 0, sizeof(ext_shoot_data_t));
+ 238              		.loc 1 68 5
+ 239 005e 0722     		movs	r2, #7
+ 240 0060 0021     		movs	r1, #0
+ 241 0062 1848     		ldr	r0, .L2+36
+ 242 0064 FFF7FEFF 		bl	memset
+  69:User/Hardware/referee_system.c ****     // 允许发弹量
+  70:User/Hardware/referee_system.c ****     memset(&projectile_allowance, 0, sizeof(ext_projectile_allowance_t));
+ 243              		.loc 1 70 5
+ 244 0068 0622     		movs	r2, #6
+ 245 006a 0021     		movs	r1, #0
+ 246 006c 1648     		ldr	r0, .L2+40
+ 247 006e FFF7FEFF 		bl	memset
+  71:User/Hardware/referee_system.c ****     // 机器人RFID状态
+  72:User/Hardware/referee_system.c ****     memset(&rfid_status, 0, sizeof(ext_rfid_status_t));
+ 248              		.loc 1 72 5
+ 249 0072 0422     		movs	r2, #4
+ 250 0074 0021     		movs	r1, #0
+ 251 0076 1548     		ldr	r0, .L2+44
+ 252 0078 FFF7FEFF 		bl	memset
+  73:User/Hardware/referee_system.c ****     // 机器人交互数据
+  74:User/Hardware/referee_system.c ****     memset(&robot_interaction_data, 0, sizeof(ext_robot_interaction_data_t));
+ 253              		.loc 1 74 5
+ 254 007c 6A22     		movs	r2, #106
+ 255 007e 0021     		movs	r1, #0
+ 256 0080 1348     		ldr	r0, .L2+48
+ 257 0082 FFF7FEFF 		bl	memset
+  75:User/Hardware/referee_system.c ****     // 选手端特定位置显示字符
+  76:User/Hardware/referee_system.c ****     memset(&exchange_data, 0, sizeof(ext_custom_info_t));
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 7
+
+
+ 258              		.loc 1 76 5
+ 259 0086 4022     		movs	r2, #64
+ 260 0088 0021     		movs	r1, #0
+ 261 008a 1248     		ldr	r0, .L2+52
+ 262 008c FFF7FEFF 		bl	memset
+  77:User/Hardware/referee_system.c ****     // 图传链路键鼠数据
+  78:User/Hardware/referee_system.c ****     memset(&remote_control, 0, sizeof(ext_remote_control_t));
+ 263              		.loc 1 78 5
+ 264 0090 0C22     		movs	r2, #12
+ 265 0092 0021     		movs	r1, #0
+ 266 0094 1048     		ldr	r0, .L2+56
+ 267 0096 FFF7FEFF 		bl	memset
+  79:User/Hardware/referee_system.c **** }
+ 268              		.loc 1 79 1
+ 269 009a 00BF     		nop
+ 270 009c 80BD     		pop	{r7, pc}
+ 271              	.L3:
+ 272 009e 00BF     		.align	2
+ 273              	.L2:
+ 274 00a0 00000000 		.word	referee_receive_header
+ 275 00a4 00000000 		.word	referee_send_header
+ 276 00a8 00000000 		.word	game_status
+ 277 00ac 00000000 		.word	game_result
+ 278 00b0 00000000 		.word	game_robot_HP
+ 279 00b4 00000000 		.word	referee_warning
+ 280 00b8 00000000 		.word	robot_status
+ 281 00bc 00000000 		.word	power_heat_data
+ 282 00c0 00000000 		.word	hurt_data
+ 283 00c4 00000000 		.word	shoot_data
+ 284 00c8 00000000 		.word	projectile_allowance
+ 285 00cc 00000000 		.word	rfid_status
+ 286 00d0 00000000 		.word	robot_interaction_data
+ 287 00d4 00000000 		.word	exchange_data
+ 288 00d8 00000000 		.word	remote_control
+ 289              		.cfi_endproc
+ 290              	.LFE147:
+ 292              		.section	.text.required_Data,"ax",%progbits
+ 293              		.align	1
+ 294              		.syntax unified
+ 295              		.thumb
+ 296              		.thumb_func
+ 298              	required_Data:
+ 299              	.LFB148:
+  80:User/Hardware/referee_system.c **** static void required_Data() //后续可根据需要自行添加
+  81:User/Hardware/referee_system.c **** {
+ 300              		.loc 1 81 1
+ 301              		.cfi_startproc
+ 302              		@ args = 0, pretend = 0, frame = 0
+ 303              		@ frame_needed = 1, uses_anonymous_args = 0
+ 304              		@ link register save eliminated.
+ 305 0000 80B4     		push	{r7}
+ 306              	.LCFI2:
+ 307              		.cfi_def_cfa_offset 4
+ 308              		.cfi_offset 7, -4
+ 309 0002 00AF     		add	r7, sp, #0
+ 310              	.LCFI3:
+ 311              		.cfi_def_cfa_register 7
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 8
+
+
+  82:User/Hardware/referee_system.c **** 		Referee_data.Initial_SPEED = shoot_data.initial_speed; 
+ 312              		.loc 1 82 42
+ 313 0004 1A4B     		ldr	r3, .L5
+ 314 0006 D3F80330 		ldr	r3, [r3, #3]	@ unaligned
+ 315              		.loc 1 82 30
+ 316 000a 1A4A     		ldr	r2, .L5+4
+ 317 000c 1360     		str	r3, [r2]	@ float
+  83:User/Hardware/referee_system.c **** 		Referee_data.Launching_Frequency = shoot_data.launching_frequency;
+ 318              		.loc 1 83 48
+ 319 000e 184B     		ldr	r3, .L5
+ 320 0010 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 321              		.loc 1 83 36
+ 322 0012 184B     		ldr	r3, .L5+4
+ 323 0014 5A71     		strb	r2, [r3, #5]
+  84:User/Hardware/referee_system.c **** 		Referee_data.projectile_allowance_17mm =projectile_allowance.projectile_allowance_17mm;
+ 324              		.loc 1 84 63
+ 325 0016 184B     		ldr	r3, .L5+8
+ 326 0018 1A88     		ldrh	r2, [r3]
+ 327              		.loc 1 84 42
+ 328 001a 164B     		ldr	r3, .L5+4
+ 329 001c DA81     		strh	r2, [r3, #14]	@ movhi
+  85:User/Hardware/referee_system.c ****     Referee_data.robot_id=robot_status.robot_id;
+ 330              		.loc 1 85 39
+ 331 001e 174B     		ldr	r3, .L5+12
+ 332 0020 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 333              		.loc 1 85 26
+ 334 0022 144B     		ldr	r3, .L5+4
+ 335 0024 1A71     		strb	r2, [r3, #4]
+  86:User/Hardware/referee_system.c **** 		Referee_data.Barrel_Heat = power_heat_data.shooter_17mm_1_barrel_heat;  		
+ 336              		.loc 1 86 45
+ 337 0026 164B     		ldr	r3, .L5+16
+ 338 0028 5A89     		ldrh	r2, [r3, #10]
+ 339              		.loc 1 86 28
+ 340 002a 124B     		ldr	r3, .L5+4
+ 341 002c 1A81     		strh	r2, [r3, #8]	@ movhi
+  87:User/Hardware/referee_system.c **** 		Referee_data.CooLing_Value = robot_status.shooter_barrel_cooling_value;		
+ 342              		.loc 1 87 44
+ 343 002e 134B     		ldr	r3, .L5+12
+ 344 0030 DA88     		ldrh	r2, [r3, #6]
+ 345              		.loc 1 87 30
+ 346 0032 104B     		ldr	r3, .L5+4
+ 347 0034 5A81     		strh	r2, [r3, #10]	@ movhi
+  88:User/Hardware/referee_system.c **** 		Referee_data.Heat_Limit =  robot_status.shooter_barrel_heat_limit;	
+ 348              		.loc 1 88 42
+ 349 0036 114B     		ldr	r3, .L5+12
+ 350 0038 1A89     		ldrh	r2, [r3, #8]
+ 351              		.loc 1 88 27
+ 352 003a 0E4B     		ldr	r3, .L5+4
+ 353 003c 9A81     		strh	r2, [r3, #12]	@ movhi
+  89:User/Hardware/referee_system.c **** 		Referee_data.Buffer_Energy = power_heat_data.buffer_energy;
+ 354              		.loc 1 89 47
+ 355 003e 104B     		ldr	r3, .L5+16
+ 356 0040 1A89     		ldrh	r2, [r3, #8]
+ 357              		.loc 1 89 30
+ 358 0042 0C4B     		ldr	r3, .L5+4
+ 359 0044 1A82     		strh	r2, [r3, #16]	@ movhi
+  90:User/Hardware/referee_system.c **** 		Referee_data.Chassis_Power_Limit = robot_status.chassis_power_limit; 
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 9
+
+
+ 360              		.loc 1 90 50
+ 361 0046 0D4B     		ldr	r3, .L5+12
+ 362 0048 5A89     		ldrh	r2, [r3, #10]
+ 363              		.loc 1 90 36
+ 364 004a 0A4B     		ldr	r3, .L5+4
+ 365 004c 5A82     		strh	r2, [r3, #18]	@ movhi
+  91:User/Hardware/referee_system.c **** 		Referee_data.rest_time =	game_status.stage_remain_time;
+ 366              		.loc 1 91 39
+ 367 004e 0D4B     		ldr	r3, .L5+20
+ 368 0050 B3F80130 		ldrh	r3, [r3, #1]	@ unaligned
+ 369 0054 9BB2     		uxth	r3, r3
+ 370              		.loc 1 91 26
+ 371 0056 07EE903A 		vmov	s15, r3	@ int
+ 372 005a F8EE677A 		vcvt.f32.u32	s15, s15
+ 373 005e 054B     		ldr	r3, .L5+4
+ 374 0060 C3ED057A 		vstr.32	s15, [r3, #20]
+  92:User/Hardware/referee_system.c **** }
+ 375              		.loc 1 92 1
+ 376 0064 00BF     		nop
+ 377 0066 BD46     		mov	sp, r7
+ 378              	.LCFI4:
+ 379              		.cfi_def_cfa_register 13
+ 380              		@ sp needed
+ 381 0068 5DF8047B 		ldr	r7, [sp], #4
+ 382              	.LCFI5:
+ 383              		.cfi_restore 7
+ 384              		.cfi_def_cfa_offset 0
+ 385 006c 7047     		bx	lr
+ 386              	.L6:
+ 387 006e 00BF     		.align	2
+ 388              	.L5:
+ 389 0070 00000000 		.word	shoot_data
+ 390 0074 00000000 		.word	Referee_data
+ 391 0078 00000000 		.word	projectile_allowance
+ 392 007c 00000000 		.word	robot_status
+ 393 0080 00000000 		.word	power_heat_data
+ 394 0084 00000000 		.word	game_status
+ 395              		.cfi_endproc
+ 396              	.LFE148:
+ 398              		.section	.text.referee_data_solve,"ax",%progbits
+ 399              		.align	1
+ 400              		.syntax unified
+ 401              		.thumb
+ 402              		.thumb_func
+ 404              	referee_data_solve:
+ 405              	.LFB149:
+  93:User/Hardware/referee_system.c **** static void referee_data_solve(uint8_t *frame)
+  94:User/Hardware/referee_system.c **** {
+ 406              		.loc 1 94 1
+ 407              		.cfi_startproc
+ 408              		@ args = 0, pretend = 0, frame = 16
+ 409              		@ frame_needed = 1, uses_anonymous_args = 0
+ 410 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 411              	.LCFI6:
+ 412              		.cfi_def_cfa_offset 20
+ 413              		.cfi_offset 4, -20
+ 414              		.cfi_offset 5, -16
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 10
+
+
+ 415              		.cfi_offset 6, -12
+ 416              		.cfi_offset 7, -8
+ 417              		.cfi_offset 14, -4
+ 418 0002 85B0     		sub	sp, sp, #20
+ 419              	.LCFI7:
+ 420              		.cfi_def_cfa_offset 40
+ 421 0004 00AF     		add	r7, sp, #0
+ 422              	.LCFI8:
+ 423              		.cfi_def_cfa_register 7
+ 424 0006 7860     		str	r0, [r7, #4]
+  95:User/Hardware/referee_system.c ****     uint16_t cmd_id = 0;
+ 425              		.loc 1 95 14
+ 426 0008 0023     		movs	r3, #0
+ 427 000a BB81     		strh	r3, [r7, #12]	@ movhi
+  96:User/Hardware/referee_system.c ****     uint8_t index = 0;
+ 428              		.loc 1 96 13
+ 429 000c 0023     		movs	r3, #0
+ 430 000e FB73     		strb	r3, [r7, #15]
+  97:User/Hardware/referee_system.c **** 
+  98:User/Hardware/referee_system.c ****     memcpy(&referee_receive_header, frame, sizeof(frame_header_struct_t));
+ 431              		.loc 1 98 5
+ 432 0010 8A4B     		ldr	r3, .L50
+ 433 0012 7A68     		ldr	r2, [r7, #4]
+ 434 0014 1068     		ldr	r0, [r2]	@ unaligned
+ 435 0016 1860     		str	r0, [r3]
+ 436 0018 1279     		ldrb	r2, [r2, #4]
+ 437 001a 1A71     		strb	r2, [r3, #4]
+  99:User/Hardware/referee_system.c **** 
+ 100:User/Hardware/referee_system.c ****     index += sizeof(frame_header_struct_t);
+ 438              		.loc 1 100 11
+ 439 001c FB7B     		ldrb	r3, [r7, #15]
+ 440 001e 0533     		adds	r3, r3, #5
+ 441 0020 FB73     		strb	r3, [r7, #15]
+ 101:User/Hardware/referee_system.c **** 
+ 102:User/Hardware/referee_system.c ****     memcpy(&cmd_id, frame + index, sizeof(uint16_t));
+ 442              		.loc 1 102 5
+ 443 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 444              		.loc 1 102 27
+ 445 0024 7A68     		ldr	r2, [r7, #4]
+ 446 0026 1344     		add	r3, r3, r2
+ 447              		.loc 1 102 5
+ 448 0028 1B88     		ldrh	r3, [r3]	@ unaligned
+ 449 002a 9BB2     		uxth	r3, r3
+ 450 002c BB81     		strh	r3, [r7, #12]	@ movhi
+ 103:User/Hardware/referee_system.c ****     index += sizeof(uint16_t);
+ 451              		.loc 1 103 11
+ 452 002e FB7B     		ldrb	r3, [r7, #15]
+ 453 0030 0233     		adds	r3, r3, #2
+ 454 0032 FB73     		strb	r3, [r7, #15]
+ 104:User/Hardware/referee_system.c **** 
+ 105:User/Hardware/referee_system.c ****     switch (cmd_id)
+ 455              		.loc 1 105 5
+ 456 0034 BB89     		ldrh	r3, [r7, #12]
+ 457 0036 B3F5427F 		cmp	r3, #776
+ 458 003a 00F3FA80 		bgt	.L46
+ 459 003e B3F5407F 		cmp	r3, #768
+ 460 0042 18DC     		bgt	.L9
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 11
+
+
+ 461 0044 40F20E22 		movw	r2, #526
+ 462 0048 9342     		cmp	r3, r2
+ 463 004a 00F3F280 		bgt	.L46
+ 464 004e B3F5007F 		cmp	r3, #512
+ 465 0052 29DC     		bgt	.L10
+ 466 0054 B3F5837F 		cmp	r3, #262
+ 467 0058 80F2EB80 		bge	.L46
+ 468 005c B3F5807F 		cmp	r3, #256
+ 469 0060 46DC     		bgt	.L11
+ 470 0062 032B     		cmp	r3, #3
+ 471 0064 69D0     		beq	.L12
+ 472 0066 032B     		cmp	r3, #3
+ 473 0068 00F3E380 		bgt	.L46
+ 474 006c 012B     		cmp	r3, #1
+ 475 006e 51D0     		beq	.L13
+ 476 0070 022B     		cmp	r3, #2
+ 477 0072 5BD0     		beq	.L14
+ 106:User/Hardware/referee_system.c ****     {
+ 107:User/Hardware/referee_system.c ****         case GAME_STATE_CMD_ID:
+ 108:User/Hardware/referee_system.c ****         {
+ 109:User/Hardware/referee_system.c ****             memcpy(&game_status, frame + index, sizeof(ext_game_status_t));
+ 110:User/Hardware/referee_system.c ****         }
+ 111:User/Hardware/referee_system.c ****         break;
+ 112:User/Hardware/referee_system.c ****         case GAME_RESULT_CMD_ID:
+ 113:User/Hardware/referee_system.c ****         {
+ 114:User/Hardware/referee_system.c ****             memcpy(&game_result, frame + index, sizeof(ext_game_result_t));
+ 115:User/Hardware/referee_system.c ****         }
+ 116:User/Hardware/referee_system.c ****         break;
+ 117:User/Hardware/referee_system.c ****         case GAME_ROBOT_HP_CMD_ID:
+ 118:User/Hardware/referee_system.c ****         {
+ 119:User/Hardware/referee_system.c ****             memcpy(&game_robot_HP, frame + index, sizeof(ext_game_robot_HP_t));
+ 120:User/Hardware/referee_system.c ****         }
+ 121:User/Hardware/referee_system.c ****         break;
+ 122:User/Hardware/referee_system.c ****         case FIELD_EVENTS_CMD_ID:
+ 123:User/Hardware/referee_system.c ****         {
+ 124:User/Hardware/referee_system.c ****             //memcpy(&event_data, frame + index, sizeof(ext_event_data_t));
+ 125:User/Hardware/referee_system.c ****         }
+ 126:User/Hardware/referee_system.c ****         break;
+ 127:User/Hardware/referee_system.c ****         case SUPPLY_PROJECTILE_ACTION_CMD_ID:
+ 128:User/Hardware/referee_system.c ****         {
+ 129:User/Hardware/referee_system.c ****             //memcpy(&supply_projectile_action, frame + index, sizeof(ext_supply_projectile_action_
+ 130:User/Hardware/referee_system.c ****         }
+ 131:User/Hardware/referee_system.c ****         break;
+ 132:User/Hardware/referee_system.c ****         case REFEREE_WARNING_CMD_ID:
+ 133:User/Hardware/referee_system.c ****         {
+ 134:User/Hardware/referee_system.c ****             memcpy(&referee_warning, frame + index, sizeof(ext_referee_warning_t));
+ 135:User/Hardware/referee_system.c ****         }
+ 136:User/Hardware/referee_system.c ****         break;
+ 137:User/Hardware/referee_system.c ****         case DART_LAUNCH_TIME_CMD_ID:
+ 138:User/Hardware/referee_system.c ****         {
+ 139:User/Hardware/referee_system.c ****             //memcpy(&dart_remaining_time, frame + index, sizeof(ext_dart_remaining_time_t));
+ 140:User/Hardware/referee_system.c ****         }
+ 141:User/Hardware/referee_system.c ****         break;
+ 142:User/Hardware/referee_system.c ****         case ROBOT_STATE_CMD_ID:
+ 143:User/Hardware/referee_system.c ****         {
+ 144:User/Hardware/referee_system.c ****             memcpy(&robot_status, frame + index, sizeof(ext_robot_status_t));
+ 145:User/Hardware/referee_system.c ****         }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 12
+
+
+ 146:User/Hardware/referee_system.c ****         break;
+ 147:User/Hardware/referee_system.c ****         case POWER_HEAT_DATA_CMD_ID:
+ 148:User/Hardware/referee_system.c ****         {
+ 149:User/Hardware/referee_system.c ****             memcpy(&power_heat_data, frame + index, sizeof(ext_power_heat_data_t));
+ 150:User/Hardware/referee_system.c ****         }
+ 151:User/Hardware/referee_system.c ****         break;
+ 152:User/Hardware/referee_system.c ****         case ROBOT_POS_CMD_ID:
+ 153:User/Hardware/referee_system.c ****         {
+ 154:User/Hardware/referee_system.c ****             //memcpy(&robot_pos, frame + index, sizeof(ext_robot_pos_t));
+ 155:User/Hardware/referee_system.c ****         }
+ 156:User/Hardware/referee_system.c ****         break;
+ 157:User/Hardware/referee_system.c ****         case BUFF_MUSK_CMD_ID:
+ 158:User/Hardware/referee_system.c ****         {
+ 159:User/Hardware/referee_system.c ****             //memcpy(&robot_buff, frame + index, sizeof(ext_buff_t));
+ 160:User/Hardware/referee_system.c ****         }
+ 161:User/Hardware/referee_system.c ****         break;
+ 162:User/Hardware/referee_system.c ****         case AERIAL_ROBOT_ENERGY_CMD_ID:
+ 163:User/Hardware/referee_system.c ****         {
+ 164:User/Hardware/referee_system.c ****             //memcpy(&air_support_data, frame + index, sizeof(ext_air_support_data_t));
+ 165:User/Hardware/referee_system.c ****         }
+ 166:User/Hardware/referee_system.c ****         break;
+ 167:User/Hardware/referee_system.c ****         case ROBOT_HURT_CMD_ID:
+ 168:User/Hardware/referee_system.c ****         {
+ 169:User/Hardware/referee_system.c ****             memcpy(&hurt_data, frame + index, sizeof(ext_hurt_data_t));
+ 170:User/Hardware/referee_system.c ****         }
+ 171:User/Hardware/referee_system.c ****         break;
+ 172:User/Hardware/referee_system.c ****         case SHOOT_DATA_CMD_ID:
+ 173:User/Hardware/referee_system.c ****         {
+ 174:User/Hardware/referee_system.c ****             memcpy(&shoot_data, frame + index, sizeof(ext_shoot_data_t));
+ 175:User/Hardware/referee_system.c ****         }
+ 176:User/Hardware/referee_system.c ****         break;
+ 177:User/Hardware/referee_system.c ****         case BULLET_REMAINING_CMD_ID:
+ 178:User/Hardware/referee_system.c ****         {
+ 179:User/Hardware/referee_system.c ****             memcpy(&projectile_allowance, frame + index, sizeof(ext_projectile_allowance_t));
+ 180:User/Hardware/referee_system.c ****         }
+ 181:User/Hardware/referee_system.c ****         break;
+ 182:User/Hardware/referee_system.c ****         case ROBOT_RFID_STATE_CMD_ID:
+ 183:User/Hardware/referee_system.c ****         {
+ 184:User/Hardware/referee_system.c ****             memcpy(&rfid_status, frame + index, sizeof(ext_rfid_status_t));
+ 185:User/Hardware/referee_system.c ****         }
+ 186:User/Hardware/referee_system.c ****         break;
+ 187:User/Hardware/referee_system.c ****         case DART_PLAYER_COMMAND_CMD_ID:
+ 188:User/Hardware/referee_system.c ****         {
+ 189:User/Hardware/referee_system.c ****             //memcpy(&dart_client_cmd, frame + index, sizeof(ext_dart_client_cmd_t));
+ 190:User/Hardware/referee_system.c ****         }
+ 191:User/Hardware/referee_system.c ****         break;
+ 192:User/Hardware/referee_system.c ****         case GROUND_ROBOT_POSITION_CMD_ID:
+ 193:User/Hardware/referee_system.c ****         {
+ 194:User/Hardware/referee_system.c ****             //memcpy(&ground_robot_position, frame + index, sizeof(ext_ground_robot_position_t));
+ 195:User/Hardware/referee_system.c ****         }
+ 196:User/Hardware/referee_system.c ****         break;
+ 197:User/Hardware/referee_system.c ****         case RADAR_MARKS_PROGRESS_CMD_ID:
+ 198:User/Hardware/referee_system.c ****         {
+ 199:User/Hardware/referee_system.c ****             //memcpy(&radar_mark_data, frame + index, sizeof(ext_radar_mark_data_t));
+ 200:User/Hardware/referee_system.c ****         }
+ 201:User/Hardware/referee_system.c ****         break;
+ 202:User/Hardware/referee_system.c ****         case ROBOT_INTERACTION_CMD_ID:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 13
+
+
+ 203:User/Hardware/referee_system.c ****         {
+ 204:User/Hardware/referee_system.c ****             memcpy(&robot_interaction_data, frame + index, sizeof(ext_robot_interaction_data_t));
+ 205:User/Hardware/referee_system.c ****         }
+ 206:User/Hardware/referee_system.c ****         break;
+ 207:User/Hardware/referee_system.c ****         case CUSTOM_CONTROLLER_AND_BOT_INTERACTION_CMD_ID:
+ 208:User/Hardware/referee_system.c ****         {
+ 209:User/Hardware/referee_system.c ****             //memcpy(&custom_robot_data, frame + index, sizeof(ext_custom_robot_data_t));
+ 210:User/Hardware/referee_system.c ****         }
+ 211:User/Hardware/referee_system.c ****         break;
+ 212:User/Hardware/referee_system.c ****         case PLAYER_SIDE_MINIMAP_INTERACTION_CMD_ID:
+ 213:User/Hardware/referee_system.c ****         {
+ 214:User/Hardware/referee_system.c ****             //memcpy(&map_command, frame + index, sizeof(ext_map_command_t));
+ 215:User/Hardware/referee_system.c ****         }
+ 216:User/Hardware/referee_system.c ****         break;
+ 217:User/Hardware/referee_system.c ****         case KEYBOARD_AND_MOUSE_REMOTE_CONTROL_CMD_ID:
+ 218:User/Hardware/referee_system.c ****         {
+ 219:User/Hardware/referee_system.c ****             memcpy(&remote_control, frame + index, sizeof(ext_remote_control_t));
+ 220:User/Hardware/referee_system.c ****         }
+ 221:User/Hardware/referee_system.c ****         break;
+ 222:User/Hardware/referee_system.c ****         case PLAYER_MINIMAP_RECEIVES_RADAR_CMD_ID:
+ 223:User/Hardware/referee_system.c ****         {
+ 224:User/Hardware/referee_system.c ****             //memcpy(&map_robot_data, frame + index, sizeof(ext_map_robot_data_t));
+ 225:User/Hardware/referee_system.c ****         }
+ 226:User/Hardware/referee_system.c ****         break;
+ 227:User/Hardware/referee_system.c ****         case INTERACTION_DATA_BETWEEN_CONTROLLER_AND_PLAYER_CMD_ID:
+ 228:User/Hardware/referee_system.c ****         {
+ 229:User/Hardware/referee_system.c ****             //memcpy(&custom_client_data, frame + index, sizeof(ext_custom_client_data_t));
+ 230:User/Hardware/referee_system.c ****         }
+ 231:User/Hardware/referee_system.c ****         break;
+ 232:User/Hardware/referee_system.c ****         case PLAYER_MINIMAP_RECEIVES_SENTRY_CMD_ID:
+ 233:User/Hardware/referee_system.c ****         {
+ 234:User/Hardware/referee_system.c ****             //memcpy(&map_sentry_data, frame + index, sizeof(ext_map_sentry_data_t));
+ 235:User/Hardware/referee_system.c ****         }
+ 236:User/Hardware/referee_system.c ****         break;
+ 237:User/Hardware/referee_system.c **** 		case SENTRY_DATA_CMD_ID:
+ 238:User/Hardware/referee_system.c ****         {
+ 239:User/Hardware/referee_system.c ****             //memcpy(&sentry_data, frame + index, sizeof(ext_sentry_info_t));
+ 240:User/Hardware/referee_system.c ****         }
+ 241:User/Hardware/referee_system.c ****         break;
+ 242:User/Hardware/referee_system.c **** 		case RADAR_DATA_CMD_ID:
+ 243:User/Hardware/referee_system.c ****         {
+ 244:User/Hardware/referee_system.c ****             //memcpy(&radar_data, frame + index, sizeof(ext_radar_info_t));
+ 245:User/Hardware/referee_system.c ****         }
+ 246:User/Hardware/referee_system.c ****         break;		
+ 247:User/Hardware/referee_system.c **** 		case EXCHANGE_DATA_CMD_ID:
+ 248:User/Hardware/referee_system.c ****         {
+ 249:User/Hardware/referee_system.c ****             memcpy(&exchange_data, frame + index, sizeof(ext_custom_info_t));
+ 250:User/Hardware/referee_system.c ****         }
+ 251:User/Hardware/referee_system.c ****         break;		
+ 252:User/Hardware/referee_system.c **** 
+ 253:User/Hardware/referee_system.c ****         default:
+ 254:User/Hardware/referee_system.c ****         {
+ 255:User/Hardware/referee_system.c ****             break;
+ 478              		.loc 1 255 13
+ 479 0074 DDE0     		b	.L46
+ 480              	.L9:
+ 105:User/Hardware/referee_system.c ****     {
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 14
+
+
+ 481              		.loc 1 105 5
+ 482 0076 A3F20133 		subw	r3, r3, #769
+ 483 007a 072B     		cmp	r3, #7
+ 484 007c 00F2D980 		bhi	.L46
+ 485 0080 01A2     		adr	r2, .L16
+ 486 0082 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 487 0086 00BF     		.p2align 2
+ 488              	.L16:
+ 489 0088 E3010000 		.word	.L23+1
+ 490 008c 33020000 		.word	.L46+1
+ 491 0090 33020000 		.word	.L46+1
+ 492 0094 F9010000 		.word	.L20+1
+ 493 0098 33020000 		.word	.L46+1
+ 494 009c 33020000 		.word	.L46+1
+ 495 00a0 33020000 		.word	.L46+1
+ 496 00a4 0B020000 		.word	.L15+1
+ 497              		.p2align 1
+ 498              	.L10:
+ 499 00a8 A3F20123 		subw	r3, r3, #513
+ 500 00ac 0D2B     		cmp	r3, #13
+ 501 00ae 00F2C080 		bhi	.L46
+ 502 00b2 01A2     		adr	r2, .L25
+ 503 00b4 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 504              		.p2align 2
+ 505              	.L25:
+ 506 00b8 6F010000 		.word	.L38+1
+ 507 00bc 87010000 		.word	.L37+1
+ 508 00c0 33020000 		.word	.L46+1
+ 509 00c4 33020000 		.word	.L46+1
+ 510 00c8 33020000 		.word	.L46+1
+ 511 00cc 9D010000 		.word	.L33+1
+ 512 00d0 AB010000 		.word	.L32+1
+ 513 00d4 C1010000 		.word	.L31+1
+ 514 00d8 D3010000 		.word	.L30+1
+ 515 00dc 33020000 		.word	.L46+1
+ 516 00e0 33020000 		.word	.L46+1
+ 517 00e4 33020000 		.word	.L46+1
+ 518 00e8 33020000 		.word	.L46+1
+ 519 00ec 33020000 		.word	.L46+1
+ 520              		.p2align 1
+ 521              	.L11:
+ 522 00f0 A3F20113 		subw	r3, r3, #257
+ 523 00f4 042B     		cmp	r3, #4
+ 524 00f6 00F29C80 		bhi	.L46
+ 525 00fa 01A2     		adr	r2, .L40
+ 526 00fc 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 527              		.p2align 2
+ 528              	.L40:
+ 529 0100 33020000 		.word	.L46+1
+ 530 0104 33020000 		.word	.L46+1
+ 531 0108 33020000 		.word	.L46+1
+ 532 010c 5D010000 		.word	.L41+1
+ 533 0110 33020000 		.word	.L46+1
+ 534              		.p2align 1
+ 535              	.L13:
+ 109:User/Hardware/referee_system.c ****         }
+ 536              		.loc 1 109 13
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 15
+
+
+ 537 0114 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 109:User/Hardware/referee_system.c ****         }
+ 538              		.loc 1 109 40
+ 539 0116 7A68     		ldr	r2, [r7, #4]
+ 540 0118 1A44     		add	r2, r2, r3
+ 109:User/Hardware/referee_system.c ****         }
+ 541              		.loc 1 109 13
+ 542 011a 494B     		ldr	r3, .L50+4
+ 543 011c 1068     		ldr	r0, [r2]	@ unaligned
+ 544 011e 5168     		ldr	r1, [r2, #4]	@ unaligned
+ 545 0120 03C3     		stmia	r3!, {r0, r1}
+ 546 0122 1189     		ldrh	r1, [r2, #8]	@ unaligned
+ 547 0124 927A     		ldrb	r2, [r2, #10]
+ 548 0126 1980     		strh	r1, [r3]	@ unaligned
+ 549 0128 9A70     		strb	r2, [r3, #2]
+ 111:User/Hardware/referee_system.c ****         case GAME_RESULT_CMD_ID:
+ 550              		.loc 1 111 9
+ 551 012a 83E0     		b	.L44
+ 552              	.L14:
+ 114:User/Hardware/referee_system.c ****         }
+ 553              		.loc 1 114 13
+ 554 012c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 114:User/Hardware/referee_system.c ****         }
+ 555              		.loc 1 114 40
+ 556 012e 7A68     		ldr	r2, [r7, #4]
+ 557 0130 1344     		add	r3, r3, r2
+ 114:User/Hardware/referee_system.c ****         }
+ 558              		.loc 1 114 13
+ 559 0132 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 560 0134 434B     		ldr	r3, .L50+8
+ 561 0136 1A70     		strb	r2, [r3]
+ 116:User/Hardware/referee_system.c ****         case GAME_ROBOT_HP_CMD_ID:
+ 562              		.loc 1 116 9
+ 563 0138 7CE0     		b	.L44
+ 564              	.L12:
+ 119:User/Hardware/referee_system.c ****         }
+ 565              		.loc 1 119 13
+ 566 013a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 119:User/Hardware/referee_system.c ****         }
+ 567              		.loc 1 119 42
+ 568 013c 7A68     		ldr	r2, [r7, #4]
+ 569 013e 1344     		add	r3, r3, r2
+ 119:User/Hardware/referee_system.c ****         }
+ 570              		.loc 1 119 13
+ 571 0140 414A     		ldr	r2, .L50+12
+ 572 0142 1446     		mov	r4, r2
+ 573 0144 1D46     		mov	r5, r3
+ 574 0146 2868     		ldr	r0, [r5]	@ unaligned
+ 575 0148 6968     		ldr	r1, [r5, #4]	@ unaligned
+ 576 014a AA68     		ldr	r2, [r5, #8]	@ unaligned
+ 577 014c EB68     		ldr	r3, [r5, #12]	@ unaligned
+ 578 014e 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 579 0150 2869     		ldr	r0, [r5, #16]	@ unaligned
+ 580 0152 6969     		ldr	r1, [r5, #20]	@ unaligned
+ 581 0154 AA69     		ldr	r2, [r5, #24]	@ unaligned
+ 582 0156 EB69     		ldr	r3, [r5, #28]	@ unaligned
+ 583 0158 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 16
+
+
+ 121:User/Hardware/referee_system.c ****         case FIELD_EVENTS_CMD_ID:
+ 584              		.loc 1 121 9
+ 585 015a 6BE0     		b	.L44
+ 586              	.L41:
+ 134:User/Hardware/referee_system.c ****         }
+ 587              		.loc 1 134 13
+ 588 015c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 134:User/Hardware/referee_system.c ****         }
+ 589              		.loc 1 134 44
+ 590 015e 7A68     		ldr	r2, [r7, #4]
+ 591 0160 1A44     		add	r2, r2, r3
+ 134:User/Hardware/referee_system.c ****         }
+ 592              		.loc 1 134 13
+ 593 0162 3A4B     		ldr	r3, .L50+16
+ 594 0164 1188     		ldrh	r1, [r2]	@ unaligned
+ 595 0166 9278     		ldrb	r2, [r2, #2]
+ 596 0168 1980     		strh	r1, [r3]	@ unaligned
+ 597 016a 9A70     		strb	r2, [r3, #2]
+ 136:User/Hardware/referee_system.c ****         case DART_LAUNCH_TIME_CMD_ID:
+ 598              		.loc 1 136 9
+ 599 016c 62E0     		b	.L44
+ 600              	.L38:
+ 144:User/Hardware/referee_system.c ****         }
+ 601              		.loc 1 144 13
+ 602 016e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 144:User/Hardware/referee_system.c ****         }
+ 603              		.loc 1 144 41
+ 604 0170 7A68     		ldr	r2, [r7, #4]
+ 605 0172 1A44     		add	r2, r2, r3
+ 144:User/Hardware/referee_system.c ****         }
+ 606              		.loc 1 144 13
+ 607 0174 364B     		ldr	r3, .L50+20
+ 608 0176 1446     		mov	r4, r2
+ 609 0178 2068     		ldr	r0, [r4]	@ unaligned
+ 610 017a 6168     		ldr	r1, [r4, #4]	@ unaligned
+ 611 017c A268     		ldr	r2, [r4, #8]	@ unaligned
+ 612 017e 07C3     		stmia	r3!, {r0, r1, r2}
+ 613 0180 227B     		ldrb	r2, [r4, #12]
+ 614 0182 1A70     		strb	r2, [r3]
+ 146:User/Hardware/referee_system.c ****         case POWER_HEAT_DATA_CMD_ID:
+ 615              		.loc 1 146 9
+ 616 0184 56E0     		b	.L44
+ 617              	.L37:
+ 149:User/Hardware/referee_system.c ****         }
+ 618              		.loc 1 149 13
+ 619 0186 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 149:User/Hardware/referee_system.c ****         }
+ 620              		.loc 1 149 44
+ 621 0188 7A68     		ldr	r2, [r7, #4]
+ 622 018a 1344     		add	r3, r3, r2
+ 149:User/Hardware/referee_system.c ****         }
+ 623              		.loc 1 149 13
+ 624 018c 314A     		ldr	r2, .L50+24
+ 625 018e 1446     		mov	r4, r2
+ 626 0190 1868     		ldr	r0, [r3]	@ unaligned
+ 627 0192 5968     		ldr	r1, [r3, #4]	@ unaligned
+ 628 0194 9A68     		ldr	r2, [r3, #8]	@ unaligned
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 17
+
+
+ 629 0196 DB68     		ldr	r3, [r3, #12]	@ unaligned
+ 630 0198 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 151:User/Hardware/referee_system.c ****         case ROBOT_POS_CMD_ID:
+ 631              		.loc 1 151 9
+ 632 019a 4BE0     		b	.L44
+ 633              	.L33:
+ 169:User/Hardware/referee_system.c ****         }
+ 634              		.loc 1 169 13
+ 635 019c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 169:User/Hardware/referee_system.c ****         }
+ 636              		.loc 1 169 38
+ 637 019e 7A68     		ldr	r2, [r7, #4]
+ 638 01a0 1344     		add	r3, r3, r2
+ 169:User/Hardware/referee_system.c ****         }
+ 639              		.loc 1 169 13
+ 640 01a2 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 641 01a4 2C4B     		ldr	r3, .L50+28
+ 642 01a6 1A70     		strb	r2, [r3]
+ 171:User/Hardware/referee_system.c ****         case SHOOT_DATA_CMD_ID:
+ 643              		.loc 1 171 9
+ 644 01a8 44E0     		b	.L44
+ 645              	.L32:
+ 174:User/Hardware/referee_system.c ****         }
+ 646              		.loc 1 174 13
+ 647 01aa FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 174:User/Hardware/referee_system.c ****         }
+ 648              		.loc 1 174 39
+ 649 01ac 7A68     		ldr	r2, [r7, #4]
+ 650 01ae 1A44     		add	r2, r2, r3
+ 174:User/Hardware/referee_system.c ****         }
+ 651              		.loc 1 174 13
+ 652 01b0 2A4B     		ldr	r3, .L50+32
+ 653 01b2 1068     		ldr	r0, [r2]	@ unaligned
+ 654 01b4 1860     		str	r0, [r3]
+ 655 01b6 9188     		ldrh	r1, [r2, #4]	@ unaligned
+ 656 01b8 9279     		ldrb	r2, [r2, #6]
+ 657 01ba 9980     		strh	r1, [r3, #4]	@ unaligned
+ 658 01bc 9A71     		strb	r2, [r3, #6]
+ 176:User/Hardware/referee_system.c ****         case BULLET_REMAINING_CMD_ID:
+ 659              		.loc 1 176 9
+ 660 01be 39E0     		b	.L44
+ 661              	.L31:
+ 179:User/Hardware/referee_system.c ****         }
+ 662              		.loc 1 179 13
+ 663 01c0 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 179:User/Hardware/referee_system.c ****         }
+ 664              		.loc 1 179 49
+ 665 01c2 7A68     		ldr	r2, [r7, #4]
+ 666 01c4 1A44     		add	r2, r2, r3
+ 179:User/Hardware/referee_system.c ****         }
+ 667              		.loc 1 179 13
+ 668 01c6 264B     		ldr	r3, .L50+36
+ 669 01c8 1068     		ldr	r0, [r2]	@ unaligned
+ 670 01ca 1860     		str	r0, [r3]
+ 671 01cc 9288     		ldrh	r2, [r2, #4]	@ unaligned
+ 672 01ce 9A80     		strh	r2, [r3, #4]	@ unaligned
+ 181:User/Hardware/referee_system.c ****         case ROBOT_RFID_STATE_CMD_ID:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 18
+
+
+ 673              		.loc 1 181 9
+ 674 01d0 30E0     		b	.L44
+ 675              	.L30:
+ 184:User/Hardware/referee_system.c ****         }
+ 676              		.loc 1 184 13
+ 677 01d2 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 184:User/Hardware/referee_system.c ****         }
+ 678              		.loc 1 184 40
+ 679 01d4 7A68     		ldr	r2, [r7, #4]
+ 680 01d6 1344     		add	r3, r3, r2
+ 184:User/Hardware/referee_system.c ****         }
+ 681              		.loc 1 184 13
+ 682 01d8 1B68     		ldr	r3, [r3]	@ unaligned
+ 683 01da 1A46     		mov	r2, r3
+ 684 01dc 214B     		ldr	r3, .L50+40
+ 685 01de 1A60     		str	r2, [r3]
+ 186:User/Hardware/referee_system.c ****         case DART_PLAYER_COMMAND_CMD_ID:
+ 686              		.loc 1 186 9
+ 687 01e0 28E0     		b	.L44
+ 688              	.L23:
+ 204:User/Hardware/referee_system.c ****         }
+ 689              		.loc 1 204 13
+ 690 01e2 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 204:User/Hardware/referee_system.c ****         }
+ 691              		.loc 1 204 51
+ 692 01e4 7A68     		ldr	r2, [r7, #4]
+ 693 01e6 1344     		add	r3, r3, r2
+ 204:User/Hardware/referee_system.c ****         }
+ 694              		.loc 1 204 13
+ 695 01e8 1F4A     		ldr	r2, .L50+44
+ 696 01ea 1046     		mov	r0, r2
+ 697 01ec 1946     		mov	r1, r3
+ 698 01ee 6A23     		movs	r3, #106
+ 699 01f0 1A46     		mov	r2, r3
+ 700 01f2 FFF7FEFF 		bl	memcpy
+ 206:User/Hardware/referee_system.c ****         case CUSTOM_CONTROLLER_AND_BOT_INTERACTION_CMD_ID:
+ 701              		.loc 1 206 9
+ 702 01f6 1DE0     		b	.L44
+ 703              	.L20:
+ 219:User/Hardware/referee_system.c ****         }
+ 704              		.loc 1 219 13
+ 705 01f8 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 219:User/Hardware/referee_system.c ****         }
+ 706              		.loc 1 219 43
+ 707 01fa 7A68     		ldr	r2, [r7, #4]
+ 708 01fc 1A44     		add	r2, r2, r3
+ 219:User/Hardware/referee_system.c ****         }
+ 709              		.loc 1 219 13
+ 710 01fe 1B4B     		ldr	r3, .L50+48
+ 711 0200 1068     		ldr	r0, [r2]	@ unaligned
+ 712 0202 5168     		ldr	r1, [r2, #4]	@ unaligned
+ 713 0204 9268     		ldr	r2, [r2, #8]	@ unaligned
+ 714 0206 07C3     		stmia	r3!, {r0, r1, r2}
+ 221:User/Hardware/referee_system.c ****         case PLAYER_MINIMAP_RECEIVES_RADAR_CMD_ID:
+ 715              		.loc 1 221 9
+ 716 0208 14E0     		b	.L44
+ 717              	.L15:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 19
+
+
+ 249:User/Hardware/referee_system.c ****         }
+ 718              		.loc 1 249 13
+ 719 020a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 249:User/Hardware/referee_system.c ****         }
+ 720              		.loc 1 249 42
+ 721 020c 7A68     		ldr	r2, [r7, #4]
+ 722 020e 1344     		add	r3, r3, r2
+ 249:User/Hardware/referee_system.c ****         }
+ 723              		.loc 1 249 13
+ 724 0210 174A     		ldr	r2, .L50+52
+ 725 0212 1C46     		mov	r4, r3
+ 726 0214 1646     		mov	r6, r2
+ 727 0216 04F1400C 		add	ip, r4, #64
+ 728              	.L45:
+ 729 021a 3546     		mov	r5, r6
+ 730 021c 2346     		mov	r3, r4
+ 731 021e 1868     		ldr	r0, [r3]	@ unaligned
+ 732 0220 5968     		ldr	r1, [r3, #4]	@ unaligned
+ 733 0222 9A68     		ldr	r2, [r3, #8]	@ unaligned
+ 734 0224 DB68     		ldr	r3, [r3, #12]	@ unaligned
+ 735 0226 0FC5     		stmia	r5!, {r0, r1, r2, r3}
+ 736 0228 1034     		adds	r4, r4, #16
+ 737 022a 1036     		adds	r6, r6, #16
+ 738 022c 6445     		cmp	r4, ip
+ 739 022e F4D1     		bne	.L45
+ 251:User/Hardware/referee_system.c **** 
+ 740              		.loc 1 251 9
+ 741 0230 00E0     		b	.L44
+ 742              	.L46:
+ 743              		.loc 1 255 13
+ 744 0232 00BF     		nop
+ 745              	.L44:
+ 256:User/Hardware/referee_system.c ****         }
+ 257:User/Hardware/referee_system.c ****     }
+ 258:User/Hardware/referee_system.c **** }
+ 746              		.loc 1 258 1
+ 747 0234 00BF     		nop
+ 748 0236 1437     		adds	r7, r7, #20
+ 749              	.LCFI9:
+ 750              		.cfi_def_cfa_offset 20
+ 751 0238 BD46     		mov	sp, r7
+ 752              	.LCFI10:
+ 753              		.cfi_def_cfa_register 13
+ 754              		@ sp needed
+ 755 023a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 756              	.L51:
+ 757              		.align	2
+ 758              	.L50:
+ 759 023c 00000000 		.word	referee_receive_header
+ 760 0240 00000000 		.word	game_status
+ 761 0244 00000000 		.word	game_result
+ 762 0248 00000000 		.word	game_robot_HP
+ 763 024c 00000000 		.word	referee_warning
+ 764 0250 00000000 		.word	robot_status
+ 765 0254 00000000 		.word	power_heat_data
+ 766 0258 00000000 		.word	hurt_data
+ 767 025c 00000000 		.word	shoot_data
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 20
+
+
+ 768 0260 00000000 		.word	projectile_allowance
+ 769 0264 00000000 		.word	rfid_status
+ 770 0268 00000000 		.word	robot_interaction_data
+ 771 026c 00000000 		.word	remote_control
+ 772 0270 00000000 		.word	exchange_data
+ 773              		.cfi_endproc
+ 774              	.LFE149:
+ 776              		.section	.text.Refree_system_init,"ax",%progbits
+ 777              		.align	1
+ 778              		.global	Refree_system_init
+ 779              		.syntax unified
+ 780              		.thumb
+ 781              		.thumb_func
+ 783              	Refree_system_init:
+ 784              	.LFB150:
+ 259:User/Hardware/referee_system.c **** /**
+ 260:User/Hardware/referee_system.c ****  * @brief 初始化裁判系统
+ 261:User/Hardware/referee_system.c ****  *
+ 262:User/Hardware/referee_system.c ****  */
+ 263:User/Hardware/referee_system.c **** void Refree_system_init(void)
+ 264:User/Hardware/referee_system.c **** {
+ 785              		.loc 1 264 1
+ 786              		.cfi_startproc
+ 787              		@ args = 0, pretend = 0, frame = 0
+ 788              		@ frame_needed = 1, uses_anonymous_args = 0
+ 789 0000 80B5     		push	{r7, lr}
+ 790              	.LCFI11:
+ 791              		.cfi_def_cfa_offset 8
+ 792              		.cfi_offset 7, -8
+ 793              		.cfi_offset 14, -4
+ 794 0002 00AF     		add	r7, sp, #0
+ 795              	.LCFI12:
+ 796              		.cfi_def_cfa_register 7
+ 265:User/Hardware/referee_system.c ****     referee_struct_init();
+ 797              		.loc 1 265 5
+ 798 0004 FFF7FEFF 		bl	referee_struct_init
+ 266:User/Hardware/referee_system.c ****     fifo_s_init(&referee_fifo, referee_fifo_buf, REFEREE_FIFO_BUF_LENGTH);
+ 799              		.loc 1 266 5
+ 800 0008 4FF48062 		mov	r2, #1024
+ 801 000c 0549     		ldr	r1, .L53
+ 802 000e 0648     		ldr	r0, .L53+4
+ 803 0010 FFF7FEFF 		bl	fifo_s_init
+ 267:User/Hardware/referee_system.c ****     fifo_s_init(&referee_image_fifo, referee_image_fifo_buf, REFEREE_FIFO_BUF_LENGTH);
+ 804              		.loc 1 267 5
+ 805 0014 4FF48062 		mov	r2, #1024
+ 806 0018 0449     		ldr	r1, .L53+8
+ 807 001a 0548     		ldr	r0, .L53+12
+ 808 001c FFF7FEFF 		bl	fifo_s_init
+ 268:User/Hardware/referee_system.c **** }
+ 809              		.loc 1 268 1
+ 810 0020 00BF     		nop
+ 811 0022 80BD     		pop	{r7, pc}
+ 812              	.L54:
+ 813              		.align	2
+ 814              	.L53:
+ 815 0024 00000000 		.word	referee_fifo_buf
+ 816 0028 00000000 		.word	referee_fifo
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 21
+
+
+ 817 002c 00000000 		.word	referee_image_fifo_buf
+ 818 0030 00000000 		.word	referee_image_fifo
+ 819              		.cfi_endproc
+ 820              	.LFE150:
+ 822              		.section	.text.Referee_unpack_fifo_data,"ax",%progbits
+ 823              		.align	1
+ 824              		.global	Referee_unpack_fifo_data
+ 825              		.syntax unified
+ 826              		.thumb
+ 827              		.thumb_func
+ 829              	Referee_unpack_fifo_data:
+ 830              	.LFB151:
+ 269:User/Hardware/referee_system.c **** 
+ 270:User/Hardware/referee_system.c **** /**
+ 271:User/Hardware/referee_system.c ****  * @brief 裁判系统解包
+ 272:User/Hardware/referee_system.c ****  * 
+ 273:User/Hardware/referee_system.c ****  * @param p_fifo 缓冲fifo
+ 274:User/Hardware/referee_system.c ****  * @param p_obj 解包流程
+ 275:User/Hardware/referee_system.c ****  */
+ 276:User/Hardware/referee_system.c **** void Referee_unpack_fifo_data(fifo_s_t* p_fifo,unpack_data_t* p_obj)
+ 277:User/Hardware/referee_system.c **** {
+ 831              		.loc 1 277 1
+ 832              		.cfi_startproc
+ 833              		@ args = 0, pretend = 0, frame = 16
+ 834              		@ frame_needed = 1, uses_anonymous_args = 0
+ 835 0000 80B5     		push	{r7, lr}
+ 836              	.LCFI13:
+ 837              		.cfi_def_cfa_offset 8
+ 838              		.cfi_offset 7, -8
+ 839              		.cfi_offset 14, -4
+ 840 0002 84B0     		sub	sp, sp, #16
+ 841              	.LCFI14:
+ 842              		.cfi_def_cfa_offset 24
+ 843 0004 00AF     		add	r7, sp, #0
+ 844              	.LCFI15:
+ 845              		.cfi_def_cfa_register 7
+ 846 0006 7860     		str	r0, [r7, #4]
+ 847 0008 3960     		str	r1, [r7]
+ 278:User/Hardware/referee_system.c ****   uint8_t byte = 0;
+ 848              		.loc 1 278 11
+ 849 000a 0023     		movs	r3, #0
+ 850 000c FB73     		strb	r3, [r7, #15]
+ 279:User/Hardware/referee_system.c ****   uint8_t sof = HEADER_SOF;
+ 851              		.loc 1 279 11
+ 852 000e A523     		movs	r3, #165
+ 853 0010 BB73     		strb	r3, [r7, #14]
+ 280:User/Hardware/referee_system.c **** 
+ 281:User/Hardware/referee_system.c ****   while (fifo_s_used(p_fifo))
+ 854              		.loc 1 281 9
+ 855 0012 12E1     		b	.L56
+ 856              	.L74:
+ 282:User/Hardware/referee_system.c ****   {
+ 283:User/Hardware/referee_system.c ****     byte = fifo_s_get(p_fifo);
+ 857              		.loc 1 283 12
+ 858 0014 7868     		ldr	r0, [r7, #4]
+ 859 0016 FFF7FEFF 		bl	fifo_s_get
+ 860 001a 0346     		mov	r3, r0
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 22
+
+
+ 861 001c FB73     		strb	r3, [r7, #15]
+ 284:User/Hardware/referee_system.c ****     switch (p_obj->unpack_step)
+ 862              		.loc 1 284 18
+ 863 001e 3B68     		ldr	r3, [r7]
+ 864 0020 93F88630 		ldrb	r3, [r3, #134]	@ zero_extendqisi2
+ 865              		.loc 1 284 5
+ 866 0024 052B     		cmp	r3, #5
+ 867 0026 00F2F980 		bhi	.L57
+ 868 002a 01A2     		adr	r2, .L59
+ 869 002c 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 870              		.p2align 2
+ 871              	.L59:
+ 872 0030 49000000 		.word	.L64+1
+ 873 0034 87000000 		.word	.L63+1
+ 874 0038 B5000000 		.word	.L62+1
+ 875 003c 17010000 		.word	.L61+1
+ 876 0040 3D010000 		.word	.L60+1
+ 877 0044 99010000 		.word	.L58+1
+ 878              		.p2align 1
+ 879              	.L64:
+ 285:User/Hardware/referee_system.c ****     {
+ 286:User/Hardware/referee_system.c ****     case STEP_HEADER_SOF:
+ 287:User/Hardware/referee_system.c ****     {
+ 288:User/Hardware/referee_system.c ****       if (byte == sof)
+ 880              		.loc 1 288 10
+ 881 0048 FA7B     		ldrb	r2, [r7, #15]	@ zero_extendqisi2
+ 882 004a BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 883 004c 9A42     		cmp	r2, r3
+ 884 004e 12D1     		bne	.L65
+ 289:User/Hardware/referee_system.c ****       {
+ 290:User/Hardware/referee_system.c ****         p_obj->unpack_step = STEP_LENGTH_LOW;
+ 885              		.loc 1 290 28
+ 886 0050 3B68     		ldr	r3, [r7]
+ 887 0052 0122     		movs	r2, #1
+ 888 0054 83F88620 		strb	r2, [r3, #134]
+ 291:User/Hardware/referee_system.c ****         p_obj->protocol_packet[p_obj->index++] = byte;
+ 889              		.loc 1 291 37
+ 890 0058 3B68     		ldr	r3, [r7]
+ 891 005a B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 892 005e 9BB2     		uxth	r3, r3
+ 893              		.loc 1 291 44
+ 894 0060 5A1C     		adds	r2, r3, #1
+ 895 0062 91B2     		uxth	r1, r2
+ 896 0064 3A68     		ldr	r2, [r7]
+ 897 0066 A2F88710 		strh	r1, [r2, #135]	@ unaligned
+ 898 006a 1A46     		mov	r2, r3
+ 899              		.loc 1 291 48
+ 900 006c 3B68     		ldr	r3, [r7]
+ 901 006e 1344     		add	r3, r3, r2
+ 902 0070 FA7B     		ldrb	r2, [r7, #15]
+ 903 0072 9A71     		strb	r2, [r3, #6]
+ 292:User/Hardware/referee_system.c ****       }
+ 293:User/Hardware/referee_system.c ****       else
+ 294:User/Hardware/referee_system.c ****       {
+ 295:User/Hardware/referee_system.c ****         p_obj->index = 0;
+ 296:User/Hardware/referee_system.c ****       }
+ 297:User/Hardware/referee_system.c ****     }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 23
+
+
+ 298:User/Hardware/referee_system.c ****     break;
+ 904              		.loc 1 298 5
+ 905 0074 E1E0     		b	.L56
+ 906              	.L65:
+ 295:User/Hardware/referee_system.c ****       }
+ 907              		.loc 1 295 22
+ 908 0076 3B68     		ldr	r3, [r7]
+ 909 0078 0022     		movs	r2, #0
+ 910 007a 83F88720 		strb	r2, [r3, #135]
+ 911 007e 0022     		movs	r2, #0
+ 912 0080 83F88820 		strb	r2, [r3, #136]
+ 913              		.loc 1 298 5
+ 914 0084 D9E0     		b	.L56
+ 915              	.L63:
+ 299:User/Hardware/referee_system.c **** 
+ 300:User/Hardware/referee_system.c ****     case STEP_LENGTH_LOW:
+ 301:User/Hardware/referee_system.c ****     {
+ 302:User/Hardware/referee_system.c ****       p_obj->data_len = byte;
+ 916              		.loc 1 302 23
+ 917 0086 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 918 0088 9AB2     		uxth	r2, r3
+ 919 008a 3B68     		ldr	r3, [r7]
+ 920 008c 9A80     		strh	r2, [r3, #4]	@ unaligned
+ 303:User/Hardware/referee_system.c ****       p_obj->protocol_packet[p_obj->index++] = byte;
+ 921              		.loc 1 303 35
+ 922 008e 3B68     		ldr	r3, [r7]
+ 923 0090 B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 924 0094 9BB2     		uxth	r3, r3
+ 925              		.loc 1 303 42
+ 926 0096 5A1C     		adds	r2, r3, #1
+ 927 0098 91B2     		uxth	r1, r2
+ 928 009a 3A68     		ldr	r2, [r7]
+ 929 009c A2F88710 		strh	r1, [r2, #135]	@ unaligned
+ 930 00a0 1A46     		mov	r2, r3
+ 931              		.loc 1 303 46
+ 932 00a2 3B68     		ldr	r3, [r7]
+ 933 00a4 1344     		add	r3, r3, r2
+ 934 00a6 FA7B     		ldrb	r2, [r7, #15]
+ 935 00a8 9A71     		strb	r2, [r3, #6]
+ 304:User/Hardware/referee_system.c ****       p_obj->unpack_step = STEP_LENGTH_HIGH;
+ 936              		.loc 1 304 26
+ 937 00aa 3B68     		ldr	r3, [r7]
+ 938 00ac 0222     		movs	r2, #2
+ 939 00ae 83F88620 		strb	r2, [r3, #134]
+ 305:User/Hardware/referee_system.c ****     }
+ 306:User/Hardware/referee_system.c ****     break;
+ 940              		.loc 1 306 5
+ 941 00b2 C2E0     		b	.L56
+ 942              	.L62:
+ 307:User/Hardware/referee_system.c **** 
+ 308:User/Hardware/referee_system.c ****     case STEP_LENGTH_HIGH:
+ 309:User/Hardware/referee_system.c ****     {
+ 310:User/Hardware/referee_system.c ****       p_obj->data_len |= (byte << 8);
+ 943              		.loc 1 310 12
+ 944 00b4 3B68     		ldr	r3, [r7]
+ 945 00b6 9B88     		ldrh	r3, [r3, #4]	@ unaligned
+ 946 00b8 9BB2     		uxth	r3, r3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 24
+
+
+ 947 00ba 1AB2     		sxth	r2, r3
+ 948              		.loc 1 310 23
+ 949 00bc FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 950 00be 1BB2     		sxth	r3, r3
+ 951 00c0 1B02     		lsls	r3, r3, #8
+ 952 00c2 1BB2     		sxth	r3, r3
+ 953 00c4 1343     		orrs	r3, r3, r2
+ 954 00c6 1BB2     		sxth	r3, r3
+ 955 00c8 9AB2     		uxth	r2, r3
+ 956 00ca 3B68     		ldr	r3, [r7]
+ 957 00cc 9A80     		strh	r2, [r3, #4]	@ unaligned
+ 311:User/Hardware/referee_system.c ****       p_obj->protocol_packet[p_obj->index++] = byte;
+ 958              		.loc 1 311 35
+ 959 00ce 3B68     		ldr	r3, [r7]
+ 960 00d0 B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 961 00d4 9BB2     		uxth	r3, r3
+ 962              		.loc 1 311 42
+ 963 00d6 5A1C     		adds	r2, r3, #1
+ 964 00d8 91B2     		uxth	r1, r2
+ 965 00da 3A68     		ldr	r2, [r7]
+ 966 00dc A2F88710 		strh	r1, [r2, #135]	@ unaligned
+ 967 00e0 1A46     		mov	r2, r3
+ 968              		.loc 1 311 46
+ 969 00e2 3B68     		ldr	r3, [r7]
+ 970 00e4 1344     		add	r3, r3, r2
+ 971 00e6 FA7B     		ldrb	r2, [r7, #15]
+ 972 00e8 9A71     		strb	r2, [r3, #6]
+ 312:User/Hardware/referee_system.c **** 
+ 313:User/Hardware/referee_system.c ****       if (p_obj->data_len < (REF_PROTOCOL_FRAME_MAX_SIZE - REF_HEADER_CRC_CMDID_LEN))
+ 973              		.loc 1 313 16
+ 974 00ea 3B68     		ldr	r3, [r7]
+ 975 00ec 9B88     		ldrh	r3, [r3, #4]	@ unaligned
+ 976 00ee 9BB2     		uxth	r3, r3
+ 977              		.loc 1 313 10
+ 978 00f0 762B     		cmp	r3, #118
+ 979 00f2 04D8     		bhi	.L68
+ 314:User/Hardware/referee_system.c ****       {
+ 315:User/Hardware/referee_system.c ****         p_obj->unpack_step = STEP_FRAME_SEQ;
+ 980              		.loc 1 315 28
+ 981 00f4 3B68     		ldr	r3, [r7]
+ 982 00f6 0322     		movs	r2, #3
+ 983 00f8 83F88620 		strb	r2, [r3, #134]
+ 316:User/Hardware/referee_system.c ****       }
+ 317:User/Hardware/referee_system.c ****       else
+ 318:User/Hardware/referee_system.c ****       {
+ 319:User/Hardware/referee_system.c ****         p_obj->unpack_step = STEP_HEADER_SOF;
+ 320:User/Hardware/referee_system.c ****         p_obj->index = 0;
+ 321:User/Hardware/referee_system.c ****       }
+ 322:User/Hardware/referee_system.c ****     }
+ 323:User/Hardware/referee_system.c ****     break;
+ 984              		.loc 1 323 5
+ 985 00fc 9DE0     		b	.L56
+ 986              	.L68:
+ 319:User/Hardware/referee_system.c ****         p_obj->index = 0;
+ 987              		.loc 1 319 28
+ 988 00fe 3B68     		ldr	r3, [r7]
+ 989 0100 0022     		movs	r2, #0
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 25
+
+
+ 990 0102 83F88620 		strb	r2, [r3, #134]
+ 320:User/Hardware/referee_system.c ****       }
+ 991              		.loc 1 320 22
+ 992 0106 3B68     		ldr	r3, [r7]
+ 993 0108 0022     		movs	r2, #0
+ 994 010a 83F88720 		strb	r2, [r3, #135]
+ 995 010e 0022     		movs	r2, #0
+ 996 0110 83F88820 		strb	r2, [r3, #136]
+ 997              		.loc 1 323 5
+ 998 0114 91E0     		b	.L56
+ 999              	.L61:
+ 324:User/Hardware/referee_system.c ****     case STEP_FRAME_SEQ:
+ 325:User/Hardware/referee_system.c ****     {
+ 326:User/Hardware/referee_system.c ****       p_obj->protocol_packet[p_obj->index++] = byte;
+ 1000              		.loc 1 326 35
+ 1001 0116 3B68     		ldr	r3, [r7]
+ 1002 0118 B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 1003 011c 9BB2     		uxth	r3, r3
+ 1004              		.loc 1 326 42
+ 1005 011e 5A1C     		adds	r2, r3, #1
+ 1006 0120 91B2     		uxth	r1, r2
+ 1007 0122 3A68     		ldr	r2, [r7]
+ 1008 0124 A2F88710 		strh	r1, [r2, #135]	@ unaligned
+ 1009 0128 1A46     		mov	r2, r3
+ 1010              		.loc 1 326 46
+ 1011 012a 3B68     		ldr	r3, [r7]
+ 1012 012c 1344     		add	r3, r3, r2
+ 1013 012e FA7B     		ldrb	r2, [r7, #15]
+ 1014 0130 9A71     		strb	r2, [r3, #6]
+ 327:User/Hardware/referee_system.c ****       p_obj->unpack_step = STEP_HEADER_CRC8;
+ 1015              		.loc 1 327 26
+ 1016 0132 3B68     		ldr	r3, [r7]
+ 1017 0134 0422     		movs	r2, #4
+ 1018 0136 83F88620 		strb	r2, [r3, #134]
+ 328:User/Hardware/referee_system.c ****     }
+ 329:User/Hardware/referee_system.c ****     break;
+ 1019              		.loc 1 329 5
+ 1020 013a 7EE0     		b	.L56
+ 1021              	.L60:
+ 330:User/Hardware/referee_system.c **** 
+ 331:User/Hardware/referee_system.c ****     case STEP_HEADER_CRC8:
+ 332:User/Hardware/referee_system.c ****     {
+ 333:User/Hardware/referee_system.c ****       p_obj->protocol_packet[p_obj->index++] = byte;
+ 1022              		.loc 1 333 35
+ 1023 013c 3B68     		ldr	r3, [r7]
+ 1024 013e B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 1025 0142 9BB2     		uxth	r3, r3
+ 1026              		.loc 1 333 42
+ 1027 0144 5A1C     		adds	r2, r3, #1
+ 1028 0146 91B2     		uxth	r1, r2
+ 1029 0148 3A68     		ldr	r2, [r7]
+ 1030 014a A2F88710 		strh	r1, [r2, #135]	@ unaligned
+ 1031 014e 1A46     		mov	r2, r3
+ 1032              		.loc 1 333 46
+ 1033 0150 3B68     		ldr	r3, [r7]
+ 1034 0152 1344     		add	r3, r3, r2
+ 1035 0154 FA7B     		ldrb	r2, [r7, #15]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 26
+
+
+ 1036 0156 9A71     		strb	r2, [r3, #6]
+ 334:User/Hardware/referee_system.c **** 
+ 335:User/Hardware/referee_system.c ****       if (p_obj->index == REF_PROTOCOL_HEADER_SIZE)
+ 1037              		.loc 1 335 16
+ 1038 0158 3B68     		ldr	r3, [r7]
+ 1039 015a B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 1040 015e 9BB2     		uxth	r3, r3
+ 1041              		.loc 1 335 10
+ 1042 0160 052B     		cmp	r3, #5
+ 1043 0162 67D1     		bne	.L75
+ 336:User/Hardware/referee_system.c ****       {
+ 337:User/Hardware/referee_system.c ****         if (verify_CRC8_check_sum(p_obj->protocol_packet, REF_PROTOCOL_HEADER_SIZE))
+ 1044              		.loc 1 337 40
+ 1045 0164 3B68     		ldr	r3, [r7]
+ 1046 0166 0633     		adds	r3, r3, #6
+ 1047              		.loc 1 337 13
+ 1048 0168 0521     		movs	r1, #5
+ 1049 016a 1846     		mov	r0, r3
+ 1050 016c FFF7FEFF 		bl	verify_CRC8_check_sum
+ 1051 0170 0346     		mov	r3, r0
+ 1052              		.loc 1 337 12 discriminator 1
+ 1053 0172 002B     		cmp	r3, #0
+ 1054 0174 04D0     		beq	.L71
+ 338:User/Hardware/referee_system.c ****         {
+ 339:User/Hardware/referee_system.c ****           p_obj->unpack_step = STEP_DATA_CRC16;
+ 1055              		.loc 1 339 30
+ 1056 0176 3B68     		ldr	r3, [r7]
+ 1057 0178 0522     		movs	r2, #5
+ 1058 017a 83F88620 		strb	r2, [r3, #134]
+ 340:User/Hardware/referee_system.c ****         }
+ 341:User/Hardware/referee_system.c ****         else
+ 342:User/Hardware/referee_system.c ****         {
+ 343:User/Hardware/referee_system.c ****           p_obj->unpack_step = STEP_HEADER_SOF;
+ 344:User/Hardware/referee_system.c ****           p_obj->index = 0;
+ 345:User/Hardware/referee_system.c ****         }
+ 346:User/Hardware/referee_system.c ****       }
+ 347:User/Hardware/referee_system.c ****     }
+ 348:User/Hardware/referee_system.c ****     break;
+ 1059              		.loc 1 348 5
+ 1060 017e 59E0     		b	.L75
+ 1061              	.L71:
+ 343:User/Hardware/referee_system.c ****           p_obj->index = 0;
+ 1062              		.loc 1 343 30
+ 1063 0180 3B68     		ldr	r3, [r7]
+ 1064 0182 0022     		movs	r2, #0
+ 1065 0184 83F88620 		strb	r2, [r3, #134]
+ 344:User/Hardware/referee_system.c ****         }
+ 1066              		.loc 1 344 24
+ 1067 0188 3B68     		ldr	r3, [r7]
+ 1068 018a 0022     		movs	r2, #0
+ 1069 018c 83F88720 		strb	r2, [r3, #135]
+ 1070 0190 0022     		movs	r2, #0
+ 1071 0192 83F88820 		strb	r2, [r3, #136]
+ 1072              		.loc 1 348 5
+ 1073 0196 4DE0     		b	.L75
+ 1074              	.L58:
+ 349:User/Hardware/referee_system.c **** 
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 27
+
+
+ 350:User/Hardware/referee_system.c ****     case STEP_DATA_CRC16:
+ 351:User/Hardware/referee_system.c ****     {
+ 352:User/Hardware/referee_system.c ****       if (p_obj->index < (REF_HEADER_CRC_CMDID_LEN + p_obj->data_len))
+ 1075              		.loc 1 352 16
+ 1076 0198 3B68     		ldr	r3, [r7]
+ 1077 019a B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 1078 019e 9BB2     		uxth	r3, r3
+ 1079 01a0 1A46     		mov	r2, r3
+ 1080              		.loc 1 352 59
+ 1081 01a2 3B68     		ldr	r3, [r7]
+ 1082 01a4 9B88     		ldrh	r3, [r3, #4]	@ unaligned
+ 1083 01a6 9BB2     		uxth	r3, r3
+ 1084              		.loc 1 352 52
+ 1085 01a8 0933     		adds	r3, r3, #9
+ 1086              		.loc 1 352 10
+ 1087 01aa 9A42     		cmp	r2, r3
+ 1088 01ac 0DD2     		bcs	.L72
+ 353:User/Hardware/referee_system.c ****       {
+ 354:User/Hardware/referee_system.c ****         p_obj->protocol_packet[p_obj->index++] = byte;
+ 1089              		.loc 1 354 37
+ 1090 01ae 3B68     		ldr	r3, [r7]
+ 1091 01b0 B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 1092 01b4 9BB2     		uxth	r3, r3
+ 1093              		.loc 1 354 44
+ 1094 01b6 5A1C     		adds	r2, r3, #1
+ 1095 01b8 91B2     		uxth	r1, r2
+ 1096 01ba 3A68     		ldr	r2, [r7]
+ 1097 01bc A2F88710 		strh	r1, [r2, #135]	@ unaligned
+ 1098 01c0 1A46     		mov	r2, r3
+ 1099              		.loc 1 354 48
+ 1100 01c2 3B68     		ldr	r3, [r7]
+ 1101 01c4 1344     		add	r3, r3, r2
+ 1102 01c6 FA7B     		ldrb	r2, [r7, #15]
+ 1103 01c8 9A71     		strb	r2, [r3, #6]
+ 1104              	.L72:
+ 355:User/Hardware/referee_system.c ****       }
+ 356:User/Hardware/referee_system.c ****       if (p_obj->index >= (REF_HEADER_CRC_CMDID_LEN + p_obj->data_len))
+ 1105              		.loc 1 356 16
+ 1106 01ca 3B68     		ldr	r3, [r7]
+ 1107 01cc B3F88730 		ldrh	r3, [r3, #135]	@ unaligned
+ 1108 01d0 9BB2     		uxth	r3, r3
+ 1109 01d2 1A46     		mov	r2, r3
+ 1110              		.loc 1 356 60
+ 1111 01d4 3B68     		ldr	r3, [r7]
+ 1112 01d6 9B88     		ldrh	r3, [r3, #4]	@ unaligned
+ 1113 01d8 9BB2     		uxth	r3, r3
+ 1114              		.loc 1 356 53
+ 1115 01da 0933     		adds	r3, r3, #9
+ 1116              		.loc 1 356 10
+ 1117 01dc 9A42     		cmp	r2, r3
+ 1118 01de 2BD3     		bcc	.L76
+ 357:User/Hardware/referee_system.c ****       {
+ 358:User/Hardware/referee_system.c ****         p_obj->unpack_step = STEP_HEADER_SOF;
+ 1119              		.loc 1 358 28
+ 1120 01e0 3B68     		ldr	r3, [r7]
+ 1121 01e2 0022     		movs	r2, #0
+ 1122 01e4 83F88620 		strb	r2, [r3, #134]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 28
+
+
+ 359:User/Hardware/referee_system.c ****         p_obj->index = 0;
+ 1123              		.loc 1 359 22
+ 1124 01e8 3B68     		ldr	r3, [r7]
+ 1125 01ea 0022     		movs	r2, #0
+ 1126 01ec 83F88720 		strb	r2, [r3, #135]
+ 1127 01f0 0022     		movs	r2, #0
+ 1128 01f2 83F88820 		strb	r2, [r3, #136]
+ 360:User/Hardware/referee_system.c **** 
+ 361:User/Hardware/referee_system.c ****         if (verify_CRC16_check_sum(p_obj->protocol_packet, REF_HEADER_CRC_CMDID_LEN + p_obj->data_l
+ 1129              		.loc 1 361 41
+ 1130 01f6 3B68     		ldr	r3, [r7]
+ 1131 01f8 9A1D     		adds	r2, r3, #6
+ 1132              		.loc 1 361 92
+ 1133 01fa 3B68     		ldr	r3, [r7]
+ 1134 01fc 9B88     		ldrh	r3, [r3, #4]	@ unaligned
+ 1135 01fe 9BB2     		uxth	r3, r3
+ 1136              		.loc 1 361 85
+ 1137 0200 0933     		adds	r3, r3, #9
+ 1138              		.loc 1 361 13
+ 1139 0202 1946     		mov	r1, r3
+ 1140 0204 1046     		mov	r0, r2
+ 1141 0206 FFF7FEFF 		bl	verify_CRC16_check_sum
+ 1142 020a 0346     		mov	r3, r0
+ 1143              		.loc 1 361 12 discriminator 1
+ 1144 020c 002B     		cmp	r3, #0
+ 1145 020e 13D0     		beq	.L76
+ 362:User/Hardware/referee_system.c ****         {
+ 363:User/Hardware/referee_system.c ****           referee_data_solve(p_obj->protocol_packet);
+ 1146              		.loc 1 363 35
+ 1147 0210 3B68     		ldr	r3, [r7]
+ 1148 0212 0633     		adds	r3, r3, #6
+ 1149              		.loc 1 363 11
+ 1150 0214 1846     		mov	r0, r3
+ 1151 0216 FFF7FEFF 		bl	referee_data_solve
+ 364:User/Hardware/referee_system.c ****         }
+ 365:User/Hardware/referee_system.c ****       }
+ 366:User/Hardware/referee_system.c ****     }
+ 367:User/Hardware/referee_system.c ****     break;
+ 1152              		.loc 1 367 5
+ 1153 021a 0DE0     		b	.L76
+ 1154              	.L57:
+ 368:User/Hardware/referee_system.c **** 
+ 369:User/Hardware/referee_system.c ****     default:
+ 370:User/Hardware/referee_system.c ****     {
+ 371:User/Hardware/referee_system.c ****       p_obj->unpack_step = STEP_HEADER_SOF;
+ 1155              		.loc 1 371 26
+ 1156 021c 3B68     		ldr	r3, [r7]
+ 1157 021e 0022     		movs	r2, #0
+ 1158 0220 83F88620 		strb	r2, [r3, #134]
+ 372:User/Hardware/referee_system.c ****       p_obj->index = 0;
+ 1159              		.loc 1 372 20
+ 1160 0224 3B68     		ldr	r3, [r7]
+ 1161 0226 0022     		movs	r2, #0
+ 1162 0228 83F88720 		strb	r2, [r3, #135]
+ 1163 022c 0022     		movs	r2, #0
+ 1164 022e 83F88820 		strb	r2, [r3, #136]
+ 373:User/Hardware/referee_system.c ****     }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 29
+
+
+ 374:User/Hardware/referee_system.c ****     break;
+ 1165              		.loc 1 374 5
+ 1166 0232 02E0     		b	.L56
+ 1167              	.L75:
+ 348:User/Hardware/referee_system.c **** 
+ 1168              		.loc 1 348 5
+ 1169 0234 00BF     		nop
+ 1170 0236 00E0     		b	.L56
+ 1171              	.L76:
+ 367:User/Hardware/referee_system.c **** 
+ 1172              		.loc 1 367 5
+ 1173 0238 00BF     		nop
+ 1174              	.L56:
+ 281:User/Hardware/referee_system.c ****   {
+ 1175              		.loc 1 281 10
+ 1176 023a 7868     		ldr	r0, [r7, #4]
+ 1177 023c FFF7FEFF 		bl	fifo_s_used
+ 1178 0240 0346     		mov	r3, r0
+ 281:User/Hardware/referee_system.c ****   {
+ 1179              		.loc 1 281 10 is_stmt 0 discriminator 1
+ 1180 0242 002B     		cmp	r3, #0
+ 1181 0244 7FF4E6AE 		bne	.L74
+ 375:User/Hardware/referee_system.c ****     }
+ 376:User/Hardware/referee_system.c ****   }
+ 377:User/Hardware/referee_system.c ****   required_Data();
+ 1182              		.loc 1 377 3 is_stmt 1
+ 1183 0248 FFF7FEFF 		bl	required_Data
+ 378:User/Hardware/referee_system.c **** }
+ 1184              		.loc 1 378 1
+ 1185 024c 00BF     		nop
+ 1186 024e 1037     		adds	r7, r7, #16
+ 1187              	.LCFI16:
+ 1188              		.cfi_def_cfa_offset 8
+ 1189 0250 BD46     		mov	sp, r7
+ 1190              	.LCFI17:
+ 1191              		.cfi_def_cfa_register 13
+ 1192              		@ sp needed
+ 1193 0252 80BD     		pop	{r7, pc}
+ 1194              		.cfi_endproc
+ 1195              	.LFE151:
+ 1197              		.text
+ 1198              	.Letext0:
+ 1199              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 1200              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 1201              		.file 4 "D:/MSYS2/mingw64/lib/gcc/arm-none-eabi/13.3.0/include/stddef.h"
+ 1202              		.file 5 "User/Hardware/referee_system_protocol.h"
+ 1203              		.file 6 "Algorithm/fifo.h"
+ 1204              		.file 7 "User/Hardware/referee_system.h"
+ 1205              		.file 8 "Algorithm/CRC8_CRC16.h"
+ 1206              		.file 9 "D:/MSYS2/mingw64/arm-none-eabi/include/string.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 30
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 referee_system.c
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:24     .bss.Referee_data:00000000 Referee_data
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:21     .bss.Referee_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:31     .bss.referee_fifo:00000000 referee_fifo
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:28     .bss.referee_fifo:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:38     .bss.referee_image_fifo:00000000 referee_image_fifo
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:35     .bss.referee_image_fifo:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:45     .bss.referee_fifo_buf:00000000 referee_fifo_buf
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:42     .bss.referee_fifo_buf:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:52     .bss.referee_image_fifo_buf:00000000 referee_image_fifo_buf
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:49     .bss.referee_image_fifo_buf:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:59     .bss.referee_unpack_obj:00000000 referee_unpack_obj
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:56     .bss.referee_unpack_obj:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:66     .bss.referee_image_unpack_obj:00000000 referee_image_unpack_obj
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:63     .bss.referee_image_unpack_obj:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:73     .bss.referee_receive_header:00000000 referee_receive_header
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:70     .bss.referee_receive_header:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:80     .bss.referee_send_header:00000000 referee_send_header
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:77     .bss.referee_send_header:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:87     .bss.game_status:00000000 game_status
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:84     .bss.game_status:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:94     .bss.game_result:00000000 game_result
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:91     .bss.game_result:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:101    .bss.game_robot_HP:00000000 game_robot_HP
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:98     .bss.game_robot_HP:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:108    .bss.referee_warning:00000000 referee_warning
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:105    .bss.referee_warning:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:115    .bss.robot_status:00000000 robot_status
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:112    .bss.robot_status:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:122    .bss.power_heat_data:00000000 power_heat_data
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:119    .bss.power_heat_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:129    .bss.hurt_data:00000000 hurt_data
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:126    .bss.hurt_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:136    .bss.shoot_data:00000000 shoot_data
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:133    .bss.shoot_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:143    .bss.projectile_allowance:00000000 projectile_allowance
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:140    .bss.projectile_allowance:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:150    .bss.rfid_status:00000000 rfid_status
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:147    .bss.rfid_status:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:157    .bss.robot_interaction_data:00000000 robot_interaction_data
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:154    .bss.robot_interaction_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:164    .bss.exchange_data:00000000 exchange_data
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:161    .bss.exchange_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:171    .bss.remote_control:00000000 remote_control
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:168    .bss.remote_control:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:174    .text.referee_struct_init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:179    .text.referee_struct_init:00000000 referee_struct_init
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:274    .text.referee_struct_init:000000a0 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:293    .text.required_Data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:298    .text.required_Data:00000000 required_Data
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:389    .text.required_Data:00000070 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:399    .text.referee_data_solve:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:404    .text.referee_data_solve:00000000 referee_data_solve
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:489    .text.referee_data_solve:00000088 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:497    .text.referee_data_solve:000000a8 $t
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:506    .text.referee_data_solve:000000b8 $d
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s 			page 31
+
+
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:520    .text.referee_data_solve:000000f0 $t
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:529    .text.referee_data_solve:00000100 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:534    .text.referee_data_solve:00000114 $t
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:759    .text.referee_data_solve:0000023c $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:777    .text.Refree_system_init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:783    .text.Refree_system_init:00000000 Refree_system_init
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:815    .text.Refree_system_init:00000024 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:823    .text.Referee_unpack_fifo_data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:829    .text.Referee_unpack_fifo_data:00000000 Referee_unpack_fifo_data
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:872    .text.Referee_unpack_fifo_data:00000030 $d
+C:\Users\23671\AppData\Local\Temp\ccZOFCp5.s:878    .text.Referee_unpack_fifo_data:00000048 $t
+
+UNDEFINED SYMBOLS
+memset
+memcpy
+fifo_s_init
+fifo_s_get
+verify_CRC8_check_sum
+verify_CRC16_check_sum
+fifo_s_used

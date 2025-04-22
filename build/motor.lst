@@ -1,0 +1,1932 @@
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 1
+
+
+   1              		.cpu cortex-m7
+   2              		.arch armv7e-m
+   3              		.fpu fpv5-d16
+   4              		.eabi_attribute 28, 1
+   5              		.eabi_attribute 20, 1
+   6              		.eabi_attribute 21, 1
+   7              		.eabi_attribute 23, 3
+   8              		.eabi_attribute 24, 1
+   9              		.eabi_attribute 25, 1
+  10              		.eabi_attribute 26, 1
+  11              		.eabi_attribute 30, 6
+  12              		.eabi_attribute 34, 1
+  13              		.eabi_attribute 18, 4
+  14              		.file	"motor.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.file 1 "User/Hardware/motor.c"
+  19              		.global	DJIMotor_data
+  20              		.section	.bss.DJIMotor_data,"aw",%nobits
+  21              		.align	3
+  24              	DJIMotor_data:
+  25 0000 00000000 		.space	1848
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  25      00000000 
+  26              		.section	.text.DJIMotor_init,"ax",%progbits
+  27              		.align	1
+  28              		.global	DJIMotor_init
+  29              		.syntax unified
+  30              		.thumb
+  31              		.thumb_func
+  33              	DJIMotor_init:
+  34              	.LFB144:
+   1:User/Hardware/motor.c **** /**
+   2:User/Hardware/motor.c ****  * @file motor.c
+   3:User/Hardware/motor.c ****  * @author Siri (lixirui2017@outlook.com)
+   4:User/Hardware/motor.c ****  * @brief 各类电机，舵机控制与反馈
+   5:User/Hardware/motor.c ****  * @version 0.1
+   6:User/Hardware/motor.c ****  * @date 2024-10-20
+   7:User/Hardware/motor.c ****  *
+   8:User/Hardware/motor.c ****  * @copyright Copyright (c) 2024
+   9:User/Hardware/motor.c ****  *
+  10:User/Hardware/motor.c ****  */
+  11:User/Hardware/motor.c **** 
+  12:User/Hardware/motor.c **** #include "motor.h"
+  13:User/Hardware/motor.c **** #include "math.h"
+  14:User/Hardware/motor.c **** 
+  15:User/Hardware/motor.c **** #ifdef USE_DJI_MOTOR
+  16:User/Hardware/motor.c **** #define abs(a) a > 0 ? a : -a
+  17:User/Hardware/motor.c **** // 电机数据定义
+  18:User/Hardware/motor.c **** DJI_motor_data_s DJIMotor_data[QUANTITY_OF_CAN][QUANTITY_OF_DJIMOTOR];
+  19:User/Hardware/motor.c **** 
+  20:User/Hardware/motor.c **** /**
+  21:User/Hardware/motor.c ****  * @brief 大疆电机初始化，暂时只用来初始化类型
+  22:User/Hardware/motor.c ****  *
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 2
+
+
+  23:User/Hardware/motor.c ****  * @param motor_type 电机种类：GM6020,M3508,M2006
+  24:User/Hardware/motor.c ****  * @param motor_id 电机can通道及ID
+  25:User/Hardware/motor.c ****  */
+  26:User/Hardware/motor.c **** void DJIMotor_init(Motor_Type_e motor_type, DJIcan_id motor_id)
+  27:User/Hardware/motor.c **** {
+  35              		.loc 1 27 1
+  36              		.cfi_startproc
+  37              		@ args = 0, pretend = 0, frame = 16
+  38              		@ frame_needed = 1, uses_anonymous_args = 0
+  39              		@ link register save eliminated.
+  40 0000 80B4     		push	{r7}
+  41              	.LCFI0:
+  42              		.cfi_def_cfa_offset 4
+  43              		.cfi_offset 7, -4
+  44 0002 85B0     		sub	sp, sp, #20
+  45              	.LCFI1:
+  46              		.cfi_def_cfa_offset 24
+  47 0004 00AF     		add	r7, sp, #0
+  48              	.LCFI2:
+  49              		.cfi_def_cfa_register 7
+  50 0006 0346     		mov	r3, r0
+  51 0008 0A46     		mov	r2, r1
+  52 000a FB71     		strb	r3, [r7, #7]
+  53 000c 1346     		mov	r3, r2
+  54 000e BB71     		strb	r3, [r7, #6]
+  28:User/Hardware/motor.c ****     uint8_t cantype = (motor_id + 1) / 11; // 获得电机所在can路
+  55              		.loc 1 28 33
+  56 0010 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+  57 0012 0133     		adds	r3, r3, #1
+  58              		.loc 1 28 38
+  59 0014 144A     		ldr	r2, .L2
+  60 0016 82FB0312 		smull	r1, r2, r2, r3
+  61 001a 5210     		asrs	r2, r2, #1
+  62 001c DB17     		asrs	r3, r3, #31
+  63 001e D31A     		subs	r3, r2, r3
+  64              		.loc 1 28 13
+  65 0020 FB73     		strb	r3, [r7, #15]
+  29:User/Hardware/motor.c ****     uint8_t canid = motor_id % 11;         // 得到电机ID值；
+  66              		.loc 1 29 13
+  67 0022 B979     		ldrb	r1, [r7, #6]	@ zero_extendqisi2
+  68 0024 114B     		ldr	r3, .L2+4
+  69 0026 A3FB0123 		umull	r2, r3, r3, r1
+  70 002a DA08     		lsrs	r2, r3, #3
+  71 002c 1346     		mov	r3, r2
+  72 002e 9B00     		lsls	r3, r3, #2
+  73 0030 1344     		add	r3, r3, r2
+  74 0032 5B00     		lsls	r3, r3, #1
+  75 0034 1344     		add	r3, r3, r2
+  76 0036 CB1A     		subs	r3, r1, r3
+  77 0038 BB73     		strb	r3, [r7, #14]
+  30:User/Hardware/motor.c **** 
+  31:User/Hardware/motor.c ****     DJIMotor_data[cantype][canid].Motor_type = motor_type; // 初始化相应电机
+  78              		.loc 1 31 34
+  79 003a F97B     		ldrb	r1, [r7, #15]	@ zero_extendqisi2
+  80 003c BA7B     		ldrb	r2, [r7, #14]	@ zero_extendqisi2
+  81              		.loc 1 31 46
+  82 003e 0C48     		ldr	r0, .L2+8
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 3
+
+
+  83 0040 1346     		mov	r3, r2
+  84 0042 DB00     		lsls	r3, r3, #3
+  85 0044 9B1A     		subs	r3, r3, r2
+  86 0046 DB00     		lsls	r3, r3, #3
+  87 0048 4FF41A72 		mov	r2, #616
+  88 004c 01FB02F2 		mul	r2, r1, r2
+  89 0050 1344     		add	r3, r3, r2
+  90 0052 0344     		add	r3, r3, r0
+  91 0054 0233     		adds	r3, r3, #2
+  92 0056 FA79     		ldrb	r2, [r7, #7]
+  93 0058 1A70     		strb	r2, [r3]
+  32:User/Hardware/motor.c **** }
+  94              		.loc 1 32 1
+  95 005a 00BF     		nop
+  96 005c 1437     		adds	r7, r7, #20
+  97              	.LCFI3:
+  98              		.cfi_def_cfa_offset 4
+  99 005e BD46     		mov	sp, r7
+ 100              	.LCFI4:
+ 101              		.cfi_def_cfa_register 13
+ 102              		@ sp needed
+ 103 0060 5DF8047B 		ldr	r7, [sp], #4
+ 104              	.LCFI5:
+ 105              		.cfi_restore 7
+ 106              		.cfi_def_cfa_offset 0
+ 107 0064 7047     		bx	lr
+ 108              	.L3:
+ 109 0066 00BF     		.align	2
+ 110              	.L2:
+ 111 0068 E9A28B2E 		.word	780903145
+ 112 006c A38B2EBA 		.word	-1171354717
+ 113 0070 00000000 		.word	DJIMotor_data
+ 114              		.cfi_endproc
+ 115              	.LFE144:
+ 117              		.section	.text.DJIMotor_setzero,"ax",%progbits
+ 118              		.align	1
+ 119              		.global	DJIMotor_setzero
+ 120              		.syntax unified
+ 121              		.thumb
+ 122              		.thumb_func
+ 124              	DJIMotor_setzero:
+ 125              	.LFB145:
+  33:User/Hardware/motor.c **** 
+  34:User/Hardware/motor.c **** /**
+  35:User/Hardware/motor.c ****  * @brief 设置零点
+  36:User/Hardware/motor.c ****  *
+  37:User/Hardware/motor.c ****  * @param zero_angle 零点角度
+  38:User/Hardware/motor.c ****  * @param motor_id 电机ID
+  39:User/Hardware/motor.c ****  */
+  40:User/Hardware/motor.c **** void DJIMotor_setzero(double zero_angle, DJIcan_id motor_id)
+  41:User/Hardware/motor.c **** {
+ 126              		.loc 1 41 1
+ 127              		.cfi_startproc
+ 128              		@ args = 0, pretend = 0, frame = 24
+ 129              		@ frame_needed = 1, uses_anonymous_args = 0
+ 130              		@ link register save eliminated.
+ 131 0000 80B4     		push	{r7}
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 4
+
+
+ 132              	.LCFI6:
+ 133              		.cfi_def_cfa_offset 4
+ 134              		.cfi_offset 7, -4
+ 135 0002 87B0     		sub	sp, sp, #28
+ 136              	.LCFI7:
+ 137              		.cfi_def_cfa_offset 32
+ 138 0004 00AF     		add	r7, sp, #0
+ 139              	.LCFI8:
+ 140              		.cfi_def_cfa_register 7
+ 141 0006 87ED020B 		vstr.64	d0, [r7, #8]
+ 142 000a 0346     		mov	r3, r0
+ 143 000c FB71     		strb	r3, [r7, #7]
+  42:User/Hardware/motor.c ****     uint8_t cantype = (motor_id + 1) / 11; // 获得电机所在can路
+ 144              		.loc 1 42 33
+ 145 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 146 0010 0133     		adds	r3, r3, #1
+ 147              		.loc 1 42 38
+ 148 0012 164A     		ldr	r2, .L5
+ 149 0014 82FB0312 		smull	r1, r2, r2, r3
+ 150 0018 5210     		asrs	r2, r2, #1
+ 151 001a DB17     		asrs	r3, r3, #31
+ 152 001c D31A     		subs	r3, r2, r3
+ 153              		.loc 1 42 13
+ 154 001e FB75     		strb	r3, [r7, #23]
+  43:User/Hardware/motor.c ****     uint8_t canid = motor_id % 11;         // 得到电机ID值；
+ 155              		.loc 1 43 13
+ 156 0020 F979     		ldrb	r1, [r7, #7]	@ zero_extendqisi2
+ 157 0022 134B     		ldr	r3, .L5+4
+ 158 0024 A3FB0123 		umull	r2, r3, r3, r1
+ 159 0028 DA08     		lsrs	r2, r3, #3
+ 160 002a 1346     		mov	r3, r2
+ 161 002c 9B00     		lsls	r3, r3, #2
+ 162 002e 1344     		add	r3, r3, r2
+ 163 0030 5B00     		lsls	r3, r3, #1
+ 164 0032 1344     		add	r3, r3, r2
+ 165 0034 CB1A     		subs	r3, r1, r3
+ 166 0036 BB75     		strb	r3, [r7, #22]
+  44:User/Hardware/motor.c **** 
+  45:User/Hardware/motor.c ****     DJIMotor_data[cantype][canid].angle_zero = zero_angle; // 初始化相应电机
+ 167              		.loc 1 45 34
+ 168 0038 F97D     		ldrb	r1, [r7, #23]	@ zero_extendqisi2
+ 169 003a BA7D     		ldrb	r2, [r7, #22]	@ zero_extendqisi2
+ 170              		.loc 1 45 46
+ 171 003c 0D48     		ldr	r0, .L5+8
+ 172 003e 1346     		mov	r3, r2
+ 173 0040 DB00     		lsls	r3, r3, #3
+ 174 0042 9B1A     		subs	r3, r3, r2
+ 175 0044 DB00     		lsls	r3, r3, #3
+ 176 0046 4FF41A72 		mov	r2, #616
+ 177 004a 01FB02F2 		mul	r2, r1, r2
+ 178 004e 1344     		add	r3, r3, r2
+ 179 0050 0344     		add	r3, r3, r0
+ 180 0052 03F12001 		add	r1, r3, #32
+ 181 0056 D7E90223 		ldrd	r2, [r7, #8]
+ 182 005a C1E90023 		strd	r2, [r1]
+  46:User/Hardware/motor.c **** }
+ 183              		.loc 1 46 1
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 5
+
+
+ 184 005e 00BF     		nop
+ 185 0060 1C37     		adds	r7, r7, #28
+ 186              	.LCFI9:
+ 187              		.cfi_def_cfa_offset 4
+ 188 0062 BD46     		mov	sp, r7
+ 189              	.LCFI10:
+ 190              		.cfi_def_cfa_register 13
+ 191              		@ sp needed
+ 192 0064 5DF8047B 		ldr	r7, [sp], #4
+ 193              	.LCFI11:
+ 194              		.cfi_restore 7
+ 195              		.cfi_def_cfa_offset 0
+ 196 0068 7047     		bx	lr
+ 197              	.L6:
+ 198 006a 00BF     		.align	2
+ 199              	.L5:
+ 200 006c E9A28B2E 		.word	780903145
+ 201 0070 A38B2EBA 		.word	-1171354717
+ 202 0074 00000000 		.word	DJIMotor_data
+ 203              		.cfi_endproc
+ 204              	.LFE145:
+ 206              		.section	.text.DJIMotor_set,"ax",%progbits
+ 207              		.align	1
+ 208              		.global	DJIMotor_set
+ 209              		.syntax unified
+ 210              		.thumb
+ 211              		.thumb_func
+ 213              	DJIMotor_set:
+ 214              	.LFB146:
+  47:User/Hardware/motor.c **** 
+  48:User/Hardware/motor.c **** /**
+  49:User/Hardware/motor.c ****  * @brief 设置大疆电机电流
+  50:User/Hardware/motor.c ****  *
+  51:User/Hardware/motor.c ****  * @param val 电流值
+  52:User/Hardware/motor.c ****  * @param motor_id 电机can通道及ID
+  53:User/Hardware/motor.c ****  */
+  54:User/Hardware/motor.c **** void DJIMotor_set(int16_t val, DJIcan_id motor_id)
+  55:User/Hardware/motor.c **** {
+ 215              		.loc 1 55 1
+ 216              		.cfi_startproc
+ 217              		@ args = 0, pretend = 0, frame = 8
+ 218              		@ frame_needed = 1, uses_anonymous_args = 0
+ 219              		@ link register save eliminated.
+ 220 0000 80B4     		push	{r7}
+ 221              	.LCFI12:
+ 222              		.cfi_def_cfa_offset 4
+ 223              		.cfi_offset 7, -4
+ 224 0002 83B0     		sub	sp, sp, #12
+ 225              	.LCFI13:
+ 226              		.cfi_def_cfa_offset 16
+ 227 0004 00AF     		add	r7, sp, #0
+ 228              	.LCFI14:
+ 229              		.cfi_def_cfa_register 7
+ 230 0006 0346     		mov	r3, r0
+ 231 0008 0A46     		mov	r2, r1
+ 232 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ 233 000c 1346     		mov	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 6
+
+
+ 234 000e 7B71     		strb	r3, [r7, #5]
+  56:User/Hardware/motor.c ****     DJIMotor_data[(motor_id + 1) / 11][motor_id % 11].set = val; // 设置电流
+ 235              		.loc 1 56 29
+ 236 0010 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 237 0012 0133     		adds	r3, r3, #1
+ 238              		.loc 1 56 34
+ 239 0014 124A     		ldr	r2, .L8
+ 240 0016 82FB0312 		smull	r1, r2, r2, r3
+ 241 001a 5210     		asrs	r2, r2, #1
+ 242 001c DB17     		asrs	r3, r3, #31
+ 243 001e D01A     		subs	r0, r2, r3
+ 244              		.loc 1 56 49
+ 245 0020 7979     		ldrb	r1, [r7, #5]	@ zero_extendqisi2
+ 246 0022 104B     		ldr	r3, .L8+4
+ 247 0024 A3FB0123 		umull	r2, r3, r3, r1
+ 248 0028 DA08     		lsrs	r2, r3, #3
+ 249 002a 1346     		mov	r3, r2
+ 250 002c 9B00     		lsls	r3, r3, #2
+ 251 002e 1344     		add	r3, r3, r2
+ 252 0030 5B00     		lsls	r3, r3, #1
+ 253 0032 1344     		add	r3, r3, r2
+ 254 0034 CB1A     		subs	r3, r1, r3
+ 255 0036 DBB2     		uxtb	r3, r3
+ 256 0038 1A46     		mov	r2, r3
+ 257              		.loc 1 56 59
+ 258 003a 0B49     		ldr	r1, .L8+8
+ 259 003c 1346     		mov	r3, r2
+ 260 003e DB00     		lsls	r3, r3, #3
+ 261 0040 9B1A     		subs	r3, r3, r2
+ 262 0042 DB00     		lsls	r3, r3, #3
+ 263 0044 4FF41A72 		mov	r2, #616
+ 264 0048 00FB02F2 		mul	r2, r0, r2
+ 265 004c 1344     		add	r3, r3, r2
+ 266 004e 0B44     		add	r3, r3, r1
+ 267 0050 FA88     		ldrh	r2, [r7, #6]	@ movhi
+ 268 0052 1A80     		strh	r2, [r3]	@ movhi
+  57:User/Hardware/motor.c **** }
+ 269              		.loc 1 57 1
+ 270 0054 00BF     		nop
+ 271 0056 0C37     		adds	r7, r7, #12
+ 272              	.LCFI15:
+ 273              		.cfi_def_cfa_offset 4
+ 274 0058 BD46     		mov	sp, r7
+ 275              	.LCFI16:
+ 276              		.cfi_def_cfa_register 13
+ 277              		@ sp needed
+ 278 005a 5DF8047B 		ldr	r7, [sp], #4
+ 279              	.LCFI17:
+ 280              		.cfi_restore 7
+ 281              		.cfi_def_cfa_offset 0
+ 282 005e 7047     		bx	lr
+ 283              	.L9:
+ 284              		.align	2
+ 285              	.L8:
+ 286 0060 E9A28B2E 		.word	780903145
+ 287 0064 A38B2EBA 		.word	-1171354717
+ 288 0068 00000000 		.word	DJIMotor_data
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 7
+
+
+ 289              		.cfi_endproc
+ 290              	.LFE146:
+ 292              		.section	.text.DJIMotor_get_data,"ax",%progbits
+ 293              		.align	1
+ 294              		.global	DJIMotor_get_data
+ 295              		.syntax unified
+ 296              		.thumb
+ 297              		.thumb_func
+ 299              	DJIMotor_get_data:
+ 300              	.LFB147:
+  58:User/Hardware/motor.c **** 
+  59:User/Hardware/motor.c **** /**
+  60:User/Hardware/motor.c ****  * @brief 获取大疆电机数据
+  61:User/Hardware/motor.c ****  *
+  62:User/Hardware/motor.c ****  * @param motor_id 电机can通道及ID
+  63:User/Hardware/motor.c ****  * @return DJI_motor_data_s 电机数据结构体。
+  64:User/Hardware/motor.c ****  */
+  65:User/Hardware/motor.c **** DJI_motor_data_s DJIMotor_get_data(DJIcan_id motor_id) // 获取马达数据
+  66:User/Hardware/motor.c **** {
+ 301              		.loc 1 66 1
+ 302              		.cfi_startproc
+ 303              		@ args = 0, pretend = 0, frame = 8
+ 304              		@ frame_needed = 1, uses_anonymous_args = 0
+ 305              		@ link register save eliminated.
+ 306 0000 B0B4     		push	{r4, r5, r7}
+ 307              	.LCFI18:
+ 308              		.cfi_def_cfa_offset 12
+ 309              		.cfi_offset 4, -12
+ 310              		.cfi_offset 5, -8
+ 311              		.cfi_offset 7, -4
+ 312 0002 83B0     		sub	sp, sp, #12
+ 313              	.LCFI19:
+ 314              		.cfi_def_cfa_offset 24
+ 315 0004 00AF     		add	r7, sp, #0
+ 316              	.LCFI20:
+ 317              		.cfi_def_cfa_register 7
+ 318 0006 7860     		str	r0, [r7, #4]
+ 319 0008 0B46     		mov	r3, r1
+ 320 000a FB70     		strb	r3, [r7, #3]
+  67:User/Hardware/motor.c ****     return DJIMotor_data[(motor_id + 1) / 11][motor_id % 11];
+ 321              		.loc 1 67 36
+ 322 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 323 000e 0133     		adds	r3, r3, #1
+ 324              		.loc 1 67 41
+ 325 0010 174A     		ldr	r2, .L12
+ 326 0012 82FB0312 		smull	r1, r2, r2, r3
+ 327 0016 5210     		asrs	r2, r2, #1
+ 328 0018 DB17     		asrs	r3, r3, #31
+ 329 001a D01A     		subs	r0, r2, r3
+ 330              		.loc 1 67 56
+ 331 001c F978     		ldrb	r1, [r7, #3]	@ zero_extendqisi2
+ 332 001e 154B     		ldr	r3, .L12+4
+ 333 0020 A3FB0123 		umull	r2, r3, r3, r1
+ 334 0024 DA08     		lsrs	r2, r3, #3
+ 335 0026 1346     		mov	r3, r2
+ 336 0028 9B00     		lsls	r3, r3, #2
+ 337 002a 1344     		add	r3, r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 8
+
+
+ 338 002c 5B00     		lsls	r3, r3, #1
+ 339 002e 1344     		add	r3, r3, r2
+ 340 0030 CB1A     		subs	r3, r1, r3
+ 341 0032 DBB2     		uxtb	r3, r3
+ 342 0034 1A46     		mov	r2, r3
+ 343              		.loc 1 67 46
+ 344 0036 7C68     		ldr	r4, [r7, #4]
+ 345 0038 0F49     		ldr	r1, .L12+8
+ 346 003a 1346     		mov	r3, r2
+ 347 003c DB00     		lsls	r3, r3, #3
+ 348 003e 9B1A     		subs	r3, r3, r2
+ 349 0040 DB00     		lsls	r3, r3, #3
+ 350 0042 4FF41A72 		mov	r2, #616
+ 351 0046 00FB02F2 		mul	r2, r0, r2
+ 352 004a 1344     		add	r3, r3, r2
+ 353 004c 0B44     		add	r3, r3, r1
+ 354 004e 1D46     		mov	r5, r3
+ 355 0050 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 356 0052 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 357 0054 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 358 0056 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 359 0058 0FCD     		ldmia	r5!, {r0, r1, r2, r3}
+ 360 005a 0FC4     		stmia	r4!, {r0, r1, r2, r3}
+ 361 005c 95E80300 		ldm	r5, {r0, r1}
+ 362 0060 84E80300 		stm	r4, {r0, r1}
+  68:User/Hardware/motor.c **** }
+ 363              		.loc 1 68 1
+ 364 0064 7868     		ldr	r0, [r7, #4]
+ 365 0066 0C37     		adds	r7, r7, #12
+ 366              	.LCFI21:
+ 367              		.cfi_def_cfa_offset 12
+ 368 0068 BD46     		mov	sp, r7
+ 369              	.LCFI22:
+ 370              		.cfi_def_cfa_register 13
+ 371              		@ sp needed
+ 372 006a B0BC     		pop	{r4, r5, r7}
+ 373              	.LCFI23:
+ 374              		.cfi_restore 7
+ 375              		.cfi_restore 5
+ 376              		.cfi_restore 4
+ 377              		.cfi_def_cfa_offset 0
+ 378 006c 7047     		bx	lr
+ 379              	.L13:
+ 380 006e 00BF     		.align	2
+ 381              	.L12:
+ 382 0070 E9A28B2E 		.word	780903145
+ 383 0074 A38B2EBA 		.word	-1171354717
+ 384 0078 00000000 		.word	DJIMotor_data
+ 385              		.cfi_endproc
+ 386              	.LFE147:
+ 388              		.global	__aeabi_l2f
+ 389              		.global	__aeabi_f2lz
+ 390              		.section	.text.DJIMotor_get_process_motor_data,"ax",%progbits
+ 391              		.align	1
+ 392              		.global	DJIMotor_get_process_motor_data
+ 393              		.syntax unified
+ 394              		.thumb
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 9
+
+
+ 395              		.thumb_func
+ 397              	DJIMotor_get_process_motor_data:
+ 398              	.LFB148:
+  69:User/Hardware/motor.c **** 
+  70:User/Hardware/motor.c **** /**
+  71:User/Hardware/motor.c ****  * @brief 大疆电机CAN数据接受以及处理
+  72:User/Hardware/motor.c ****  *
+  73:User/Hardware/motor.c ****  * @param ptr 电机数据
+  74:User/Hardware/motor.c ****  * @param data can数据
+  75:User/Hardware/motor.c ****  */
+  76:User/Hardware/motor.c **** void DJIMotor_get_process_motor_data(DJI_motor_data_s *ptr, uint8_t data[])
+  77:User/Hardware/motor.c **** {
+ 399              		.loc 1 77 1
+ 400              		.cfi_startproc
+ 401              		@ args = 0, pretend = 0, frame = 16
+ 402              		@ frame_needed = 1, uses_anonymous_args = 0
+ 403 0000 2DE9B043 		push	{r4, r5, r7, r8, r9, lr}
+ 404              	.LCFI24:
+ 405              		.cfi_def_cfa_offset 24
+ 406              		.cfi_offset 4, -24
+ 407              		.cfi_offset 5, -20
+ 408              		.cfi_offset 7, -16
+ 409              		.cfi_offset 8, -12
+ 410              		.cfi_offset 9, -8
+ 411              		.cfi_offset 14, -4
+ 412 0004 84B0     		sub	sp, sp, #16
+ 413              	.LCFI25:
+ 414              		.cfi_def_cfa_offset 40
+ 415 0006 00AF     		add	r7, sp, #0
+ 416              	.LCFI26:
+ 417              		.cfi_def_cfa_register 7
+ 418 0008 7860     		str	r0, [r7, #4]
+ 419 000a 3960     		str	r1, [r7]
+  78:User/Hardware/motor.c ****     // get raw data
+  79:User/Hardware/motor.c ****     (ptr)->last_ecd = (ptr)->ecd;
+ 420              		.loc 1 79 28
+ 421 000c 7B68     		ldr	r3, [r7, #4]
+ 422 000e 9A88     		ldrh	r2, [r3, #4]
+ 423              		.loc 1 79 21
+ 424 0010 7B68     		ldr	r3, [r7, #4]
+ 425 0012 9A81     		strh	r2, [r3, #12]	@ movhi
+  80:User/Hardware/motor.c ****     (ptr)->ecd = (uint16_t)((data)[0] << 8 | (data)[1]);
+ 426              		.loc 1 80 35
+ 427 0014 3B68     		ldr	r3, [r7]
+ 428 0016 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 429              		.loc 1 80 44
+ 430 0018 1BB2     		sxth	r3, r3
+ 431 001a 1B02     		lsls	r3, r3, #8
+ 432 001c 1AB2     		sxth	r2, r3
+ 433              		.loc 1 80 52
+ 434 001e 3B68     		ldr	r3, [r7]
+ 435 0020 0133     		adds	r3, r3, #1
+ 436 0022 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 437 0024 1BB2     		sxth	r3, r3
+ 438              		.loc 1 80 44
+ 439 0026 1343     		orrs	r3, r3, r2
+ 440 0028 1BB2     		sxth	r3, r3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 10
+
+
+ 441              		.loc 1 80 18
+ 442 002a 9AB2     		uxth	r2, r3
+ 443              		.loc 1 80 16
+ 444 002c 7B68     		ldr	r3, [r7, #4]
+ 445 002e 9A80     		strh	r2, [r3, #4]	@ movhi
+  81:User/Hardware/motor.c ****     (ptr)->speed_rpm = (uint16_t)((data)[2] << 8 | (data)[3]);
+ 446              		.loc 1 81 41
+ 447 0030 3B68     		ldr	r3, [r7]
+ 448 0032 0233     		adds	r3, r3, #2
+ 449 0034 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 450              		.loc 1 81 24
+ 451 0036 1BB2     		sxth	r3, r3
+ 452 0038 1B02     		lsls	r3, r3, #8
+ 453 003a 1AB2     		sxth	r2, r3
+ 454              		.loc 1 81 58
+ 455 003c 3B68     		ldr	r3, [r7]
+ 456 003e 0333     		adds	r3, r3, #3
+ 457 0040 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 458 0042 1BB2     		sxth	r3, r3
+ 459              		.loc 1 81 50
+ 460 0044 1343     		orrs	r3, r3, r2
+ 461 0046 1AB2     		sxth	r2, r3
+ 462              		.loc 1 81 22
+ 463 0048 7B68     		ldr	r3, [r7, #4]
+ 464 004a DA80     		strh	r2, [r3, #6]	@ movhi
+  82:User/Hardware/motor.c ****     (ptr)->given_current = (uint16_t)((data)[4] << 8 | (data)[5]);
+ 465              		.loc 1 82 45
+ 466 004c 3B68     		ldr	r3, [r7]
+ 467 004e 0433     		adds	r3, r3, #4
+ 468 0050 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 469              		.loc 1 82 28
+ 470 0052 1BB2     		sxth	r3, r3
+ 471 0054 1B02     		lsls	r3, r3, #8
+ 472 0056 1AB2     		sxth	r2, r3
+ 473              		.loc 1 82 62
+ 474 0058 3B68     		ldr	r3, [r7]
+ 475 005a 0533     		adds	r3, r3, #5
+ 476 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 477 005e 1BB2     		sxth	r3, r3
+ 478              		.loc 1 82 54
+ 479 0060 1343     		orrs	r3, r3, r2
+ 480 0062 1AB2     		sxth	r2, r3
+ 481              		.loc 1 82 26
+ 482 0064 7B68     		ldr	r3, [r7, #4]
+ 483 0066 1A81     		strh	r2, [r3, #8]	@ movhi
+  83:User/Hardware/motor.c ****     (ptr)->temperate = (data)[6];
+ 484              		.loc 1 83 22
+ 485 0068 3B68     		ldr	r3, [r7]
+ 486 006a 9A79     		ldrb	r2, [r3, #6]	@ zero_extendqisi2
+ 487 006c 7B68     		ldr	r3, [r7, #4]
+ 488 006e 9A72     		strb	r2, [r3, #10]
+  84:User/Hardware/motor.c **** 
+  85:User/Hardware/motor.c ****     // process the data
+  86:User/Hardware/motor.c ****     // count cnt
+  87:User/Hardware/motor.c ****     if ((ptr)->last_ecd > 7000 && (ptr)->ecd < 1000)
+ 489              		.loc 1 87 14
+ 490 0070 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 11
+
+
+ 491 0072 9B89     		ldrh	r3, [r3, #12]
+ 492              		.loc 1 87 8
+ 493 0074 41F65832 		movw	r2, #7000
+ 494 0078 9342     		cmp	r3, r2
+ 495 007a 2BD9     		bls	.L15
+ 496              		.loc 1 87 40 discriminator 1
+ 497 007c 7B68     		ldr	r3, [r7, #4]
+ 498 007e 9B88     		ldrh	r3, [r3, #4]
+ 499              		.loc 1 87 32 discriminator 1
+ 500 0080 B3F57A7F 		cmp	r3, #1000
+ 501 0084 26D2     		bcs	.L15
+  88:User/Hardware/motor.c ****         (ptr)->ecd_cnt += ((ECD_MAX - (ptr)->last_ecd) + (ptr)->ecd);
+ 502              		.loc 1 88 14
+ 503 0086 7B68     		ldr	r3, [r7, #4]
+ 504 0088 D3E90423 		ldrd	r2, [r3, #16]
+ 505              		.loc 1 88 24
+ 506 008c 1046     		mov	r0, r2
+ 507 008e 1946     		mov	r1, r3
+ 508 0090 FFF7FEFF 		bl	__aeabi_l2f
+ 509 0094 06EE900A 		vmov	s13, r0
+ 510              		.loc 1 88 44
+ 511 0098 7B68     		ldr	r3, [r7, #4]
+ 512 009a 9B89     		ldrh	r3, [r3, #12]
+ 513 009c 07EE903A 		vmov	s15, r3	@ int
+ 514              		.loc 1 88 37
+ 515 00a0 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 516 00a4 9FED9A7A 		vldr.32	s14, .L32
+ 517 00a8 37EE677A 		vsub.f32	s14, s14, s15
+ 518              		.loc 1 88 63
+ 519 00ac 7B68     		ldr	r3, [r7, #4]
+ 520 00ae 9B88     		ldrh	r3, [r3, #4]
+ 521 00b0 07EE903A 		vmov	s15, r3	@ int
+ 522              		.loc 1 88 56
+ 523 00b4 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 524 00b8 77EE277A 		vadd.f32	s15, s14, s15
+ 525              		.loc 1 88 24
+ 526 00bc 76EEA77A 		vadd.f32	s15, s13, s15
+ 527 00c0 17EE900A 		vmov	r0, s15
+ 528 00c4 FFF7FEFF 		bl	__aeabi_f2lz
+ 529 00c8 0246     		mov	r2, r0
+ 530 00ca 0B46     		mov	r3, r1
+ 531 00cc 7968     		ldr	r1, [r7, #4]
+ 532 00ce C1E90423 		strd	r2, [r1, #16]
+ 533 00d2 44E0     		b	.L16
+ 534              	.L15:
+  89:User/Hardware/motor.c ****     else if ((ptr)->last_ecd < 1000 && (ptr)->ecd > 7000)
+ 535              		.loc 1 89 19
+ 536 00d4 7B68     		ldr	r3, [r7, #4]
+ 537 00d6 9B89     		ldrh	r3, [r3, #12]
+ 538              		.loc 1 89 13
+ 539 00d8 B3F57A7F 		cmp	r3, #1000
+ 540 00dc 2CD2     		bcs	.L17
+ 541              		.loc 1 89 45 discriminator 1
+ 542 00de 7B68     		ldr	r3, [r7, #4]
+ 543 00e0 9B88     		ldrh	r3, [r3, #4]
+ 544              		.loc 1 89 37 discriminator 1
+ 545 00e2 41F65832 		movw	r2, #7000
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 12
+
+
+ 546 00e6 9342     		cmp	r3, r2
+ 547 00e8 26D9     		bls	.L17
+  90:User/Hardware/motor.c ****         (ptr)->ecd_cnt -= ((ECD_MAX - (ptr)->ecd) + (ptr)->last_ecd);
+ 548              		.loc 1 90 14
+ 549 00ea 7B68     		ldr	r3, [r7, #4]
+ 550 00ec D3E90423 		ldrd	r2, [r3, #16]
+ 551              		.loc 1 90 24
+ 552 00f0 1046     		mov	r0, r2
+ 553 00f2 1946     		mov	r1, r3
+ 554 00f4 FFF7FEFF 		bl	__aeabi_l2f
+ 555 00f8 06EE900A 		vmov	s13, r0
+ 556              		.loc 1 90 44
+ 557 00fc 7B68     		ldr	r3, [r7, #4]
+ 558 00fe 9B88     		ldrh	r3, [r3, #4]
+ 559 0100 07EE903A 		vmov	s15, r3	@ int
+ 560              		.loc 1 90 37
+ 561 0104 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 562 0108 9FED817A 		vldr.32	s14, .L32
+ 563 010c 37EE677A 		vsub.f32	s14, s14, s15
+ 564              		.loc 1 90 58
+ 565 0110 7B68     		ldr	r3, [r7, #4]
+ 566 0112 9B89     		ldrh	r3, [r3, #12]
+ 567 0114 07EE903A 		vmov	s15, r3	@ int
+ 568              		.loc 1 90 51
+ 569 0118 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 570 011c 77EE277A 		vadd.f32	s15, s14, s15
+ 571              		.loc 1 90 24
+ 572 0120 76EEE77A 		vsub.f32	s15, s13, s15
+ 573 0124 17EE900A 		vmov	r0, s15
+ 574 0128 FFF7FEFF 		bl	__aeabi_f2lz
+ 575 012c 0246     		mov	r2, r0
+ 576 012e 0B46     		mov	r3, r1
+ 577 0130 7968     		ldr	r1, [r7, #4]
+ 578 0132 C1E90423 		strd	r2, [r1, #16]
+ 579 0136 12E0     		b	.L16
+ 580              	.L17:
+  91:User/Hardware/motor.c ****     else
+  92:User/Hardware/motor.c ****         (ptr)->ecd_cnt += ((ptr)->ecd - (ptr)->last_ecd);
+ 581              		.loc 1 92 14
+ 582 0138 7B68     		ldr	r3, [r7, #4]
+ 583 013a D3E90423 		ldrd	r2, [r3, #16]
+ 584              		.loc 1 92 33
+ 585 013e 7968     		ldr	r1, [r7, #4]
+ 586 0140 8988     		ldrh	r1, [r1, #4]
+ 587 0142 0846     		mov	r0, r1
+ 588              		.loc 1 92 46
+ 589 0144 7968     		ldr	r1, [r7, #4]
+ 590 0146 8989     		ldrh	r1, [r1, #12]
+ 591              		.loc 1 92 39
+ 592 0148 411A     		subs	r1, r0, r1
+ 593 014a C817     		asrs	r0, r1, #31
+ 594 014c 0C46     		mov	r4, r1
+ 595 014e 0546     		mov	r5, r0
+ 596              		.loc 1 92 24
+ 597 0150 12EB0408 		adds	r8, r2, r4
+ 598 0154 43EB0509 		adc	r9, r3, r5
+ 599 0158 7B68     		ldr	r3, [r7, #4]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 13
+
+
+ 600 015a C3E90489 		strd	r8, [r3, #16]
+ 601              	.L16:
+  93:User/Hardware/motor.c ****     // process data
+  94:User/Hardware/motor.c ****     (ptr)->angle_cnt = (ptr)->ecd_cnt * ECD_TO_ANGEL_DJI;
+ 602              		.loc 1 94 29
+ 603 015e 7B68     		ldr	r3, [r7, #4]
+ 604 0160 D3E90423 		ldrd	r2, [r3, #16]
+ 605              		.loc 1 94 39
+ 606 0164 1046     		mov	r0, r2
+ 607 0166 1946     		mov	r1, r3
+ 608 0168 FFF7FEFF 		bl	__aeabi_l2f
+ 609 016c 07EE100A 		vmov	s14, r0
+ 610 0170 DFED687A 		vldr.32	s15, .L32+4
+ 611 0174 67EE277A 		vmul.f32	s15, s14, s15
+ 612 0178 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 613              		.loc 1 94 22
+ 614 017c 7B68     		ldr	r3, [r7, #4]
+ 615 017e 83ED067B 		vstr.64	d7, [r3, #24]
+  95:User/Hardware/motor.c ****     // 根据不同电机进行不同处理
+  96:User/Hardware/motor.c ****     if ((ptr)->Motor_type == GM6020)
+ 616              		.loc 1 96 14
+ 617 0182 7B68     		ldr	r3, [r7, #4]
+ 618 0184 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 619              		.loc 1 96 8
+ 620 0186 012B     		cmp	r3, #1
+ 621 0188 40F09380 		bne	.L18
+ 622              	.LBB2:
+  97:User/Hardware/motor.c ****     {
+  98:User/Hardware/motor.c ****         // 计算出轴转速
+  99:User/Hardware/motor.c ****         (ptr)->round_speed = (ptr)->speed_rpm;
+ 623              		.loc 1 99 35
+ 624 018c 7B68     		ldr	r3, [r7, #4]
+ 625 018e B3F90630 		ldrsh	r3, [r3, #6]
+ 626              		.loc 1 99 28
+ 627 0192 07EE903A 		vmov	s15, r3	@ int
+ 628 0196 B8EEE77B 		vcvt.f64.s32	d7, s15
+ 629 019a 7B68     		ldr	r3, [r7, #4]
+ 630 019c 83ED0C7B 		vstr.64	d7, [r3, #48]
+ 100:User/Hardware/motor.c **** 
+ 101:User/Hardware/motor.c ****         // 计算相对角度 -180~180 谨防精度丢失 总角度过大时
+ 102:User/Hardware/motor.c ****         float angle = (ptr)->angle_cnt - (ptr)->angle_zero;
+ 631              		.loc 1 102 28
+ 632 01a0 7B68     		ldr	r3, [r7, #4]
+ 633 01a2 93ED066B 		vldr.64	d6, [r3, #24]
+ 634              		.loc 1 102 47
+ 635 01a6 7B68     		ldr	r3, [r7, #4]
+ 636 01a8 93ED087B 		vldr.64	d7, [r3, #32]
+ 637              		.loc 1 102 40
+ 638 01ac 36EE477B 		vsub.f64	d7, d6, d7
+ 639              		.loc 1 102 15
+ 640 01b0 F7EEC77B 		vcvt.f32.f64	s15, d7
+ 641 01b4 C7ED037A 		vstr.32	s15, [r7, #12]
+ 103:User/Hardware/motor.c ****         uint32_t mul = abs((int)angle) / 180;
+ 642              		.loc 1 103 24
+ 643 01b8 D7ED037A 		vldr.32	s15, [r7, #12]
+ 644 01bc FDEEE77A 		vcvt.s32.f32	s15, s15
+ 645 01c0 17EE903A 		vmov	r3, s15	@ int
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 14
+
+
+ 646 01c4 002B     		cmp	r3, #0
+ 647 01c6 06DD     		ble	.L19
+ 648              		.loc 1 103 24 is_stmt 0 discriminator 1
+ 649 01c8 D7ED037A 		vldr.32	s15, [r7, #12]
+ 650 01cc FDEEE77A 		vcvt.s32.f32	s15, s15
+ 651 01d0 17EE903A 		vmov	r3, s15	@ int
+ 652 01d4 0CE0     		b	.L20
+ 653              	.L19:
+ 654              		.loc 1 103 24 discriminator 2
+ 655 01d6 D7ED037A 		vldr.32	s15, [r7, #12]
+ 656 01da FDEEE77A 		vcvt.s32.f32	s15, s15
+ 657 01de 17EE903A 		vmov	r3, s15	@ int
+ 658              		.loc 1 103 40 is_stmt 1 discriminator 2
+ 659 01e2 4D4A     		ldr	r2, .L32+8
+ 660 01e4 82FB0312 		smull	r1, r2, r2, r3
+ 661 01e8 1A44     		add	r2, r2, r3
+ 662 01ea D211     		asrs	r2, r2, #7
+ 663 01ec DB17     		asrs	r3, r3, #31
+ 664 01ee 9B1A     		subs	r3, r3, r2
+ 665              	.L20:
+ 666              		.loc 1 103 18 discriminator 4
+ 667 01f0 BB60     		str	r3, [r7, #8]
+ 104:User/Hardware/motor.c ****         if (angle > 180.0f)
+ 668              		.loc 1 104 12
+ 669 01f2 D7ED037A 		vldr.32	s15, [r7, #12]
+ 670 01f6 9FED497A 		vldr.32	s14, .L32+12
+ 671 01fa F4EEC77A 		vcmpe.f32	s15, s14
+ 672 01fe F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 673 0202 22DD     		ble	.L21
+ 105:User/Hardware/motor.c ****         {
+ 106:User/Hardware/motor.c ****             if (mul % 2 == 1) // 处于-180度
+ 674              		.loc 1 106 21
+ 675 0204 BB68     		ldr	r3, [r7, #8]
+ 676 0206 03F00103 		and	r3, r3, #1
+ 677              		.loc 1 106 16
+ 678 020a 002B     		cmp	r3, #0
+ 679 020c 0FD0     		beq	.L23
+ 107:User/Hardware/motor.c ****                 angle -= (mul + 1) * 180;
+ 680              		.loc 1 107 36
+ 681 020e BB68     		ldr	r3, [r7, #8]
+ 682 0210 0133     		adds	r3, r3, #1
+ 683 0212 B422     		movs	r2, #180
+ 684 0214 02FB03F3 		mul	r3, r2, r3
+ 685              		.loc 1 107 23
+ 686 0218 07EE903A 		vmov	s15, r3	@ int
+ 687 021c F8EE677A 		vcvt.f32.u32	s15, s15
+ 688 0220 97ED037A 		vldr.32	s14, [r7, #12]
+ 689 0224 77EE677A 		vsub.f32	s15, s14, s15
+ 690 0228 C7ED037A 		vstr.32	s15, [r7, #12]
+ 691 022c 0DE0     		b	.L21
+ 692              	.L23:
+ 108:User/Hardware/motor.c ****             else // 处于180度
+ 109:User/Hardware/motor.c ****                 angle -= mul * 180;
+ 693              		.loc 1 109 30
+ 694 022e BB68     		ldr	r3, [r7, #8]
+ 695 0230 B422     		movs	r2, #180
+ 696 0232 02FB03F3 		mul	r3, r2, r3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 15
+
+
+ 697              		.loc 1 109 23
+ 698 0236 07EE903A 		vmov	s15, r3	@ int
+ 699 023a F8EE677A 		vcvt.f32.u32	s15, s15
+ 700 023e 97ED037A 		vldr.32	s14, [r7, #12]
+ 701 0242 77EE677A 		vsub.f32	s15, s14, s15
+ 702 0246 C7ED037A 		vstr.32	s15, [r7, #12]
+ 703              	.L21:
+ 110:User/Hardware/motor.c ****         }
+ 111:User/Hardware/motor.c ****         if (angle < -180.0f)
+ 704              		.loc 1 111 12
+ 705 024a D7ED037A 		vldr.32	s15, [r7, #12]
+ 706 024e 9FED347A 		vldr.32	s14, .L32+16
+ 707 0252 F4EEC77A 		vcmpe.f32	s15, s14
+ 708 0256 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 709 025a 22D5     		bpl	.L24
+ 112:User/Hardware/motor.c ****         {
+ 113:User/Hardware/motor.c ****             if (mul % 2 == 1) // 处于180度
+ 710              		.loc 1 113 21
+ 711 025c BB68     		ldr	r3, [r7, #8]
+ 712 025e 03F00103 		and	r3, r3, #1
+ 713              		.loc 1 113 16
+ 714 0262 002B     		cmp	r3, #0
+ 715 0264 0FD0     		beq	.L26
+ 114:User/Hardware/motor.c ****                 angle += (mul + 1) * 180;
+ 716              		.loc 1 114 36
+ 717 0266 BB68     		ldr	r3, [r7, #8]
+ 718 0268 0133     		adds	r3, r3, #1
+ 719 026a B422     		movs	r2, #180
+ 720 026c 02FB03F3 		mul	r3, r2, r3
+ 721              		.loc 1 114 23
+ 722 0270 07EE903A 		vmov	s15, r3	@ int
+ 723 0274 F8EE677A 		vcvt.f32.u32	s15, s15
+ 724 0278 97ED037A 		vldr.32	s14, [r7, #12]
+ 725 027c 77EE277A 		vadd.f32	s15, s14, s15
+ 726 0280 C7ED037A 		vstr.32	s15, [r7, #12]
+ 727 0284 0DE0     		b	.L24
+ 728              	.L26:
+ 115:User/Hardware/motor.c ****             else // 处于-180度
+ 116:User/Hardware/motor.c ****                 angle += mul * 180;
+ 729              		.loc 1 116 30
+ 730 0286 BB68     		ldr	r3, [r7, #8]
+ 731 0288 B422     		movs	r2, #180
+ 732 028a 02FB03F3 		mul	r3, r2, r3
+ 733              		.loc 1 116 23
+ 734 028e 07EE903A 		vmov	s15, r3	@ int
+ 735 0292 F8EE677A 		vcvt.f32.u32	s15, s15
+ 736 0296 97ED037A 		vldr.32	s14, [r7, #12]
+ 737 029a 77EE277A 		vadd.f32	s15, s14, s15
+ 738 029e C7ED037A 		vstr.32	s15, [r7, #12]
+ 739              	.L24:
+ 117:User/Hardware/motor.c ****         }
+ 118:User/Hardware/motor.c ****         (ptr)->angle = angle;
+ 740              		.loc 1 118 22
+ 741 02a2 D7ED037A 		vldr.32	s15, [r7, #12]
+ 742 02a6 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 743 02aa 7B68     		ldr	r3, [r7, #4]
+ 744 02ac 83ED0A7B 		vstr.64	d7, [r3, #40]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 16
+
+
+ 745              	.LBE2:
+ 119:User/Hardware/motor.c ****     }
+ 120:User/Hardware/motor.c ****     else if ((ptr)->Motor_type == M3508)
+ 121:User/Hardware/motor.c ****     {
+ 122:User/Hardware/motor.c ****         (ptr)->round_speed = (ptr)->speed_rpm / 19.0f;
+ 123:User/Hardware/motor.c ****     }
+ 124:User/Hardware/motor.c ****     else if ((ptr)->Motor_type == M2006)
+ 125:User/Hardware/motor.c ****     {
+ 126:User/Hardware/motor.c ****         (ptr)->round_speed = (ptr)->speed_rpm / 36.0f;
+ 127:User/Hardware/motor.c ****     }
+ 128:User/Hardware/motor.c **** }
+ 746              		.loc 1 128 1
+ 747 02b0 28E0     		b	.L31
+ 748              	.L18:
+ 120:User/Hardware/motor.c ****     {
+ 749              		.loc 1 120 19
+ 750 02b2 7B68     		ldr	r3, [r7, #4]
+ 751 02b4 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 120:User/Hardware/motor.c ****     {
+ 752              		.loc 1 120 13
+ 753 02b6 022B     		cmp	r3, #2
+ 754 02b8 10D1     		bne	.L28
+ 122:User/Hardware/motor.c ****     }
+ 755              		.loc 1 122 35
+ 756 02ba 7B68     		ldr	r3, [r7, #4]
+ 757 02bc B3F90630 		ldrsh	r3, [r3, #6]
+ 122:User/Hardware/motor.c ****     }
+ 758              		.loc 1 122 47
+ 759 02c0 07EE903A 		vmov	s15, r3	@ int
+ 760 02c4 B8EEE77A 		vcvt.f32.s32	s14, s15
+ 761 02c8 F3EE036A 		vmov.f32	s13, #1.9e+1
+ 762 02cc C7EE267A 		vdiv.f32	s15, s14, s13
+ 763 02d0 B7EEE77A 		vcvt.f64.f32	d7, s15
+ 122:User/Hardware/motor.c ****     }
+ 764              		.loc 1 122 28
+ 765 02d4 7B68     		ldr	r3, [r7, #4]
+ 766 02d6 83ED0C7B 		vstr.64	d7, [r3, #48]
+ 767              		.loc 1 128 1
+ 768 02da 13E0     		b	.L31
+ 769              	.L28:
+ 124:User/Hardware/motor.c ****     {
+ 770              		.loc 1 124 19
+ 771 02dc 7B68     		ldr	r3, [r7, #4]
+ 772 02de 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 124:User/Hardware/motor.c ****     {
+ 773              		.loc 1 124 13
+ 774 02e0 032B     		cmp	r3, #3
+ 775 02e2 0FD1     		bne	.L31
+ 126:User/Hardware/motor.c ****     }
+ 776              		.loc 1 126 35
+ 777 02e4 7B68     		ldr	r3, [r7, #4]
+ 778 02e6 B3F90630 		ldrsh	r3, [r3, #6]
+ 126:User/Hardware/motor.c ****     }
+ 779              		.loc 1 126 47
+ 780 02ea 07EE903A 		vmov	s15, r3	@ int
+ 781 02ee B8EEE77A 		vcvt.f32.s32	s14, s15
+ 782 02f2 DFED0C6A 		vldr.32	s13, .L32+20
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 17
+
+
+ 783 02f6 C7EE267A 		vdiv.f32	s15, s14, s13
+ 784 02fa B7EEE77A 		vcvt.f64.f32	d7, s15
+ 126:User/Hardware/motor.c ****     }
+ 785              		.loc 1 126 28
+ 786 02fe 7B68     		ldr	r3, [r7, #4]
+ 787 0300 83ED0C7B 		vstr.64	d7, [r3, #48]
+ 788              	.L31:
+ 789              		.loc 1 128 1
+ 790 0304 00BF     		nop
+ 791 0306 1037     		adds	r7, r7, #16
+ 792              	.LCFI27:
+ 793              		.cfi_def_cfa_offset 24
+ 794 0308 BD46     		mov	sp, r7
+ 795              	.LCFI28:
+ 796              		.cfi_def_cfa_register 13
+ 797              		@ sp needed
+ 798 030a BDE8B083 		pop	{r4, r5, r7, r8, r9, pc}
+ 799              	.L33:
+ 800 030e 00BF     		.align	2
+ 801              	.L32:
+ 802 0310 00000046 		.word	1174405120
+ 803 0314 ACFF333D 		.word	1026817964
+ 804 0318 B7600BB6 		.word	-1240768329
+ 805 031c 00003443 		.word	1127481344
+ 806 0320 000034C3 		.word	-1020002304
+ 807 0324 00001042 		.word	1108344832
+ 808              		.cfi_endproc
+ 809              	.LFE148:
+ 811              		.section	.text.DJIMotor_decode_candata,"ax",%progbits
+ 812              		.align	1
+ 813              		.global	DJIMotor_decode_candata
+ 814              		.syntax unified
+ 815              		.thumb
+ 816              		.thumb_func
+ 818              	DJIMotor_decode_candata:
+ 819              	.LFB149:
+ 129:User/Hardware/motor.c **** 
+ 130:User/Hardware/motor.c **** /**
+ 131:User/Hardware/motor.c ****  * @brief 大疆电机can数据处理
+ 132:User/Hardware/motor.c ****  *
+ 133:User/Hardware/motor.c ****  * @param hfdcan CAN通道
+ 134:User/Hardware/motor.c ****  * @param id can标识符
+ 135:User/Hardware/motor.c ****  * @param data can数据
+ 136:User/Hardware/motor.c ****  */
+ 137:User/Hardware/motor.c **** void DJIMotor_decode_candata(FDCAN_HandleTypeDef *hfdcan, uint32_t id, uint8_t *data)
+ 138:User/Hardware/motor.c **** {
+ 820              		.loc 1 138 1
+ 821              		.cfi_startproc
+ 822              		@ args = 0, pretend = 0, frame = 16
+ 823              		@ frame_needed = 1, uses_anonymous_args = 0
+ 824 0000 80B5     		push	{r7, lr}
+ 825              	.LCFI29:
+ 826              		.cfi_def_cfa_offset 8
+ 827              		.cfi_offset 7, -8
+ 828              		.cfi_offset 14, -4
+ 829 0002 84B0     		sub	sp, sp, #16
+ 830              	.LCFI30:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 18
+
+
+ 831              		.cfi_def_cfa_offset 24
+ 832 0004 00AF     		add	r7, sp, #0
+ 833              	.LCFI31:
+ 834              		.cfi_def_cfa_register 7
+ 835 0006 F860     		str	r0, [r7, #12]
+ 836 0008 B960     		str	r1, [r7, #8]
+ 837 000a 7A60     		str	r2, [r7, #4]
+ 139:User/Hardware/motor.c ****     if (id - CAN_ID1 <= 11) // 防止数组溢出
+ 838              		.loc 1 139 12
+ 839 000c BB68     		ldr	r3, [r7, #8]
+ 840 000e A3F20123 		subw	r3, r3, #513
+ 841              		.loc 1 139 8
+ 842 0012 0B2B     		cmp	r3, #11
+ 843 0014 38D8     		bhi	.L38
+ 140:User/Hardware/motor.c ****     {
+ 141:User/Hardware/motor.c ****         if (hfdcan == &hfdcan1)
+ 844              		.loc 1 141 12
+ 845 0016 FB68     		ldr	r3, [r7, #12]
+ 846 0018 1D4A     		ldr	r2, .L39
+ 847 001a 9342     		cmp	r3, r2
+ 848 001c 0DD1     		bne	.L36
+ 142:User/Hardware/motor.c ****         {
+ 143:User/Hardware/motor.c ****             DJIMotor_get_process_motor_data(&DJIMotor_data[0][id - CAN_ID1], data);
+ 849              		.loc 1 143 66
+ 850 001e BB68     		ldr	r3, [r7, #8]
+ 851 0020 A3F20122 		subw	r2, r3, #513
+ 852              		.loc 1 143 13
+ 853 0024 1346     		mov	r3, r2
+ 854 0026 DB00     		lsls	r3, r3, #3
+ 855 0028 9B1A     		subs	r3, r3, r2
+ 856 002a DB00     		lsls	r3, r3, #3
+ 857 002c 194A     		ldr	r2, .L39+4
+ 858 002e 1344     		add	r3, r3, r2
+ 859 0030 7968     		ldr	r1, [r7, #4]
+ 860 0032 1846     		mov	r0, r3
+ 861 0034 FFF7FEFF 		bl	DJIMotor_get_process_motor_data
+ 144:User/Hardware/motor.c ****         }
+ 145:User/Hardware/motor.c ****         else if (hfdcan == &hfdcan2)
+ 146:User/Hardware/motor.c ****         {
+ 147:User/Hardware/motor.c ****             DJIMotor_get_process_motor_data(&DJIMotor_data[1][id - CAN_ID1], data);
+ 148:User/Hardware/motor.c ****         }
+ 149:User/Hardware/motor.c ****         else if (hfdcan == &hfdcan3)
+ 150:User/Hardware/motor.c ****         {
+ 151:User/Hardware/motor.c ****             DJIMotor_get_process_motor_data(&DJIMotor_data[2][id - CAN_ID1], data);
+ 152:User/Hardware/motor.c ****         }
+ 153:User/Hardware/motor.c ****     }
+ 154:User/Hardware/motor.c **** }
+ 862              		.loc 1 154 1
+ 863 0038 26E0     		b	.L38
+ 864              	.L36:
+ 145:User/Hardware/motor.c ****         {
+ 865              		.loc 1 145 17
+ 866 003a FB68     		ldr	r3, [r7, #12]
+ 867 003c 164A     		ldr	r2, .L39+8
+ 868 003e 9342     		cmp	r3, r2
+ 869 0040 0FD1     		bne	.L37
+ 147:User/Hardware/motor.c ****         }
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 19
+
+
+ 870              		.loc 1 147 66
+ 871 0042 BB68     		ldr	r3, [r7, #8]
+ 872 0044 A3F20122 		subw	r2, r3, #513
+ 147:User/Hardware/motor.c ****         }
+ 873              		.loc 1 147 13
+ 874 0048 1346     		mov	r3, r2
+ 875 004a DB00     		lsls	r3, r3, #3
+ 876 004c 9B1A     		subs	r3, r3, r2
+ 877 004e DB00     		lsls	r3, r3, #3
+ 878 0050 03F51A73 		add	r3, r3, #616
+ 879 0054 0F4A     		ldr	r2, .L39+4
+ 880 0056 1344     		add	r3, r3, r2
+ 881 0058 7968     		ldr	r1, [r7, #4]
+ 882 005a 1846     		mov	r0, r3
+ 883 005c FFF7FEFF 		bl	DJIMotor_get_process_motor_data
+ 884              		.loc 1 154 1
+ 885 0060 12E0     		b	.L38
+ 886              	.L37:
+ 149:User/Hardware/motor.c ****         {
+ 887              		.loc 1 149 17
+ 888 0062 FB68     		ldr	r3, [r7, #12]
+ 889 0064 0D4A     		ldr	r2, .L39+12
+ 890 0066 9342     		cmp	r3, r2
+ 891 0068 0ED1     		bne	.L38
+ 151:User/Hardware/motor.c ****         }
+ 892              		.loc 1 151 66
+ 893 006a BB68     		ldr	r3, [r7, #8]
+ 894 006c A3F20122 		subw	r2, r3, #513
+ 151:User/Hardware/motor.c ****         }
+ 895              		.loc 1 151 13
+ 896 0070 1346     		mov	r3, r2
+ 897 0072 DB00     		lsls	r3, r3, #3
+ 898 0074 9B1A     		subs	r3, r3, r2
+ 899 0076 DB00     		lsls	r3, r3, #3
+ 900 0078 03F59A63 		add	r3, r3, #1232
+ 901 007c 054A     		ldr	r2, .L39+4
+ 902 007e 1344     		add	r3, r3, r2
+ 903 0080 7968     		ldr	r1, [r7, #4]
+ 904 0082 1846     		mov	r0, r3
+ 905 0084 FFF7FEFF 		bl	DJIMotor_get_process_motor_data
+ 906              	.L38:
+ 907              		.loc 1 154 1
+ 908 0088 00BF     		nop
+ 909 008a 1037     		adds	r7, r7, #16
+ 910              	.LCFI32:
+ 911              		.cfi_def_cfa_offset 8
+ 912 008c BD46     		mov	sp, r7
+ 913              	.LCFI33:
+ 914              		.cfi_def_cfa_register 13
+ 915              		@ sp needed
+ 916 008e 80BD     		pop	{r7, pc}
+ 917              	.L40:
+ 918              		.align	2
+ 919              	.L39:
+ 920 0090 00000000 		.word	hfdcan1
+ 921 0094 00000000 		.word	DJIMotor_data
+ 922 0098 00000000 		.word	hfdcan2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 20
+
+
+ 923 009c 00000000 		.word	hfdcan3
+ 924              		.cfi_endproc
+ 925              	.LFE149:
+ 927              		.section	.text.DJIMotor_send_current,"ax",%progbits
+ 928              		.align	1
+ 929              		.global	DJIMotor_send_current
+ 930              		.syntax unified
+ 931              		.thumb
+ 932              		.thumb_func
+ 934              	DJIMotor_send_current:
+ 935              	.LFB150:
+ 155:User/Hardware/motor.c **** 
+ 156:User/Hardware/motor.c **** /**
+ 157:User/Hardware/motor.c ****  * @brief 大疆电机电流值发送，建议放freertos里定期发送（这个函数好大，应该拆一下）
+ 158:User/Hardware/motor.c ****  *
+ 159:User/Hardware/motor.c ****  */
+ 160:User/Hardware/motor.c **** void DJIMotor_send_current(void)
+ 161:User/Hardware/motor.c **** {
+ 936              		.loc 1 161 1
+ 937              		.cfi_startproc
+ 938              		@ args = 0, pretend = 0, frame = 64
+ 939              		@ frame_needed = 1, uses_anonymous_args = 0
+ 940 0000 80B5     		push	{r7, lr}
+ 941              	.LCFI34:
+ 942              		.cfi_def_cfa_offset 8
+ 943              		.cfi_offset 7, -8
+ 944              		.cfi_offset 14, -4
+ 945 0002 90B0     		sub	sp, sp, #64
+ 946              	.LCFI35:
+ 947              		.cfi_def_cfa_offset 72
+ 948 0004 00AF     		add	r7, sp, #0
+ 949              	.LCFI36:
+ 950              		.cfi_def_cfa_register 7
+ 162:User/Hardware/motor.c ****     uint8_t can_send_data[3][8];
+ 163:User/Hardware/motor.c ****     uint8_t canid;
+ 164:User/Hardware/motor.c ****     static FDCAN_TxHeaderTypeDef tx_message;
+ 165:User/Hardware/motor.c ****     if (hfdcan1.ErrorCode)
+ 951              		.loc 1 165 16
+ 952 0006 B94B     		ldr	r3, .L61
+ 953 0008 D3F89C30 		ldr	r3, [r3, #156]
+ 954              		.loc 1 165 8
+ 955 000c 002B     		cmp	r3, #0
+ 956 000e 02D0     		beq	.L42
+ 166:User/Hardware/motor.c ****         HAL_FDCAN_ErrorCallback(&hfdcan1);
+ 957              		.loc 1 166 9
+ 958 0010 B648     		ldr	r0, .L61
+ 959 0012 FFF7FEFF 		bl	HAL_FDCAN_ErrorCallback
+ 960              	.L42:
+ 167:User/Hardware/motor.c ****     if (hfdcan2.ErrorCode)
+ 961              		.loc 1 167 16
+ 962 0016 B64B     		ldr	r3, .L61+4
+ 963 0018 D3F89C30 		ldr	r3, [r3, #156]
+ 964              		.loc 1 167 8
+ 965 001c 002B     		cmp	r3, #0
+ 966 001e 02D0     		beq	.L43
+ 168:User/Hardware/motor.c ****         HAL_FDCAN_ErrorCallback(&hfdcan2);
+ 967              		.loc 1 168 9
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 21
+
+
+ 968 0020 B348     		ldr	r0, .L61+4
+ 969 0022 FFF7FEFF 		bl	HAL_FDCAN_ErrorCallback
+ 970              	.L43:
+ 169:User/Hardware/motor.c ****     if (hfdcan3.ErrorCode)
+ 971              		.loc 1 169 16
+ 972 0026 B34B     		ldr	r3, .L61+8
+ 973 0028 D3F89C30 		ldr	r3, [r3, #156]
+ 974              		.loc 1 169 8
+ 975 002c 002B     		cmp	r3, #0
+ 976 002e 02D0     		beq	.L44
+ 170:User/Hardware/motor.c ****         HAL_FDCAN_ErrorCallback(&hfdcan3);
+ 977              		.loc 1 170 9
+ 978 0030 B048     		ldr	r0, .L61+8
+ 979 0032 FFF7FEFF 		bl	HAL_FDCAN_ErrorCallback
+ 980              	.L44:
+ 171:User/Hardware/motor.c ****     // 发送3508/2006前4个
+ 172:User/Hardware/motor.c ****     tx_message.Identifier = CAN_20063508_1_4_send_ID;
+ 981              		.loc 1 172 27
+ 982 0036 B04B     		ldr	r3, .L61+12
+ 983 0038 4FF40072 		mov	r2, #512
+ 984 003c 1A60     		str	r2, [r3]
+ 173:User/Hardware/motor.c ****     tx_message.IdType = FDCAN_STANDARD_ID;              // 标准ID
+ 985              		.loc 1 173 23
+ 986 003e AE4B     		ldr	r3, .L61+12
+ 987 0040 0022     		movs	r2, #0
+ 988 0042 5A60     		str	r2, [r3, #4]
+ 174:User/Hardware/motor.c ****     tx_message.TxFrameType = FDCAN_DATA_FRAME;          // 数据帧
+ 989              		.loc 1 174 28
+ 990 0044 AC4B     		ldr	r3, .L61+12
+ 991 0046 0022     		movs	r2, #0
+ 992 0048 9A60     		str	r2, [r3, #8]
+ 175:User/Hardware/motor.c ****     tx_message.DataLength = FDCAN_DLC_BYTES_8;          // 发送数据长度
+ 993              		.loc 1 175 27
+ 994 004a AB4B     		ldr	r3, .L61+12
+ 995 004c 0822     		movs	r2, #8
+ 996 004e DA60     		str	r2, [r3, #12]
+ 176:User/Hardware/motor.c ****     tx_message.ErrorStateIndicator = FDCAN_ESI_ACTIVE;  // 设置错误状态指示
+ 997              		.loc 1 176 36
+ 998 0050 A94B     		ldr	r3, .L61+12
+ 999 0052 0022     		movs	r2, #0
+ 1000 0054 1A61     		str	r2, [r3, #16]
+ 177:User/Hardware/motor.c ****     tx_message.BitRateSwitch = FDCAN_BRS_OFF;           // 不开启可变波特率
+ 1001              		.loc 1 177 30
+ 1002 0056 A84B     		ldr	r3, .L61+12
+ 1003 0058 0022     		movs	r2, #0
+ 1004 005a 5A61     		str	r2, [r3, #20]
+ 178:User/Hardware/motor.c ****     tx_message.FDFormat = FDCAN_CLASSIC_CAN;            // 普通CAN格式
+ 1005              		.loc 1 178 25
+ 1006 005c A64B     		ldr	r3, .L61+12
+ 1007 005e 0022     		movs	r2, #0
+ 1008 0060 9A61     		str	r2, [r3, #24]
+ 179:User/Hardware/motor.c ****     tx_message.TxEventFifoControl = FDCAN_NO_TX_EVENTS; // 用于发送事件FIFO控制, 不存储
+ 1009              		.loc 1 179 35
+ 1010 0062 A54B     		ldr	r3, .L61+12
+ 1011 0064 0022     		movs	r2, #0
+ 1012 0066 DA61     		str	r2, [r3, #28]
+ 180:User/Hardware/motor.c ****     tx_message.MessageMarker = 0x00;                    // 用于复制到TX EVENT FIFO的消息Maker来识别
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 22
+
+
+ 1013              		.loc 1 180 30
+ 1014 0068 A34B     		ldr	r3, .L61+12
+ 1015 006a 0022     		movs	r2, #0
+ 1016 006c 1A62     		str	r2, [r3, #32]
+ 1017              	.LBB3:
+ 181:User/Hardware/motor.c ****     // 三路can依次赋值
+ 182:User/Hardware/motor.c ****     for (int i = 0; i < 3; i++)
+ 1018              		.loc 1 182 14
+ 1019 006e 0023     		movs	r3, #0
+ 1020 0070 BB63     		str	r3, [r7, #56]
+ 1021              		.loc 1 182 5
+ 1022 0072 4AE0     		b	.L45
+ 1023              	.L48:
+ 183:User/Hardware/motor.c ****     {
+ 184:User/Hardware/motor.c ****         canid = 0;
+ 1024              		.loc 1 184 15
+ 1025 0074 0023     		movs	r3, #0
+ 1026 0076 87F83F30 		strb	r3, [r7, #63]
+ 1027              	.LBB4:
+ 185:User/Hardware/motor.c ****         for (int k = 0; k < 8; k += 2)
+ 1028              		.loc 1 185 18
+ 1029 007a 0023     		movs	r3, #0
+ 1030 007c 7B63     		str	r3, [r7, #52]
+ 1031              		.loc 1 185 9
+ 1032 007e 3EE0     		b	.L46
+ 1033              	.L47:
+ 186:User/Hardware/motor.c ****         {
+ 187:User/Hardware/motor.c ****             can_send_data[i][k] = (DJIMotor_data[i][canid].set >> 8);
+ 1034              		.loc 1 187 59
+ 1035 0080 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
+ 1036 0084 9D48     		ldr	r0, .L61+16
+ 1037 0086 B96B     		ldr	r1, [r7, #56]
+ 1038 0088 1346     		mov	r3, r2
+ 1039 008a DB00     		lsls	r3, r3, #3
+ 1040 008c 9B1A     		subs	r3, r3, r2
+ 1041 008e DB00     		lsls	r3, r3, #3
+ 1042 0090 4FF41A72 		mov	r2, #616
+ 1043 0094 01FB02F2 		mul	r2, r1, r2
+ 1044 0098 1344     		add	r3, r3, r2
+ 1045 009a 0344     		add	r3, r3, r0
+ 1046 009c B3F90030 		ldrsh	r3, [r3]
+ 1047              		.loc 1 187 33
+ 1048 00a0 1B12     		asrs	r3, r3, #8
+ 1049 00a2 1BB2     		sxth	r3, r3
+ 1050 00a4 D9B2     		uxtb	r1, r3
+ 1051 00a6 BB6B     		ldr	r3, [r7, #56]
+ 1052 00a8 DB00     		lsls	r3, r3, #3
+ 1053 00aa 4033     		adds	r3, r3, #64
+ 1054 00ac DA19     		adds	r2, r3, r7
+ 1055 00ae 7B6B     		ldr	r3, [r7, #52]
+ 1056 00b0 1344     		add	r3, r3, r2
+ 1057 00b2 3C3B     		subs	r3, r3, #60
+ 1058 00b4 0A46     		mov	r2, r1
+ 1059 00b6 1A70     		strb	r2, [r3]
+ 188:User/Hardware/motor.c ****             can_send_data[i][k + 1] = DJIMotor_data[i][canid].set;
+ 1060              		.loc 1 188 62
+ 1061 00b8 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 23
+
+
+ 1062 00bc 8F48     		ldr	r0, .L61+16
+ 1063 00be B96B     		ldr	r1, [r7, #56]
+ 1064 00c0 1346     		mov	r3, r2
+ 1065 00c2 DB00     		lsls	r3, r3, #3
+ 1066 00c4 9B1A     		subs	r3, r3, r2
+ 1067 00c6 DB00     		lsls	r3, r3, #3
+ 1068 00c8 4FF41A72 		mov	r2, #616
+ 1069 00cc 01FB02F2 		mul	r2, r1, r2
+ 1070 00d0 1344     		add	r3, r3, r2
+ 1071 00d2 0344     		add	r3, r3, r0
+ 1072 00d4 B3F90020 		ldrsh	r2, [r3]
+ 1073              		.loc 1 188 32
+ 1074 00d8 7B6B     		ldr	r3, [r7, #52]
+ 1075 00da 0133     		adds	r3, r3, #1
+ 1076              		.loc 1 188 37
+ 1077 00dc D1B2     		uxtb	r1, r2
+ 1078 00de BA6B     		ldr	r2, [r7, #56]
+ 1079 00e0 D200     		lsls	r2, r2, #3
+ 1080 00e2 4032     		adds	r2, r2, #64
+ 1081 00e4 3A44     		add	r2, r2, r7
+ 1082 00e6 1344     		add	r3, r3, r2
+ 1083 00e8 3C3B     		subs	r3, r3, #60
+ 1084 00ea 0A46     		mov	r2, r1
+ 1085 00ec 1A70     		strb	r2, [r3]
+ 189:User/Hardware/motor.c ****             canid++;
+ 1086              		.loc 1 189 18
+ 1087 00ee 97F83F30 		ldrb	r3, [r7, #63]	@ zero_extendqisi2
+ 1088 00f2 0133     		adds	r3, r3, #1
+ 1089 00f4 87F83F30 		strb	r3, [r7, #63]
+ 185:User/Hardware/motor.c ****         {
+ 1090              		.loc 1 185 34 discriminator 3
+ 1091 00f8 7B6B     		ldr	r3, [r7, #52]
+ 1092 00fa 0233     		adds	r3, r3, #2
+ 1093 00fc 7B63     		str	r3, [r7, #52]
+ 1094              	.L46:
+ 185:User/Hardware/motor.c ****         {
+ 1095              		.loc 1 185 27 discriminator 1
+ 1096 00fe 7B6B     		ldr	r3, [r7, #52]
+ 1097 0100 072B     		cmp	r3, #7
+ 1098 0102 BDDD     		ble	.L47
+ 1099              	.LBE4:
+ 182:User/Hardware/motor.c ****     {
+ 1100              		.loc 1 182 29 discriminator 2
+ 1101 0104 BB6B     		ldr	r3, [r7, #56]
+ 1102 0106 0133     		adds	r3, r3, #1
+ 1103 0108 BB63     		str	r3, [r7, #56]
+ 1104              	.L45:
+ 182:User/Hardware/motor.c ****     {
+ 1105              		.loc 1 182 23 discriminator 1
+ 1106 010a BB6B     		ldr	r3, [r7, #56]
+ 1107 010c 022B     		cmp	r3, #2
+ 1108 010e B1DD     		ble	.L48
+ 1109              	.LBE3:
+ 190:User/Hardware/motor.c ****         }
+ 191:User/Hardware/motor.c ****     }
+ 192:User/Hardware/motor.c ****     // 三路can同时发送
+ 193:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &tx_message, can_send_data[0]);
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 24
+
+
+ 1110              		.loc 1 193 5
+ 1111 0110 3B1D     		adds	r3, r7, #4
+ 1112 0112 1A46     		mov	r2, r3
+ 1113 0114 7849     		ldr	r1, .L61+12
+ 1114 0116 7548     		ldr	r0, .L61
+ 1115 0118 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 194:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &tx_message, can_send_data[1]);
+ 1116              		.loc 1 194 5
+ 1117 011c 3B1D     		adds	r3, r7, #4
+ 1118 011e 0833     		adds	r3, r3, #8
+ 1119 0120 1A46     		mov	r2, r3
+ 1120 0122 7549     		ldr	r1, .L61+12
+ 1121 0124 7248     		ldr	r0, .L61+4
+ 1122 0126 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 195:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan3, &tx_message, can_send_data[2]);
+ 1123              		.loc 1 195 5
+ 1124 012a 3B1D     		adds	r3, r7, #4
+ 1125 012c 1033     		adds	r3, r3, #16
+ 1126 012e 1A46     		mov	r2, r3
+ 1127 0130 7149     		ldr	r1, .L61+12
+ 1128 0132 7048     		ldr	r0, .L61+8
+ 1129 0134 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 196:User/Hardware/motor.c **** 
+ 197:User/Hardware/motor.c ****     // 发送3508/2006后4个
+ 198:User/Hardware/motor.c ****     tx_message.Identifier = CAN_20063508_5_8_send_ID;
+ 1130              		.loc 1 198 27
+ 1131 0138 6F4B     		ldr	r3, .L61+12
+ 1132 013a 40F2FF12 		movw	r2, #511
+ 1133 013e 1A60     		str	r2, [r3]
+ 1134              	.LBB5:
+ 199:User/Hardware/motor.c ****     for (int i = 0; i < 3; i++)
+ 1135              		.loc 1 199 14
+ 1136 0140 0023     		movs	r3, #0
+ 1137 0142 3B63     		str	r3, [r7, #48]
+ 1138              		.loc 1 199 5
+ 1139 0144 4AE0     		b	.L49
+ 1140              	.L52:
+ 200:User/Hardware/motor.c ****     {
+ 201:User/Hardware/motor.c ****         canid = 4;
+ 1141              		.loc 1 201 15
+ 1142 0146 0423     		movs	r3, #4
+ 1143 0148 87F83F30 		strb	r3, [r7, #63]
+ 1144              	.LBB6:
+ 202:User/Hardware/motor.c ****         for (int k = 0; k < 8; k += 2)
+ 1145              		.loc 1 202 18
+ 1146 014c 0023     		movs	r3, #0
+ 1147 014e FB62     		str	r3, [r7, #44]
+ 1148              		.loc 1 202 9
+ 1149 0150 3EE0     		b	.L50
+ 1150              	.L51:
+ 203:User/Hardware/motor.c ****         {
+ 204:User/Hardware/motor.c ****             can_send_data[i][k] = (DJIMotor_data[i][canid].set >> 8);
+ 1151              		.loc 1 204 59
+ 1152 0152 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
+ 1153 0156 6948     		ldr	r0, .L61+16
+ 1154 0158 396B     		ldr	r1, [r7, #48]
+ 1155 015a 1346     		mov	r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 25
+
+
+ 1156 015c DB00     		lsls	r3, r3, #3
+ 1157 015e 9B1A     		subs	r3, r3, r2
+ 1158 0160 DB00     		lsls	r3, r3, #3
+ 1159 0162 4FF41A72 		mov	r2, #616
+ 1160 0166 01FB02F2 		mul	r2, r1, r2
+ 1161 016a 1344     		add	r3, r3, r2
+ 1162 016c 0344     		add	r3, r3, r0
+ 1163 016e B3F90030 		ldrsh	r3, [r3]
+ 1164              		.loc 1 204 33
+ 1165 0172 1B12     		asrs	r3, r3, #8
+ 1166 0174 1BB2     		sxth	r3, r3
+ 1167 0176 D9B2     		uxtb	r1, r3
+ 1168 0178 3B6B     		ldr	r3, [r7, #48]
+ 1169 017a DB00     		lsls	r3, r3, #3
+ 1170 017c 4033     		adds	r3, r3, #64
+ 1171 017e DA19     		adds	r2, r3, r7
+ 1172 0180 FB6A     		ldr	r3, [r7, #44]
+ 1173 0182 1344     		add	r3, r3, r2
+ 1174 0184 3C3B     		subs	r3, r3, #60
+ 1175 0186 0A46     		mov	r2, r1
+ 1176 0188 1A70     		strb	r2, [r3]
+ 205:User/Hardware/motor.c ****             can_send_data[i][k + 1] = DJIMotor_data[i][canid].set;
+ 1177              		.loc 1 205 62
+ 1178 018a 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
+ 1179 018e 5B48     		ldr	r0, .L61+16
+ 1180 0190 396B     		ldr	r1, [r7, #48]
+ 1181 0192 1346     		mov	r3, r2
+ 1182 0194 DB00     		lsls	r3, r3, #3
+ 1183 0196 9B1A     		subs	r3, r3, r2
+ 1184 0198 DB00     		lsls	r3, r3, #3
+ 1185 019a 4FF41A72 		mov	r2, #616
+ 1186 019e 01FB02F2 		mul	r2, r1, r2
+ 1187 01a2 1344     		add	r3, r3, r2
+ 1188 01a4 0344     		add	r3, r3, r0
+ 1189 01a6 B3F90020 		ldrsh	r2, [r3]
+ 1190              		.loc 1 205 32
+ 1191 01aa FB6A     		ldr	r3, [r7, #44]
+ 1192 01ac 0133     		adds	r3, r3, #1
+ 1193              		.loc 1 205 37
+ 1194 01ae D1B2     		uxtb	r1, r2
+ 1195 01b0 3A6B     		ldr	r2, [r7, #48]
+ 1196 01b2 D200     		lsls	r2, r2, #3
+ 1197 01b4 4032     		adds	r2, r2, #64
+ 1198 01b6 3A44     		add	r2, r2, r7
+ 1199 01b8 1344     		add	r3, r3, r2
+ 1200 01ba 3C3B     		subs	r3, r3, #60
+ 1201 01bc 0A46     		mov	r2, r1
+ 1202 01be 1A70     		strb	r2, [r3]
+ 206:User/Hardware/motor.c ****             canid++;
+ 1203              		.loc 1 206 18
+ 1204 01c0 97F83F30 		ldrb	r3, [r7, #63]	@ zero_extendqisi2
+ 1205 01c4 0133     		adds	r3, r3, #1
+ 1206 01c6 87F83F30 		strb	r3, [r7, #63]
+ 202:User/Hardware/motor.c ****         {
+ 1207              		.loc 1 202 34 discriminator 3
+ 1208 01ca FB6A     		ldr	r3, [r7, #44]
+ 1209 01cc 0233     		adds	r3, r3, #2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 26
+
+
+ 1210 01ce FB62     		str	r3, [r7, #44]
+ 1211              	.L50:
+ 202:User/Hardware/motor.c ****         {
+ 1212              		.loc 1 202 27 discriminator 1
+ 1213 01d0 FB6A     		ldr	r3, [r7, #44]
+ 1214 01d2 072B     		cmp	r3, #7
+ 1215 01d4 BDDD     		ble	.L51
+ 1216              	.LBE6:
+ 199:User/Hardware/motor.c ****     {
+ 1217              		.loc 1 199 29 discriminator 2
+ 1218 01d6 3B6B     		ldr	r3, [r7, #48]
+ 1219 01d8 0133     		adds	r3, r3, #1
+ 1220 01da 3B63     		str	r3, [r7, #48]
+ 1221              	.L49:
+ 199:User/Hardware/motor.c ****     {
+ 1222              		.loc 1 199 23 discriminator 1
+ 1223 01dc 3B6B     		ldr	r3, [r7, #48]
+ 1224 01de 022B     		cmp	r3, #2
+ 1225 01e0 B1DD     		ble	.L52
+ 1226              	.LBE5:
+ 207:User/Hardware/motor.c ****         }
+ 208:User/Hardware/motor.c ****     }
+ 209:User/Hardware/motor.c ****     // 三路can同时发送
+ 210:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &tx_message, can_send_data[0]);
+ 1227              		.loc 1 210 5
+ 1228 01e2 3B1D     		adds	r3, r7, #4
+ 1229 01e4 1A46     		mov	r2, r3
+ 1230 01e6 4449     		ldr	r1, .L61+12
+ 1231 01e8 4048     		ldr	r0, .L61
+ 1232 01ea FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 211:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &tx_message, can_send_data[1]);
+ 1233              		.loc 1 211 5
+ 1234 01ee 3B1D     		adds	r3, r7, #4
+ 1235 01f0 0833     		adds	r3, r3, #8
+ 1236 01f2 1A46     		mov	r2, r3
+ 1237 01f4 4049     		ldr	r1, .L61+12
+ 1238 01f6 3E48     		ldr	r0, .L61+4
+ 1239 01f8 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 212:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan3, &tx_message, can_send_data[2]);
+ 1240              		.loc 1 212 5
+ 1241 01fc 3B1D     		adds	r3, r7, #4
+ 1242 01fe 1033     		adds	r3, r3, #16
+ 1243 0200 1A46     		mov	r2, r3
+ 1244 0202 3D49     		ldr	r1, .L61+12
+ 1245 0204 3B48     		ldr	r0, .L61+8
+ 1246 0206 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 213:User/Hardware/motor.c **** 
+ 214:User/Hardware/motor.c ****     // 发送6020前4个
+ 215:User/Hardware/motor.c ****     tx_message.Identifier = CAN_6020_1_4_send_ID;
+ 1247              		.loc 1 215 27
+ 1248 020a 3B4B     		ldr	r3, .L61+12
+ 1249 020c 4FF4FF72 		mov	r2, #510
+ 1250 0210 1A60     		str	r2, [r3]
+ 1251              	.LBB7:
+ 216:User/Hardware/motor.c ****     for (int i = 0; i < 3; i++)
+ 1252              		.loc 1 216 14
+ 1253 0212 0023     		movs	r3, #0
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 27
+
+
+ 1254 0214 BB62     		str	r3, [r7, #40]
+ 1255              		.loc 1 216 5
+ 1256 0216 4AE0     		b	.L53
+ 1257              	.L56:
+ 217:User/Hardware/motor.c ****     {
+ 218:User/Hardware/motor.c ****         canid = 4;
+ 1258              		.loc 1 218 15
+ 1259 0218 0423     		movs	r3, #4
+ 1260 021a 87F83F30 		strb	r3, [r7, #63]
+ 1261              	.LBB8:
+ 219:User/Hardware/motor.c ****         for (int k = 0; k < 8; k += 2)
+ 1262              		.loc 1 219 18
+ 1263 021e 0023     		movs	r3, #0
+ 1264 0220 7B62     		str	r3, [r7, #36]
+ 1265              		.loc 1 219 9
+ 1266 0222 3EE0     		b	.L54
+ 1267              	.L55:
+ 220:User/Hardware/motor.c ****         {
+ 221:User/Hardware/motor.c ****             can_send_data[i][k] = (DJIMotor_data[i][canid].set >> 8);
+ 1268              		.loc 1 221 59
+ 1269 0224 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
+ 1270 0228 3448     		ldr	r0, .L61+16
+ 1271 022a B96A     		ldr	r1, [r7, #40]
+ 1272 022c 1346     		mov	r3, r2
+ 1273 022e DB00     		lsls	r3, r3, #3
+ 1274 0230 9B1A     		subs	r3, r3, r2
+ 1275 0232 DB00     		lsls	r3, r3, #3
+ 1276 0234 4FF41A72 		mov	r2, #616
+ 1277 0238 01FB02F2 		mul	r2, r1, r2
+ 1278 023c 1344     		add	r3, r3, r2
+ 1279 023e 0344     		add	r3, r3, r0
+ 1280 0240 B3F90030 		ldrsh	r3, [r3]
+ 1281              		.loc 1 221 33
+ 1282 0244 1B12     		asrs	r3, r3, #8
+ 1283 0246 1BB2     		sxth	r3, r3
+ 1284 0248 D9B2     		uxtb	r1, r3
+ 1285 024a BB6A     		ldr	r3, [r7, #40]
+ 1286 024c DB00     		lsls	r3, r3, #3
+ 1287 024e 4033     		adds	r3, r3, #64
+ 1288 0250 DA19     		adds	r2, r3, r7
+ 1289 0252 7B6A     		ldr	r3, [r7, #36]
+ 1290 0254 1344     		add	r3, r3, r2
+ 1291 0256 3C3B     		subs	r3, r3, #60
+ 1292 0258 0A46     		mov	r2, r1
+ 1293 025a 1A70     		strb	r2, [r3]
+ 222:User/Hardware/motor.c ****             can_send_data[i][k + 1] = DJIMotor_data[i][canid].set;
+ 1294              		.loc 1 222 62
+ 1295 025c 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
+ 1296 0260 2648     		ldr	r0, .L61+16
+ 1297 0262 B96A     		ldr	r1, [r7, #40]
+ 1298 0264 1346     		mov	r3, r2
+ 1299 0266 DB00     		lsls	r3, r3, #3
+ 1300 0268 9B1A     		subs	r3, r3, r2
+ 1301 026a DB00     		lsls	r3, r3, #3
+ 1302 026c 4FF41A72 		mov	r2, #616
+ 1303 0270 01FB02F2 		mul	r2, r1, r2
+ 1304 0274 1344     		add	r3, r3, r2
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 28
+
+
+ 1305 0276 0344     		add	r3, r3, r0
+ 1306 0278 B3F90020 		ldrsh	r2, [r3]
+ 1307              		.loc 1 222 32
+ 1308 027c 7B6A     		ldr	r3, [r7, #36]
+ 1309 027e 0133     		adds	r3, r3, #1
+ 1310              		.loc 1 222 37
+ 1311 0280 D1B2     		uxtb	r1, r2
+ 1312 0282 BA6A     		ldr	r2, [r7, #40]
+ 1313 0284 D200     		lsls	r2, r2, #3
+ 1314 0286 4032     		adds	r2, r2, #64
+ 1315 0288 3A44     		add	r2, r2, r7
+ 1316 028a 1344     		add	r3, r3, r2
+ 1317 028c 3C3B     		subs	r3, r3, #60
+ 1318 028e 0A46     		mov	r2, r1
+ 1319 0290 1A70     		strb	r2, [r3]
+ 223:User/Hardware/motor.c ****             canid++;
+ 1320              		.loc 1 223 18
+ 1321 0292 97F83F30 		ldrb	r3, [r7, #63]	@ zero_extendqisi2
+ 1322 0296 0133     		adds	r3, r3, #1
+ 1323 0298 87F83F30 		strb	r3, [r7, #63]
+ 219:User/Hardware/motor.c ****         {
+ 1324              		.loc 1 219 34 discriminator 3
+ 1325 029c 7B6A     		ldr	r3, [r7, #36]
+ 1326 029e 0233     		adds	r3, r3, #2
+ 1327 02a0 7B62     		str	r3, [r7, #36]
+ 1328              	.L54:
+ 219:User/Hardware/motor.c ****         {
+ 1329              		.loc 1 219 27 discriminator 1
+ 1330 02a2 7B6A     		ldr	r3, [r7, #36]
+ 1331 02a4 072B     		cmp	r3, #7
+ 1332 02a6 BDDD     		ble	.L55
+ 1333              	.LBE8:
+ 216:User/Hardware/motor.c ****     {
+ 1334              		.loc 1 216 29 discriminator 2
+ 1335 02a8 BB6A     		ldr	r3, [r7, #40]
+ 1336 02aa 0133     		adds	r3, r3, #1
+ 1337 02ac BB62     		str	r3, [r7, #40]
+ 1338              	.L53:
+ 216:User/Hardware/motor.c ****     {
+ 1339              		.loc 1 216 23 discriminator 1
+ 1340 02ae BB6A     		ldr	r3, [r7, #40]
+ 1341 02b0 022B     		cmp	r3, #2
+ 1342 02b2 B1DD     		ble	.L56
+ 1343              	.LBE7:
+ 224:User/Hardware/motor.c ****         }
+ 225:User/Hardware/motor.c ****     }
+ 226:User/Hardware/motor.c ****     // 三路can同时发送
+ 227:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &tx_message, can_send_data[0]);
+ 1344              		.loc 1 227 5
+ 1345 02b4 3B1D     		adds	r3, r7, #4
+ 1346 02b6 1A46     		mov	r2, r3
+ 1347 02b8 0F49     		ldr	r1, .L61+12
+ 1348 02ba 0C48     		ldr	r0, .L61
+ 1349 02bc FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 228:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &tx_message, can_send_data[1]);
+ 1350              		.loc 1 228 5
+ 1351 02c0 3B1D     		adds	r3, r7, #4
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 29
+
+
+ 1352 02c2 0833     		adds	r3, r3, #8
+ 1353 02c4 1A46     		mov	r2, r3
+ 1354 02c6 0C49     		ldr	r1, .L61+12
+ 1355 02c8 0948     		ldr	r0, .L61+4
+ 1356 02ca FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 229:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan3, &tx_message, can_send_data[2]);
+ 1357              		.loc 1 229 5
+ 1358 02ce 3B1D     		adds	r3, r7, #4
+ 1359 02d0 1033     		adds	r3, r3, #16
+ 1360 02d2 1A46     		mov	r2, r3
+ 1361 02d4 0849     		ldr	r1, .L61+12
+ 1362 02d6 0748     		ldr	r0, .L61+8
+ 1363 02d8 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 230:User/Hardware/motor.c **** 
+ 231:User/Hardware/motor.c ****     // 发送6020后3个
+ 232:User/Hardware/motor.c ****     tx_message.Identifier = CAN_6020_5_7_send_ID;
+ 1364              		.loc 1 232 27
+ 1365 02dc 064B     		ldr	r3, .L61+12
+ 1366 02de 40F2FE22 		movw	r2, #766
+ 1367 02e2 1A60     		str	r2, [r3]
+ 1368              	.LBB9:
+ 233:User/Hardware/motor.c ****     for (int i = 0; i < 3; i++)
+ 1369              		.loc 1 233 14
+ 1370 02e4 0023     		movs	r3, #0
+ 1371 02e6 3B62     		str	r3, [r7, #32]
+ 1372              		.loc 1 233 5
+ 1373 02e8 55E0     		b	.L57
+ 1374              	.L62:
+ 1375 02ea 00BF     		.align	2
+ 1376              	.L61:
+ 1377 02ec 00000000 		.word	hfdcan1
+ 1378 02f0 00000000 		.word	hfdcan2
+ 1379 02f4 00000000 		.word	hfdcan3
+ 1380 02f8 00000000 		.word	tx_message.0
+ 1381 02fc 00000000 		.word	DJIMotor_data
+ 1382              	.L60:
+ 234:User/Hardware/motor.c ****     {
+ 235:User/Hardware/motor.c ****         canid = 8;
+ 1383              		.loc 1 235 15
+ 1384 0300 0823     		movs	r3, #8
+ 1385 0302 87F83F30 		strb	r3, [r7, #63]
+ 1386              	.LBB10:
+ 236:User/Hardware/motor.c ****         for (int k = 0; k < 6; k += 2)
+ 1387              		.loc 1 236 18
+ 1388 0306 0023     		movs	r3, #0
+ 1389 0308 FB61     		str	r3, [r7, #28]
+ 1390              		.loc 1 236 9
+ 1391 030a 3EE0     		b	.L58
+ 1392              	.L59:
+ 237:User/Hardware/motor.c ****         {
+ 238:User/Hardware/motor.c ****             can_send_data[i][k] = (DJIMotor_data[i][canid].set >> 8);
+ 1393              		.loc 1 238 59
+ 1394 030c 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
+ 1395 0310 2E48     		ldr	r0, .L63
+ 1396 0312 396A     		ldr	r1, [r7, #32]
+ 1397 0314 1346     		mov	r3, r2
+ 1398 0316 DB00     		lsls	r3, r3, #3
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 30
+
+
+ 1399 0318 9B1A     		subs	r3, r3, r2
+ 1400 031a DB00     		lsls	r3, r3, #3
+ 1401 031c 4FF41A72 		mov	r2, #616
+ 1402 0320 01FB02F2 		mul	r2, r1, r2
+ 1403 0324 1344     		add	r3, r3, r2
+ 1404 0326 0344     		add	r3, r3, r0
+ 1405 0328 B3F90030 		ldrsh	r3, [r3]
+ 1406              		.loc 1 238 33
+ 1407 032c 1B12     		asrs	r3, r3, #8
+ 1408 032e 1BB2     		sxth	r3, r3
+ 1409 0330 D9B2     		uxtb	r1, r3
+ 1410 0332 3B6A     		ldr	r3, [r7, #32]
+ 1411 0334 DB00     		lsls	r3, r3, #3
+ 1412 0336 4033     		adds	r3, r3, #64
+ 1413 0338 DA19     		adds	r2, r3, r7
+ 1414 033a FB69     		ldr	r3, [r7, #28]
+ 1415 033c 1344     		add	r3, r3, r2
+ 1416 033e 3C3B     		subs	r3, r3, #60
+ 1417 0340 0A46     		mov	r2, r1
+ 1418 0342 1A70     		strb	r2, [r3]
+ 239:User/Hardware/motor.c ****             can_send_data[i][k + 1] = DJIMotor_data[i][canid].set;
+ 1419              		.loc 1 239 62
+ 1420 0344 97F83F20 		ldrb	r2, [r7, #63]	@ zero_extendqisi2
+ 1421 0348 2048     		ldr	r0, .L63
+ 1422 034a 396A     		ldr	r1, [r7, #32]
+ 1423 034c 1346     		mov	r3, r2
+ 1424 034e DB00     		lsls	r3, r3, #3
+ 1425 0350 9B1A     		subs	r3, r3, r2
+ 1426 0352 DB00     		lsls	r3, r3, #3
+ 1427 0354 4FF41A72 		mov	r2, #616
+ 1428 0358 01FB02F2 		mul	r2, r1, r2
+ 1429 035c 1344     		add	r3, r3, r2
+ 1430 035e 0344     		add	r3, r3, r0
+ 1431 0360 B3F90020 		ldrsh	r2, [r3]
+ 1432              		.loc 1 239 32
+ 1433 0364 FB69     		ldr	r3, [r7, #28]
+ 1434 0366 0133     		adds	r3, r3, #1
+ 1435              		.loc 1 239 37
+ 1436 0368 D1B2     		uxtb	r1, r2
+ 1437 036a 3A6A     		ldr	r2, [r7, #32]
+ 1438 036c D200     		lsls	r2, r2, #3
+ 1439 036e 4032     		adds	r2, r2, #64
+ 1440 0370 3A44     		add	r2, r2, r7
+ 1441 0372 1344     		add	r3, r3, r2
+ 1442 0374 3C3B     		subs	r3, r3, #60
+ 1443 0376 0A46     		mov	r2, r1
+ 1444 0378 1A70     		strb	r2, [r3]
+ 240:User/Hardware/motor.c ****             canid++;
+ 1445              		.loc 1 240 18
+ 1446 037a 97F83F30 		ldrb	r3, [r7, #63]	@ zero_extendqisi2
+ 1447 037e 0133     		adds	r3, r3, #1
+ 1448 0380 87F83F30 		strb	r3, [r7, #63]
+ 236:User/Hardware/motor.c ****         {
+ 1449              		.loc 1 236 34 discriminator 3
+ 1450 0384 FB69     		ldr	r3, [r7, #28]
+ 1451 0386 0233     		adds	r3, r3, #2
+ 1452 0388 FB61     		str	r3, [r7, #28]
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 31
+
+
+ 1453              	.L58:
+ 236:User/Hardware/motor.c ****         {
+ 1454              		.loc 1 236 27 discriminator 1
+ 1455 038a FB69     		ldr	r3, [r7, #28]
+ 1456 038c 052B     		cmp	r3, #5
+ 1457 038e BDDD     		ble	.L59
+ 1458              	.LBE10:
+ 233:User/Hardware/motor.c ****     {
+ 1459              		.loc 1 233 29 discriminator 2
+ 1460 0390 3B6A     		ldr	r3, [r7, #32]
+ 1461 0392 0133     		adds	r3, r3, #1
+ 1462 0394 3B62     		str	r3, [r7, #32]
+ 1463              	.L57:
+ 233:User/Hardware/motor.c ****     {
+ 1464              		.loc 1 233 23 discriminator 1
+ 1465 0396 3B6A     		ldr	r3, [r7, #32]
+ 1466 0398 022B     		cmp	r3, #2
+ 1467 039a B1DD     		ble	.L60
+ 1468              	.LBE9:
+ 241:User/Hardware/motor.c ****         }
+ 242:User/Hardware/motor.c ****     }
+ 243:User/Hardware/motor.c ****     // 三路can同时发送
+ 244:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &tx_message, can_send_data[0]);
+ 1469              		.loc 1 244 5
+ 1470 039c 3B1D     		adds	r3, r7, #4
+ 1471 039e 1A46     		mov	r2, r3
+ 1472 03a0 0B49     		ldr	r1, .L63+4
+ 1473 03a2 0C48     		ldr	r0, .L63+8
+ 1474 03a4 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 245:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan2, &tx_message, can_send_data[1]);
+ 1475              		.loc 1 245 5
+ 1476 03a8 3B1D     		adds	r3, r7, #4
+ 1477 03aa 0833     		adds	r3, r3, #8
+ 1478 03ac 1A46     		mov	r2, r3
+ 1479 03ae 0849     		ldr	r1, .L63+4
+ 1480 03b0 0948     		ldr	r0, .L63+12
+ 1481 03b2 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 246:User/Hardware/motor.c ****     HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan3, &tx_message, can_send_data[2]);
+ 1482              		.loc 1 246 5
+ 1483 03b6 3B1D     		adds	r3, r7, #4
+ 1484 03b8 1033     		adds	r3, r3, #16
+ 1485 03ba 1A46     		mov	r2, r3
+ 1486 03bc 0449     		ldr	r1, .L63+4
+ 1487 03be 0748     		ldr	r0, .L63+16
+ 1488 03c0 FFF7FEFF 		bl	HAL_FDCAN_AddMessageToTxFifoQ
+ 247:User/Hardware/motor.c **** }
+ 1489              		.loc 1 247 1
+ 1490 03c4 00BF     		nop
+ 1491 03c6 4037     		adds	r7, r7, #64
+ 1492              	.LCFI37:
+ 1493              		.cfi_def_cfa_offset 8
+ 1494 03c8 BD46     		mov	sp, r7
+ 1495              	.LCFI38:
+ 1496              		.cfi_def_cfa_register 13
+ 1497              		@ sp needed
+ 1498 03ca 80BD     		pop	{r7, pc}
+ 1499              	.L64:
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 32
+
+
+ 1500              		.align	2
+ 1501              	.L63:
+ 1502 03cc 00000000 		.word	DJIMotor_data
+ 1503 03d0 00000000 		.word	tx_message.0
+ 1504 03d4 00000000 		.word	hfdcan1
+ 1505 03d8 00000000 		.word	hfdcan2
+ 1506 03dc 00000000 		.word	hfdcan3
+ 1507              		.cfi_endproc
+ 1508              	.LFE150:
+ 1510              		.section	.bss.tx_message.0,"aw",%nobits
+ 1511              		.align	2
+ 1514              	tx_message.0:
+ 1515 0000 00000000 		.space	36
+ 1515      00000000 
+ 1515      00000000 
+ 1515      00000000 
+ 1515      00000000 
+ 1516              		.text
+ 1517              	.Letext0:
+ 1518              		.file 2 "D:/MSYS2/mingw64/arm-none-eabi/include/machine/_default_types.h"
+ 1519              		.file 3 "D:/MSYS2/mingw64/arm-none-eabi/include/sys/_stdint.h"
+ 1520              		.file 4 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h723xx.h"
+ 1521              		.file 5 "Drivers/CMSIS/Device/ST/STM32H7xx/Include/stm32h7xx.h"
+ 1522              		.file 6 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_def.h"
+ 1523              		.file 7 "Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_fdcan.h"
+ 1524              		.file 8 "Core/Inc/fdcan.h"
+ 1525              		.file 9 "User/Hardware/motor.h"
+ 1526              		.file 10 "User/BSP/CAN_receive_send.h"
+ARM GAS  C:\Users\23671\AppData\Local\Temp\ccKf5H71.s 			page 33
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 motor.c
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:24     .bss.DJIMotor_data:00000000 DJIMotor_data
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:21     .bss.DJIMotor_data:00000000 $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:27     .text.DJIMotor_init:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:33     .text.DJIMotor_init:00000000 DJIMotor_init
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:111    .text.DJIMotor_init:00000068 $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:118    .text.DJIMotor_setzero:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:124    .text.DJIMotor_setzero:00000000 DJIMotor_setzero
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:200    .text.DJIMotor_setzero:0000006c $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:207    .text.DJIMotor_set:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:213    .text.DJIMotor_set:00000000 DJIMotor_set
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:286    .text.DJIMotor_set:00000060 $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:293    .text.DJIMotor_get_data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:299    .text.DJIMotor_get_data:00000000 DJIMotor_get_data
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:382    .text.DJIMotor_get_data:00000070 $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:391    .text.DJIMotor_get_process_motor_data:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:397    .text.DJIMotor_get_process_motor_data:00000000 DJIMotor_get_process_motor_data
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:802    .text.DJIMotor_get_process_motor_data:00000310 $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:812    .text.DJIMotor_decode_candata:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:818    .text.DJIMotor_decode_candata:00000000 DJIMotor_decode_candata
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:920    .text.DJIMotor_decode_candata:00000090 $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:928    .text.DJIMotor_send_current:00000000 $t
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:934    .text.DJIMotor_send_current:00000000 DJIMotor_send_current
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:1377   .text.DJIMotor_send_current:000002ec $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:1514   .bss.tx_message.0:00000000 tx_message.0
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:1384   .text.DJIMotor_send_current:00000300 $t
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:1502   .text.DJIMotor_send_current:000003cc $d
+C:\Users\23671\AppData\Local\Temp\ccKf5H71.s:1511   .bss.tx_message.0:00000000 $d
+
+UNDEFINED SYMBOLS
+__aeabi_l2f
+__aeabi_f2lz
+hfdcan1
+hfdcan2
+hfdcan3
+HAL_FDCAN_ErrorCallback
+HAL_FDCAN_AddMessageToTxFifoQ
