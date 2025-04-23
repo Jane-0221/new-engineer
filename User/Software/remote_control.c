@@ -8,7 +8,9 @@
 #include "DT7.h"
 
 #include "Stm32_time.h"
-
+#include <tim.h>
+int b =0;
+int c =0;
 RC_ctrl_t RC_data;
 
 int16_t wait_time[SIZE_OF_WAIT] = {0}; // 键盘消抖用时间
@@ -160,4 +162,67 @@ void Keyboard_mouse_control(void)
         Global.Shoot.tigger_mode = HIGH;
     else
         Global.Shoot.tigger_mode = TRIGGER_CLOSE;
+}
+void GPIO_init(){
+    HAL_GPIO_WritePin(GPIOD,GPIO_PIN_14 ,GPIO_PIN_RESET);//PD14
+        
+    HAL_GPIO_WritePin(GPIOD,GPIO_PIN_15 ,GPIO_PIN_RESET);//PD15
+        
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8 ,GPIO_PIN_RESET);//PB8
+    
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9 ,GPIO_PIN_RESET);//PB9
+    
+    HAL_GPIO_WritePin(GPIOE,GPIO_PIN_14 ,GPIO_PIN_RESET);//PE14
+    
+    HAL_GPIO_WritePin(GPIOE,GPIO_PIN_0 ,GPIO_PIN_RESET);//PE0	
+        
+    HAL_GPIO_WritePin(GPIOE,GPIO_PIN_1 ,GPIO_PIN_RESET);//PE1
+        
+    HAL_GPIO_WritePin(GPIOC,GPIO_PIN_10 ,GPIO_PIN_RESET);//PC10
+        
+    HAL_GPIO_WritePin(GPIOC,GPIO_PIN_11 ,GPIO_PIN_RESET);//PC11
+    }
+    void PWM_control_init(void)
+{
+    HAL_TIM_Base_Start(&htim1);
+	//HAL_TIM_Base_Start(&htim2);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
+	
+	HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);//蜂鸣器PWM
+//	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);	//加热电阻PWM,不开启	
+}
+void switch_servos(){  //舵机控制云台
+    if(1){ //具体根据需求确定遥控器通道
+    if(SBUS_CH.CH4 > 1024){
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_3,b=b+1 );//通道3云台1
+            
+        }
+            if(SBUS_CH.CH4 < 1024){
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_3,b=b-1 );
+            
+        }
+        if(b>=2100){ //给个限位，防止跑飞
+            b=2100;
+        }
+        if(b<=400){
+            b=400;
+        }
+}
+if(1){//具体根据需求确定遥控器通道
+    if(SBUS_CH.CH3 > 1024){
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1,c=c+1 );  //通道1云台2
+
+        }
+            if(SBUS_CH.CH3 < 1024){
+        __HAL_TIM_SetCompare(&htim1, TIM_CHANNEL_1,c=c-1 );
+
+        }
+}
+if(c>=2100){//给个限位，防止跑飞
+    c=2100;
+}
+if(c<=400){
+    c=400;
+}
 }

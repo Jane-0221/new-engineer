@@ -61,6 +61,8 @@ void Error_Handler(void);
 #define Power_OUT2_GPIO_Port GPIOC
 #define Power_OUT1_Pin GPIO_PIN_14
 #define Power_OUT1_GPIO_Port GPIOC
+#define POWER_5V_Pin GPIO_PIN_15
+#define POWER_5V_GPIO_Port GPIOC
 #define ACC_CS_Pin GPIO_PIN_0
 #define ACC_CS_GPIO_Port GPIOC
 #define GYRO_CS_Pin GPIO_PIN_3

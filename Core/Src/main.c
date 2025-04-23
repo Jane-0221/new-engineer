@@ -96,10 +96,9 @@ int main(void)
 
   /* USER CODE END 1 */
 
-  /* MPU Configuration--------------------------------------------------------*/
-  MPU_Config();
+  /* MPU Configuration-----------------------------------------------  MPU_Config();
 
-  /* MCU Configuration----- ---------------------------------------------------*/
+  /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
   HAL_Init();
@@ -135,6 +134,7 @@ int main(void)
   MX_USART3_UART_Init();
   MX_USART1_UART_Init();
   MX_TIM12_Init();
+  MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   HAL_IWDG_Refresh(&hiwdg1);
   /*INIT*/
@@ -148,6 +148,8 @@ int main(void)
   Gimbal_init();
   Shoot_init();
   HAL_IWDG_Refresh(&hiwdg1);
+  PWM_control_init();
+  GPIO_init();
   // OSPI_W25Qxx_Init(); // 锟斤拷始锟斤拷OSPI锟斤拷W25Q64
   // OSPI_W25Qxx_Test(); // Flash锟斤拷写锟斤拷锟斤拷
 

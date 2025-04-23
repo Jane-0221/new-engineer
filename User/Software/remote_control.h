@@ -54,5 +54,7 @@ typedef PACKED_STRUCT()
 void DT7toRCdata();
 void RC_control();
 void Keyboard_mouse_control();
-
+void GPIO_init();
+void PWM_control_init(void);
+void switch_servos();
 #endif // !__REMOTE_CONTROL__

@@ -45,7 +45,7 @@ void Chassis_init()
  */
 void Chassis_set_x(float x)
 {
-    // RampGenerator_SetTarget(&Vx_ramp, x);
+     RampGenerator_SetTarget(&Vx_ramp, x);
     Global.Chssis.input.x = x;
 }
 void Chassis_set_y(float y)
